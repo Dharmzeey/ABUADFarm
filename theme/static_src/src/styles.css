@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.card{
+  @apply rounded bg-white border-gray-200 shadow-md overflow-hidden relative cursor-pointer;
+}
+
+button {
+  @apply p-2 rounded-full border-2 border-black hover:bg-black hover:text-white transition ease-in delay-100;
+}
+
+td, th{
+  @apply px-6 py-2 text-left;
+}
+
+tr {
+  @apply mb-4;
+}
+
+h1 {
+  @apply text-center;
+}
+
+img{
+  @apply w-full h-auto;
+}
+
+.heading{
+  @apply text-left;
+}
+
+.card h1 {
+  @apply py-3
+}
+
+.menu-toggle-icon.activated .open-menu-icon, .close-menu-icon{
+  @apply hidden;
+}
+
+.menu-toggle-icon.activated .close-menu-icon{
+  @apply block;
+}

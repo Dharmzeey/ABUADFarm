@@ -1,0 +1,50 @@
+{% load static %}
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% block title %}
+  <title>Afe Balalola University | ABUAD FARM</title>
+  {% endblock %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+  <link rel="shortcut icon" href="{% static 'images/abuadlogofavicon.ico' %}" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous"
+    referrerpolicy="no-referrer" />
+  <!-- LINK FOR CAROUSEL SLIDER CSS FILE BELOW -->
+  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+  <!-- AM CARTS -->
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+  <!-- <script src="https://cdn.amcharts.com/lib/5/locales/de_DE.js"></script> -->
+  <!-- <script src="https://cdn.amcharts.com/lib/5/geodata/germanyLow.js"></script> -->
+  <!-- <script src="https://cdn.amcharts.com/lib/5/fonts/notosans-sc.js"></script> -->
+  {% tailwind_css %}
+</head>
+
+<body id="body" class="">
+  <nav>
+    {% include "./navbar.html" %}
+  </nav>
+
+  <div class="flex justify-center">
+    <div class="container">
+      <div class="w-full min-h-screen md:w-full m-auto p-6">
+        {% block content%}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+
+  {% include "./footer.html" %}
+
+</body>
+
+</html>

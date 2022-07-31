@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Afe Balalola University | ABUAD FARM - ADMINISTRATIVE LOGIN</title>
+</head>
+<body>
+  <div>
+    WELCOME TO ABUAD ADMNISTRATOR LOGIN PAGE
+  </div>
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+    {{ form.as_table}}
+    </table>
+    <button class="p-2 px-4"> Submit</button>
+  </form>
+
+</body>
+</html>

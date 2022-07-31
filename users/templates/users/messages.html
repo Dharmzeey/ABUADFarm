@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="w-11/12 md:w-full m-auto p-6">
+
+
+  {% if not messages %}
+  <strong>
+    You Have No Message
+  </strong>
+  {% else %}
+
+  {% for message in messages %}
+  {% if message.read %}
+  <small>{{ message.date }}</small>
+  <h2><b>{{ message.title }}</b></h2>
+  <p>{{ message.body }}</p>
+  {% else %}
+
+  <small>{{ message.date }}</small>
+  <h2><b>{{ message.title }}</b></h2>
+  <p>{{ message.body|truncatewords:5 }}</p>
+  <button class="px-6 py-2" data-pk="{{ message.id }}" onclick="readMessage(this)">Read</button>
+  {% endif %}
+  <br><br>
+  {% endfor %}
+
+  {% endif %}
+</div>
+
+<script src="{% static 'js/script.js' %}"></script>
+<script>
+  const url = "{% url 'read-message' %}";
+</script>
+{% endblock %}

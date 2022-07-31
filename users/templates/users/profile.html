@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="md:ml-10 h-[80vh]">
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+    {{ form.as_table}}
+    </table>
+    <!-- <input class="btn" type="submit" value="Submit"> -->
+    <button class="p-2 px-4"> Submit</button>
+  </form>
+</div>
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

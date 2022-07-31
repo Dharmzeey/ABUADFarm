@@ -1,0 +1,142 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+<div>
+  <header class="w-11/12 md:w-4/5 m-auto p-6 text-center">
+    Afe Babalola University Ado Ekiti Farm Industry is the subset and extension of the Afe Babalola University which they have specialized in taking our Nation's Manufacturing and Production to the greater Level. 
+
+    We are committed to making our country and humanity idk.
+  </header>
+
+  <h1>Ruo Unts</h1>
+  <div class="p-6 text-center">
+    <button id="farm">
+      <span class="text-center px-10 inline-block">Frm</span>
+    </button>
+
+    <button id="industry">
+      <span class="text-center px-10 inline-block">Idsrt</span>
+    </button>
+  </div>
+  <div class="farm-items" id="farm-items">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 m-auto">
+      <div class="card">
+        <a href="{% url 'agronomy' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Agny</h1>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="{% url 'feedmill' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Fml</h1>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="{% url 'fishries' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Fsh</h1>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="{% url 'honey' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Hny</h1>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="{% url 'mango-juice' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Mg Jc</h1>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="{% url 'moringa' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Mrga</h1>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="{% url 'piggery' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Pgry</h1>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="{% url 'plantain-chips' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Ptn Chp</h1>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="{% url 'poultry' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Pltry</h1>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="{% url 'wood-factory' %}">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <!-- <div class="w-60 h-72 "></div> -->
+          <h1>Wd Ftry</h1>
+        </a>
+      </div>
+    </div>
+    <div>
+    </div>
+  </div>
+
+    <div class="industry-items hidden" id="industry-items">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 m-auto">
+        <div class="card">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <h1>Tmt p</h1>
+        </div>
+        <div class="card">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+          <h1>Pnd Y</h1>
+        </div>
+        <div class="card">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+        </div>
+        <div class="card">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+        </div>
+        <div class="card">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+        </div>
+        <div class="card">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+        </div>
+        <div class="card">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+        </div>
+        <div class="card">
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
