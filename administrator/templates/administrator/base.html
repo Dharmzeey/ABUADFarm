@@ -1,0 +1,47 @@
+{% load static %}
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Afe Balalola University | ABUAD FARM - ADMINISTRATIVE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous"
+    referrerpolicy="no-referrer" />
+  <link rel="shortcut icon" href="{% static 'images/abuadlogofavicon.ico' %}" type="image/x-icon">
+  {% tailwind_css %}
+</head>
+
+<body>
+  {% if messages %}
+  <ul class="fixed bg-black text-white w-full p-4 text-center" id="pop-up">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <h1 class="w-1/3 md:w-2/12 p-2 heading">
+    <a href="{% url 'home' %}">
+      <img src="{% static 'images/afe-uni-logo.png' %}" alt="ABUAD FARM">
+    </a>
+  </h1>
+  <div class="min-h-[80vh] grid grid-cols-5">
+    {% include 'administrator/navbar.html' %}
+
+
+    <div class="col-span-4">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+
+  {% include 'administrator/footer.html' %}
+
+</body>
+<script src="{% static 'js/script.js' %}"></script>
+
+</html>

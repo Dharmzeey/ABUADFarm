@@ -1,0 +1,20 @@
+{% extends 'administrator/base.html' %}
+{% load static %}
+{% block content %}
+
+<div>
+  <div><b>{{ unit_name }} Unit Customers</b>
+    <button>
+      <a href="{% url 'administrator:add-new-customer' %}">
+        <i class="fa-solid fa-plus px-2"></i>
+        <span class="pr-3"> Add New Customer</span>
+      </a>
+    </button>
+  </div>
+  <ul class="leading-10">
+    {% for customer in customers %}
+    <li><a href="{% url 'administrator:customer-detail' customer.id %}">{{ customer }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

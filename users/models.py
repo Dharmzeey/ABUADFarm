@@ -1,5 +1,9 @@
+from email.policy import default
+from pyexpat import model
+from re import T
 from django.db import models
 from django.contrib.auth import settings
+from django.forms import BooleanField
 
 from products.models import Product
 
@@ -32,6 +36,8 @@ class Goods(models.Model):
     item = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.FloatField()
     price = models.FloatField()
+    add_note = models.BooleanField(default=False)
+    note = models.TextField(blank=True, null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

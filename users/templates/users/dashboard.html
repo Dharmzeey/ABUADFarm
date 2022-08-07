@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-<div class="w-full md:w-full m-auto p-6">
+<div class="w-full m-auto p-1">
   {% if empty_dashboard %}
   <strong>
     You do not have a dashboard Yet
@@ -36,7 +36,7 @@
         <th>Item</th>
         <th>Weight (kg)</th>
         <th>Price (&#8358;)</th>
-        <th>Chart </th>
+        <!-- <th>Chart </th> -->
       </tr>
       {% for good in goods %}
       <tr>
@@ -44,11 +44,12 @@
         <td>{{ good.item }}</td>
         <td>{{ good.quantity }}</td>
         <td>{{ good.price }}</td>
-        <td>Chart</td>
+        <!-- <td>Chart</td> -->
       </tr>
       {% endfor %}
       <th>Total</th>
-      <td colspan="3"> &#8358; {{ total }}</td>
+      <td colspan="2"></td>
+      <td> &#8358; {{ total }}</td>
     </table>
   </div>
 

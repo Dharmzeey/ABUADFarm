@@ -34,7 +34,10 @@
       <a href="{% url 'administrator:home' %}">Admin Dashboard</a>
       {% endif %}
 
-      
+      {% if user.is_staff and not user.is_superuser%}
+      <i class="fa-solid fa-lock"></i>
+      <a href="{% url 'administrator:staff-home' %}">Staff Dashboard</a>
+      {% endif %}
 
       <li>
         <i class="fa-solid fa-house"></i>

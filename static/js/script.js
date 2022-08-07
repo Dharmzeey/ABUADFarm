@@ -84,6 +84,7 @@ if (document.querySelector("#menu-toggle-icon")) {
     toggleMenu.classList.toggle("activated");
     openAside.classList.toggle("hidden");
     bodyColor.classList.toggle("bg-neutral-700");
+    bodyColor.classList.toggle("bg-transparent");
   }
 
   toggleMenu.addEventListener('click', toggleFunction);
@@ -97,14 +98,35 @@ function readMessage(val) {
   })
 }
 
-// THIS IS FOR THE DASHBOARD CHART WHICH IS PROCESSED ASYNC ALONG SIDE THE FILTERING 
-// function loadChart() {
-//   $.get(url, { 'goodName': goodName }, (data) => {
-//     for (let i = 0; i < data['data'].length; i++) {
-//       console.log(data["data"][i]["item"]["name"])
-//       console.log(data["data"][i]["price"])
-//       console.log(data["data"][i]["quantity"])
-//       console.log(data["data"][i]["date_ordered"])
-//     }
-//   })
-// }
+// THIS IS FOR POP UP MESSAGE DISAPPEAR
+if (document.getElementById("pop-up")){
+  window.onload = ()=>{
+    popUp = document.getElementById("pop-up");
+    setTimeout(()=>{
+      popUp.style.display = "none"
+    }, 2000)
+  }
+}
+
+
+// THIS IS THE TOGGLER FOR THE ADD NOTE TEXTAREA
+if (document.getElementById("id_add_note")){
+  const addNote = document.getElementById("id_add_note");
+  const noteTextarea = document.getElementById("id_note");
+
+//  THIS WILL HIDE THE TEXTAREA UNTIL THE BE IS CHECKED
+  window.addEventListener('load', ()=> {
+    if (!addNote.checked) {
+      noteTextarea.parentNode.parentNode.style.display = 'none';
+    }
+  })
+
+  addNote.addEventListener('click', ()=> {
+    if(addNote.checked){
+      noteTextarea.parentNode.parentNode.style.display = 'table-row';
+    }else {
+      noteTextarea.parentNode.parentNode.style.display = 'none';
+    }
+  })
+}
+

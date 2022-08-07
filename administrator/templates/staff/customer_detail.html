@@ -1,0 +1,44 @@
+{% extends 'administrator/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+  <div class="mb-24">
+    <div>{{ unit_customer }}</div>
+    <div>{{ unit_customer }}</div>
+    <div>{{ unit_customer }}</div>
+  </div>
+
+    <table class="w-full border-solid border-2 border-black-500 ">
+      <caption class="mb-4">
+        {{ unit_customer }} recent {{ unit_name }} Purchases
+      </caption>
+      <button>
+        <a href="{% url 'administrator:add-purchase' %}?q={{ unit_customer.id }}">
+          <i class="fa-solid fa-plus px-2"></i> Add Purchase 
+        </a>
+      </button>
+      
+      <tr>
+        <th>Date</th>
+        <th>Item</th>
+        <th>Weight (kg)</th>
+        <th>Price (&#8358;)</th>
+        <!-- <th>Chart </th> -->
+      </tr>
+      {% for good in customer_unit_goods %}
+      <tr>
+        <td>{{ good.date_ordered|date:"d M Y"}}</td>
+        <td>{{ good.item }}</td>
+        <td>{{ good.quantity }}</td>
+        <td>{{ good.price }}</td>
+        <!-- <td>Chart</td> -->
+      </tr>
+      {% endfor %}
+      <th>Total</th>
+      <td colspan="2"></td>
+      <td> &#8358; {{ total }}</td>
+    </table>
+
+</div>
+{% endblock %}
