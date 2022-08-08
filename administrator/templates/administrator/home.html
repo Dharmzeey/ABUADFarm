@@ -1,38 +1,49 @@
+{% extends 'administrator/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block content %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Afe Balalola University | ABUAD FARM - ADMINISTRATOR PAGE</title>
-  
-</head>
+<ul class="mb-4 text-center flex flex-wrap gap-3">
+  <li>
+    <button>Today</button>
+  </li>
+  <li>
+    <button>Yesterday</button>
+  </li>
+  <li>
+    <button>Last Week</button>
+  </li>
+  <li>
+    <button>Select Date</button>
+  </li>
+  <li>
+    <button>
+      <i class="fa-solid fa-arrow-down pr-2"></i>
+      Filter Product
+      <i class="fa-solid fa-filter pl-2"></i>
+    </button>
+  </li>
+</ul>
+<div>
+  {% for product in products %}
+  {{ product }}
+  {% endfor %}
+</div>
 
-<body>
 
-  <h1 class="w-4/12 p-2 heading md:hidden">
-    <a href="{% url 'home' %}">
-      <img src="{% static 'images/afe-uni-logo.png' %}" alt="ABUAD FARM">
-    </a>
-  </h1>
 
-  <nav>
-    {% for product in products %}
-    {{ product }}
+<div class="my-4">
+  <div>Today's sales</div>
+  <div>Most Sold goods </div>
+  <div>Highest generated Goods</div>
+</div>
+
+<div>
+  <ul>
+    {% for good in goods %}
+    <li>{{ good }}</li>
     {% endfor %}
-  </nav>
+  </ul>
+</div>
 
-  <H1>
-    THIS IS THE ADMIN PAGE
-  </H1>
 
-  <h2>
-    {% if user.is_authenticated %}
-    <a href="{% url 'administrator:logout' %}">Logout</a>
-    {% endif %}
-  </h2>
-</body>
-
-</html>
+{% endblock %}

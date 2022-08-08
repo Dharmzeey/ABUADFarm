@@ -2,6 +2,7 @@ import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
+from django.contrib import messages
 from django.views import View
 from django.shortcuts import get_object_or_404
 
@@ -14,7 +15,7 @@ from .serializer import GoodsSerializer
 class ProfileUpdateView(LoginRequiredMixin, View):
     template_name = "users/profile.html"
     model = Profile
-    success_url = "profile-view"
+    success_url = "profile_view"
 
     def get(self, request):
         owner = get_object_or_404(self.model, owner=request.user)
@@ -29,6 +30,7 @@ class ProfileUpdateView(LoginRequiredMixin, View):
             context = {"form": form}
             return render(request, self.template_name, context)
         form.save()
+        messages.success(request, "Profile Updated Successfully")
         return redirect(self.success_url)
 
 
@@ -39,7 +41,7 @@ class Dashboard(LoginRequiredMixin, View):
     template_name = "users/dashboard.html"
 
     def get(self, request):
-        goods = Goods.objects.filter(owner=request.user)
+        goods = Goods.objects.filter(owner=request.user)[:30]
         product = Product.objects.all()
         # THIS BELOW CHECKS THE GOODS A USER DO PURCHASE BY CHECKING THE REVERSE OF GOODS THROUGH THE PRODUCT MODEL.
         user_goods = [
@@ -53,7 +55,7 @@ class Dashboard(LoginRequiredMixin, View):
         q = request.GET.get("q", "")
         try:
             if q:
-                goods = Goods.objects.filter(owner=request.user, item__name=q)
+                goods = Goods.objects.filter(owner=request.user, item__name=q)[:30]
                 total = sum([x.price for x in goods])
         except:
             pass
@@ -66,17 +68,17 @@ class Dashboard(LoginRequiredMixin, View):
 
 dashboard = Dashboard.as_view()
 
-
-class Message(LoginRequiredMixin, View):
+# THIS CLASS HANDLES THE MESSAGE STATUS OF A CUSTOMER
+class UserMessage(LoginRequiredMixin, View):
     template_name = "users/messages.html"
 
     def get(self, request):
-        messages = Messages.objects.filter(owner=request.user).order_by("date")[:10]
-        context = {"messages": messages}
+        user_messages = Messages.objects.filter(owner=request.user).order_by("date")[:10]
+        context = {"user_messages": user_messages}
         return render(request, self.template_name, context)
 
 
-messages = Message.as_view()
+user_messages = UserMessage.as_view()
 
 
 # THIS CLASS WILL BE EXECUTED BY A AJAX REQUEST

@@ -5,7 +5,7 @@
 <div>
   <div><b>{{ unit_name }} Unit Customers</b>
     <button>
-      <a href="{% url 'administrator:add-new-customer' %}">
+      <a href="{% url 'administrator:add_new_customer' %}">
         <i class="fa-solid fa-plus px-2"></i>
         <span class="pr-3"> Add New Customer</span>
       </a>
@@ -13,7 +13,7 @@
   </div>
   <ul class="leading-10">
     {% for customer in customers %}
-    <li><a href="{% url 'administrator:customer-detail' customer.id %}">{{ customer }}</a></li>
+    <li><a href="{% url 'administrator:customer_detail' customer.id %}">{{ customer }}</a></li>
     {% endfor %}
   </ul>
 </div>

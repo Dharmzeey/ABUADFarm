@@ -9,11 +9,11 @@ urlpatterns = [
   path('farm/feedmill/', views.feedmill, name="feedmill"),
   path('farm/fishries/', views.fishries, name="fishries"),
   path('farm/honey/', views.honey, name="honey"),
-  path('farm/mango-juice/', views.mango_juice, name="mango-juice"),
+  path('farm/mango-juice/', views.mango_juice, name="mango_juice"),
   path('farm/moringa/', views.moringa, name="moringa"),
   path('farm/piggery/', views.piggery, name="piggery"),
-  path('farm/plantain-chips/', views.plantain_chips, name="plantain-chips"),
+  path('farm/plantain-chips/', views.plantain_chips, name="plantain_chips"),
   path('farm/poultry/', views.poultry, name="poultry"),
-  path('farm/wood-factory/', views.wood_factory, name="wood-factory"),
+  path('farm/wood-factory/', views.wood_factory, name="wood_factory"),
   
 ]

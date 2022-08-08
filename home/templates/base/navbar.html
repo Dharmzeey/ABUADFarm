@@ -36,7 +36,7 @@
 
       {% if user.is_staff and not user.is_superuser%}
       <i class="fa-solid fa-lock"></i>
-      <a href="{% url 'administrator:staff-home' %}">Staff Dashboard</a>
+      <a href="{% url 'administrator:staff_home' %}">Staff Dashboard</a>
       {% endif %}
 
       <li>
@@ -58,7 +58,7 @@
       </li>
       <li>
         <i class="fa-solid fa-user"></i>
-        <a href="{% url 'profile-view' %} ">Profile</a>
+        <a href="{% url 'profile_view' %} ">Profile</a>
       </li>
 
       <li>

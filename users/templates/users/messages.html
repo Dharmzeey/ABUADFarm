@@ -5,23 +5,23 @@
 <div class="w-11/12 md:w-full m-auto p-6">
 
 
-  {% if not messages %}
+  {% if not user_messages %}
   <strong>
     You Have No Message
   </strong>
   {% else %}
 
-  {% for message in messages %}
-  {% if message.read %}
-  <small>{{ message.date }}</small>
-  <h2><b>{{ message.title }}</b></h2>
-  <p>{{ message.body }}</p>
+  {% for user_message in user_messages %}
+  {% if user_message.read %}
+  <small>{{ user_message.date }}</small>
+  <h2><b>{{ user_message.title }}</b></h2>
+  <p>{{ user_message.body }}</p>
   {% else %}
 
-  <small>{{ message.date }}</small>
-  <h2><b>{{ message.title }}</b></h2>
-  <p>{{ message.body|truncatewords:5 }}</p>
-  <button class="px-6 py-2" data-pk="{{ message.id }}" onclick="readMessage(this)">Read</button>
+  <small>{{ user_message.date }}</small>
+  <h2><b>{{ user_message.title }}</b></h2>
+  <p>{{ user_message.body|truncatewords:5 }}</p>
+  <button class="px-6 py-2" data-pk="{{ user_message.id }}" onclick="readuser_message(this)">Read</button>
   {% endif %}
   <br><br>
   {% endfor %}
@@ -31,6 +31,6 @@
 
 <script src="{% static 'js/script.js' %}"></script>
 <script>
-  const url = "{% url 'read-message' %}";
+  const url = "{% url 'read_message' %}";
 </script>
 {% endblock %}

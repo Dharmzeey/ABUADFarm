@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timezone
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,7 +13,7 @@ from products.models import Product
 from users.models import Goods
 
 from .models import StaffModel
-from .forms import AddCustomerGoodForm, AddNewCustomerForm
+from .forms import AddCustomerGoodForm, AddNewCustomerForm, SendCustomerMessageForm
 
 # User = settings.AUTH_USER_MODEL
 
@@ -24,24 +24,26 @@ class AdminView(LoginRequiredMixin, View):
 
     def get(self, request):
         if request.user.is_superuser:
-            
             products = Product.objects.all()
             today = date.today()
-            # print(today)
-            goods = Goods.objects.all()
-            # print(goods)
+            str_today = str(today)
+            list_today = str_today.split("-")
+            get_year = int(list_today[0])
+            get_month = int(list_today[1])
+            get_date = int(list_today[2])
             
+            datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
+            date_to_get = date(get_year, get_month, get_date)            
+            goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)            
             context = {
                 "products": products,
                 "goods": goods
             }
             return render(request, self.template_name, context)
         elif request.user.is_staff:
-            return redirect("administrator:staff-home")
+            return redirect("administrator:staff_home")
         else:
             return redirect("home")
-
-
 admin_view = AdminView.as_view()
 
 
@@ -49,9 +51,12 @@ class AdminLogin(View):
     template_name = "administrator/login.html"
 
     def get(self, request):
-        form = AuthenticationForm()
-        context = {"form": form}
-        return render(request, self.template_name, context)
+        if request.user.is_authenticated:
+            return redirect("administrator:home")
+        else:
+            form = AuthenticationForm()
+            context = {"form": form}
+            return render(request, self.template_name, context)
 
     def post(self, request):
         form = AuthenticationForm(request, data=request.POST)
@@ -112,14 +117,13 @@ class CustomerView(LoginRequiredMixin, View):
     def get(self, request, pk):
         unit_name = StaffModel.objects.get(owner=request.user).unit
         unit_customer = User.objects.get(id=pk)
-        customer_unit_goods = Goods.objects.filter(owner=unit_customer , item=unit_name)
+        customer_unit_goods = Goods.objects.filter(owner=unit_customer , item=unit_name)[:30]
         total = sum([x.price for x in customer_unit_goods])
         context = {
             "customer_unit_goods" : customer_unit_goods,
             "unit_name" : unit_name,
             "unit_customer" : unit_customer,
             "total": total
-            
         }
         return render(request, self.template_name, context)
 customer_view = CustomerView.as_view()
@@ -129,7 +133,7 @@ class AddCustomerGood(LoginRequiredMixin, CreateView):
     login_url = "administrator:login"
     form_class = AddCustomerGoodForm
     template_name =  "staff/add_customer_good.html"
-    success_url = "administrator:customer-detail"
+    success_url = "administrator:customer_detail"
     
     # THIS METHOD ADDS THE CUSTOMER TO THE CONTEXT DICT FOR THE TEMPLATE
     def get_context_data(self, **kwargs):
@@ -150,12 +154,13 @@ class AddCustomerGood(LoginRequiredMixin, CreateView):
     # THIS REEDIRECTS TO THE USER DASHBOARD ON STAFF PAGE
     def get_success_url(self):
         pk = self.request.GET.get("q", None)
-        return reverse_lazy('administrator:customer-detail', kwargs={'pk': pk})
+        return reverse_lazy('administrator:customer_detail', kwargs={'pk': pk})
     
 add_customer_good = AddCustomerGood.as_view()
 
 # THIS CLASS HANDLES THE ADDING A NEW CUSTOMER TO A UNIT IF HE HAS NOT MADE ANY PURCHASE BEFORE
-class AddNewCustomer(View):
+class AddNewCustomer(LoginRequiredMixin, View):
+    login_url = "administrator:login"
     template_name = 'staff/add_new_customer.html'
     def get(self, request):
         form = AddNewCustomerForm()
@@ -168,6 +173,7 @@ class AddNewCustomer(View):
             username = form.cleaned_data["username"]
             quantity = form.cleaned_data["quantity"]
             price = form.cleaned_data["price"]
+            add_note = form.cleaned_data["add_note"]
             note = form.cleaned_data["note"]
             unit_name = StaffModel.objects.get(owner=self.request.user).unit
             try:
@@ -181,10 +187,37 @@ class AddNewCustomer(View):
                 item = unit_name,
                 quantity = quantity,    
                 price = price,
+                add_note = add_note,
                 note = note,
             )
             messages.success(request, "Added Succssfully")
-            return redirect('administrator:customer-detail', pk = user_id)
+            return redirect('administrator:customer_detail', pk = user_id)
         return render(request, self.template_name, {"form":AddNewCustomerForm(request.POST)})
     
 add_new_customer = AddNewCustomer.as_view()
+
+# THIS CLASS WILL HANDLE STAFF SENDING MESSAGE TO CUSTOMERS IF NECESSARY
+class SendcustomerMessage(LoginRequiredMixin, CreateView):
+    login_url = "administrator:login"
+    form_class = SendCustomerMessageForm
+    template_name = "staff/send_customer_message.html"
+    
+    def get_context_data(self, **kwargs):
+        pk = self.request.GET.get("q", None)
+        unit_customer = User.objects.get(id=pk)
+        kwargs["customer"] = unit_customer
+        return super().get_context_data(**kwargs)
+    
+    def form_valid(self, form):
+        pk = self.request.GET.get("q", None)
+        unit_customer = User.objects.get(id=pk)
+        form.instance.owner = unit_customer
+        messages.success(self.request, "Message Sent Succssfully")
+        return super(SendcustomerMessage, self).form_valid(form)
+    
+    # THIS REEDIRECTS TO THE USER DASHBOARD ON STAFF PAGE
+    def get_success_url(self):
+        pk = self.request.GET.get("q", None)
+        return reverse_lazy('administrator:customer_detail', kwargs={'pk': pk})
+    
+send_customer_message = SendcustomerMessage.as_view()

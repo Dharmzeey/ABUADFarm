@@ -1,5 +1,5 @@
 from django import forms
-from users.models import Goods
+from users.models import Goods, Messages
 
 class AddCustomerGoodForm(forms.ModelForm):
   class Meta:
@@ -16,3 +16,12 @@ class AddNewCustomerForm(forms.Form):
   price = forms.FloatField()
   add_note = forms.BooleanField()
   note = forms.CharField(widget=forms.Textarea(attrs={'rows': '4', "cols": "22"}))
+
+
+class SendCustomerMessageForm(forms.ModelForm):
+  class Meta:
+    model = Messages
+    fields = ("title", "body")
+    widgets = {
+      "body" : forms.Textarea(attrs={'rows': '4', "cols": "22"}),
+    }
