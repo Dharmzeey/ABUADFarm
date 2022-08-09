@@ -3,12 +3,19 @@
 @tailwind utilities;
 
 
+@layer base {
+  html {
+    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Montserrat', sans-serif; */
+  }
+}
+
 .card{
   @apply rounded bg-white border-gray-200 shadow-md overflow-hidden relative cursor-pointer;
 }
 
-button {
-  @apply p-1 px-4 rounded-full border-2 border-black hover:bg-black hover:text-white transition ease-in delay-100;
+button, .btn {
+  @apply p-1 px-4 rounded-full border-[1px] border-black hover:bg-black hover:text-white transition ease-in delay-100;
 }
 
 td, th{
@@ -41,4 +48,8 @@ img{
 
 .menu-toggle-icon.activated .close-menu-icon{
   @apply block;
+}
+
+.scale-dropdown{
+  @apply scale-0
 }

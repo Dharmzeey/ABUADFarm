@@ -1,49 +1,78 @@
 {% extends 'administrator/base.html' %}
-{% load static %}
+{% load humanize %}
 {% block content %}
 
-<ul class="mb-4 text-center flex flex-wrap gap-3">
-  <li>
-    <button>Today</button>
-  </li>
-  <li>
-    <button>Yesterday</button>
-  </li>
-  <li>
-    <button>Last Week</button>
-  </li>
-  <li>
-    <button>Select Date</button>
-  </li>
-  <li>
-    <button>
-      <i class="fa-solid fa-arrow-down pr-2"></i>
+<div class="mb-4 text-center flex flex-wrap gap-3 items-start">
+
+  <a href="{% url 'administrator:home' %}" class="btn">Recent</a>
+
+  <a href="{% url 'administrator:home' %}?day=today" class="btn">Today</a>
+
+  <a href="{% url 'administrator:home' %}?day=yesterday" class="btn">Yesterday</a>
+
+  <a href="{% url 'administrator:home' %}?day=last week" class="btn">Last Week</a>
+
+  <a href="" class="btn">Select Date</a>
+
+  <div class="relative">
+    <div id="dropdown" class="cursor-pointer">
+      <i class="fa-solid fa-filter pr-2"></i>
       Filter Product
-      <i class="fa-solid fa-filter pl-2"></i>
-    </button>
-  </li>
-</ul>
-<div>
-  {% for product in products %}
-  {{ product }}
-  {% endfor %}
+      <i class="fa-solid fa-caret-down pl-2"></i>
+    </div>
+
+    <div id="product-dropdown" class="scale-dropdown absolute transition ease-in-out delay-200">
+      <div class="w-40 py-2 m-auto card text-left leading-10">
+        {% for product in products %}
+        <a href="{% url 'administrator:home' %}?product={{ product }}{% if day %}&day={{ day }}{% endif %}"
+          class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ product }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
 </div>
-
-
 
 <div class="my-4">
-  <div>Today's sales</div>
-  <div>Most Sold goods </div>
-  <div>Highest generated Goods</div>
+  <div>{{day|title}} Sold Goods</div>
+  <!-- <div> {{day|title}} Most Sold goods </div>
+  <div>Highest generated Goods</div> -->
 </div>
 
-<div>
-  <ul>
-    {% for good in goods %}
-    <li>{{ good }}</li>
-    {% endfor %}
-  </ul>
-</div>
+<table class="w-full border-solid border-2 border-black-500 ">
+  <caption class="mb-4">
+    <!-- {{ unit_customer }} recent {{ unit_name }} Purchases -->
+    {{day|title}} Sold Good
+  </caption>
+ 
+  <tr>
+    <th>Customer</th>
+    <th>Date</th>
+    <th>Item</th>
+    <th>Weight (kg)</th>
+    <th>Price (&#8358;)</th>
+    <th>Note </th>
+  </tr>
+  {% for good in goods %}
+  <tr>
+    <td>{{ good.owner }}</td>
+    <td>{{ good.date_ordered|date:"D, d M Y"}}</td>
+    <td>{{ good.item }}</td>
+    <td>{{ good.quantity }}</td>
+    <td>{{ good.price }}</td>
+    <td>
+      {% if good.note %}
+      <span class="text-blue-800 underline font-bold cursor-pointer" onclick="alert('{{ good.note }}')">{{ good.note|truncatewords:2 }}</span>
+      {% else %}
+      ---
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  <th>Total</th>
+  <td colspan="3"></td>
+  <td> &#8358; {{ total|intcomma }}</td>
+</table>
 
 
 {% endblock %}

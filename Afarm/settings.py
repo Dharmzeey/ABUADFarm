@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    'django.contrib.humanize',
     "rest_framework",
     "allauth",
     "allauth.account",
@@ -127,8 +128,6 @@ USE_TZ = True
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "account_login"
-# LOGOUT_REDIRECT_URL = "agronomy"
-# LOGOUT_REDIRECT_URL = "/"
 
 
 # Static files (CSS, JavaScript, Images)

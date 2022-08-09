@@ -1,7 +1,6 @@
 function loadChart() {
   $.get(url, { 'goodName': goodName }, (value) => {
-    console.log()
-
+    
     // AMCHARTS
     am5.ready(function () {
 
@@ -40,14 +39,9 @@ function loadChart() {
         const price = value["data"][i]["price"]
         const quantity = value["data"][i]["quantity"]
         const dateOrdered = value["data"][i]["date_ordered"]
-        // console.log(itemName)
-        // console.log(price)
-        // console.log(quantity)
-        // console.log(dateOrdered)
 
         switch (itemName) {
           case "Pepper":
-            console.log("Pepper")
             data.push({
               "date": new Date(dateOrdered).getTime(),
               "pepper": price,
@@ -57,7 +51,6 @@ function loadChart() {
             break;
 
           case "Drink":
-            console.log("Drink")
             data.push({
               "date": new Date(dateOrdered).getTime(),
               "drink": price,
@@ -66,7 +59,6 @@ function loadChart() {
             break;
 
           case "Juice":
-            console.log("Juice")
             data.push({
               "date": new Date(dateOrdered).getTime(),
               "juice": price,
@@ -75,7 +67,6 @@ function loadChart() {
             break;
 
           case "Yam":
-            console.log("Yam")
             data.push({
               "date": new Date(dateOrdered).getTime(),
               "yam": price,
@@ -84,7 +75,6 @@ function loadChart() {
             break;
 
           case "Efo":
-            console.log("Efo")
             data.push({
               "date": new Date(dateOrdered).getTime(),
               "efo": price,
@@ -93,10 +83,8 @@ function loadChart() {
             break;
 
           default:
-            console.log("Default")
             break;
         }
-        console.log(data)
       }
 
 
@@ -214,8 +202,6 @@ function loadChart() {
 
         return series;
       }
-
-      console.log(data)
 
       if (value['singleProduct']) {
         itemLower = item.toLowerCase()

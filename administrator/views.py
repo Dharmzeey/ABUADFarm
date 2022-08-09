@@ -16,6 +16,16 @@ from .models import StaffModel
 from .forms import AddCustomerGoodForm, AddNewCustomerForm, SendCustomerMessageForm
 
 # User = settings.AUTH_USER_MODEL
+# def filter_function(day, *args, **kwargs):
+#     if filter_day == "recently":
+#         datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
+#         # date_to_get = date(get_year, get_month, get_date)  
+#         if filter_product:
+#             goods = Goods.objects.filter(item__name = filter_product)[:30]
+#             total = sum([x.price for x in goods])
+#         else:      
+#             goods = Goods.objects.filter()[:30]
+#             total = sum([x.price for x in goods])
 
 # THIS CLASS HANDLES THE SUPERUSER(ADMIN) DASHBOARD
 class AdminView(LoginRequiredMixin, View):
@@ -32,12 +42,56 @@ class AdminView(LoginRequiredMixin, View):
             get_month = int(list_today[1])
             get_date = int(list_today[2])
             
-            datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
-            date_to_get = date(get_year, get_month, get_date)            
-            goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)            
+            # datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
+            # date_to_get = date(get_year, get_month, get_date)            
+            goods = Goods.objects.all()[:30]
+                        
+            # THIS FUNCTIONALITY WILL HANDLE THE DAY FILTERING FOR DAY AND PRODUCT USINF CONDITIONAL STATEMENT
+            filter_day = request.GET.get("day", "recently")
+            filter_product = request.GET.get("product", None)
+            if filter_day == "recently":
+                if filter_product:
+                    goods = Goods.objects.filter(item__name = filter_product)[:30]
+                    total = sum([x.price for x in goods])
+                else:      
+                    goods = Goods.objects.filter()[:30]
+                    total = sum([x.price for x in goods])
+                    
+            if filter_day == "today":
+                datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
+                # date_to_get = date(get_year, get_month, get_date)  
+                if filter_product:
+                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
+                    total = sum([x.price for x in goods])
+                else:      
+                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)
+                    total = sum([x.price for x in goods])
+                
+            elif filter_day == "yesterday":
+                datetime_to_get = datetime(get_year, get_month, get_date - 1, tzinfo=timezone.utc)
+                # date_to_get = date(get_year, get_month, get_date)
+                if filter_product:
+                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
+                    total = sum([x.price for x in goods])
+                else:      
+                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)        
+                    total = sum([x.price for x in goods])
+
+            elif filter_day == "last week":
+                datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
+                # date_to_get = date(get_year, get_month, get_date)        
+                if filter_product:
+                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
+                    total = sum([x.price for x in goods])
+                else:      
+                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)
+                    total = sum([x.price for x in goods])
+
             context = {
                 "products": products,
-                "goods": goods
+                "goods": goods,
+                "day": filter_day,
+                "total": total
             }
             return render(request, self.template_name, context)
         elif request.user.is_staff:

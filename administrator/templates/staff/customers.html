@@ -1,15 +1,12 @@
 {% extends 'administrator/base.html' %}
-{% load static %}
 {% block content %}
 
 <div>
   <div><b>{{ unit_name }} Unit Customers</b>
-    <button>
-      <a href="{% url 'administrator:add_new_customer' %}">
+      <a href="{% url 'administrator:add_new_customer' %}" class="btn">
         <i class="fa-solid fa-plus px-2"></i>
         <span class="pr-3"> Add New Customer</span>
       </a>
-    </button>
   </div>
   <ul class="leading-10">
     {% for customer in customers %}

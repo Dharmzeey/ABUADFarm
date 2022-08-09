@@ -21,7 +21,7 @@
   <small>{{ user_message.date }}</small>
   <h2><b>{{ user_message.title }}</b></h2>
   <p>{{ user_message.body|truncatewords:5 }}</p>
-  <button class="px-6 py-2" data-pk="{{ user_message.id }}" onclick="readuser_message(this)">Read</button>
+  <button class="px-6 py-2" data-pk="{{ user_message.id }}" onclick="readMessage(this)">Read</button>
   {% endif %}
   <br><br>
   {% endfor %}
@@ -29,7 +29,7 @@
   {% endif %}
 </div>
 
-<script src="{% static 'js/script.js' %}"></script>
+
 <script>
   const url = "{% url 'read_message' %}";
 </script>

@@ -1,5 +1,5 @@
 {% extends 'administrator/base.html' %}
-{% load static %}
+{% load humanize %}
 {% block content %}
 
 <div class="container">
@@ -10,19 +10,15 @@
   </div>
 
     <div class="flex">
-      <button class="mr-6">
-        <a href="{% url 'administrator:add_purchase' %}?q={{ unit_customer.id }}">
+        <a href="{% url 'administrator:add_purchase' %}?q={{ unit_customer.id }} " class="mr-6 btn">
           <i class="fa-solid fa-plus px-2"></i> 
           <span class="pr-3"> Add Purchase </span>
         </a>
-      </button>
 
-      <button>
-        <a href="{% url 'administrator:send_customer_message' %}?q={{ unit_customer.id }}">
+        <a href="{% url 'administrator:send_customer_message' %}?q={{ unit_customer.id }}" class="btn">
           <i class="fa-solid fa-envelope px-2"></i>
           <span class="pr-3"> Send message </span>
         </a>
-      </button>
     </div>
     <table class="w-full border-solid border-2 border-black-500 ">
       <caption class="mb-4">
@@ -53,7 +49,7 @@
       {% endfor %}
       <th>Total</th>
       <td colspan="2"></td>
-      <td> &#8358; {{ total }}</td>
+      <td> &#8358; {{ total|intcomma }}</td>
     </table>
 
 </div>

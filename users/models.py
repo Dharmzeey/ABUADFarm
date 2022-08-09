@@ -1,9 +1,5 @@
-from email.policy import default
-from pyexpat import model
-from re import T
 from django.db import models
 from django.contrib.auth import settings
-from django.forms import BooleanField
 
 from products.models import Product
 

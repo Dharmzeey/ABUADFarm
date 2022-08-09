@@ -99,10 +99,10 @@ function readMessage(val) {
 }
 
 // THIS IS FOR POP UP MESSAGE DISAPPEAR
-if (document.getElementById("pop-up")){
-  window.onload = ()=>{
+if (document.getElementById("pop-up")) {
+  window.onload = () => {
     popUp = document.getElementById("pop-up");
-    setTimeout(()=>{
+    setTimeout(() => {
       popUp.style.display = "none"
     }, 2000)
   }
@@ -110,23 +110,32 @@ if (document.getElementById("pop-up")){
 
 
 // THIS IS THE TOGGLER FOR THE ADD NOTE TEXTAREA
-if (document.getElementById("id_add_note")){
+if (document.getElementById("id_add_note")) {
   const addNote = document.getElementById("id_add_note");
   const noteTextarea = document.getElementById("id_note");
 
-//  THIS WILL HIDE THE TEXTAREA UNTIL THE BE IS CHECKED
-  window.addEventListener('load', ()=> {
+  //  THIS WILL HIDE THE TEXTAREA UNTIL THE BE IS CHECKED
+  window.addEventListener('load', () => {
     if (!addNote.checked) {
       noteTextarea.parentNode.parentNode.style.display = 'none';
     }
   })
 
-  addNote.addEventListener('click', ()=> {
-    if(addNote.checked){
+  addNote.addEventListener('click', () => {
+    if (addNote.checked) {
       noteTextarea.parentNode.parentNode.style.display = 'table-row';
-    }else {
+    } else {
       noteTextarea.parentNode.parentNode.style.display = 'none';
     }
   })
 }
 
+// THIS FUNCTIONALITY CONTROLS THE PRODUCT DROPDOWN
+if (document.getElementById("dropdown")) {
+  const dropDown = document.getElementById("dropdown");
+  const productDropDown = document.getElementById("product-dropdown");
+
+  dropDown.addEventListener("click", () => {
+    productDropDown.classList.toggle("scale-dropdown")
+  })
+}
