@@ -1,13 +1,16 @@
-{% extends 'administrator/base.html' %}
+{% extends 'staff/base.html' %}
 {% block content %}
 
-<h2 class="mb-10">Add New product purchase for <b>{{customer}}</b></h2>
+<h2 class="mb-10">Leave a message for 
+  <b>{{ customer }}</b>
+</h2>
+
 <form action="" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <table>
     {{ form.as_table }}
   </table>
-  <button class="p-2 px-4"> Submit</button>
+  <button class="p-2 px-4"> Send Message</button>
 </form>
 
 {% endblock %}

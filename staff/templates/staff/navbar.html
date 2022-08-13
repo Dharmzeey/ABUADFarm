@@ -1,19 +1,15 @@
-{% load message_template_tags %}
 {% load static %}
 
 <div>
-  {% if user.is_authenticated %}
+  {% if user.is_authenticated%}
   <div class="md:ml-60 md:py-3 md:px-12 flex  justify-between md:justify-center">
-
     <h1 class="w-4/12 p-2 heading md:hidden">
       <a href="{% url 'home' %}">
         <img src="{% static 'images/afe-uni-logo.png' %}" alt="ABUAD FARM">
       </a>
     </h1>
 
-    <h2 class="p-2 text-center md:ml-10 md:text-xl">
-      Hello, {{user}}
-    </h2>
+    <h2 class="p-2 text-center md:ml-10 md:text-xl"> Staff Dashboard</h2>
 
     <button class="p-2 px-6 menu-toggle-icon md:hidden border-none hover:bg-transparent hover:text-black" id="menu-toggle-icon">
       <i class="fa-solid fa-bars open-menu-icon toggle" id="open-menu"></i>
@@ -29,54 +25,28 @@
       </a>
     </h1>
     <ul class="leading-[3.5rem] mt-4 ml-2">
-      {% if user.is_superuser %}
-      <i class="fa-solid fa-lock"></i>
-      <a href="{% url 'administrator:home' %}">Admin Dashboard</a>
-      {% endif %}
-
-      {% if user.is_staff and not user.is_superuser%}
-      <i class="fa-solid fa-lock"></i>
-      <a href="{% url 'staff:home' %}">Staff Dashboard</a>
-      {% endif %}
-
       <li>
         <i class="fa-solid fa-house"></i>
-        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'staff:home' %}">Home</a>
       </li>
       <li>
-        <i class="fa-solid fa-bars-staggered"></i>
-        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <i class="fa-solid fa-bars-progress"></i>
+        <a href="">Activities</a>
       </li>
       <li>
-        <i class="fa-solid fa-envelope"></i>
-        <a href="{% url 'messages' %}">Message</a>
-        {% if request.user|message_count >= 1 %}
-        <sup id="message-counter" class="p-1 bg-red-500 text-white rounded-full">
-          {{ request.user|message_count }}
-        </sup>
-        {% endif %}
+        <i class="fa-solid fa-users"></i>
+        <a href="{% url 'staff:unit_customers' %}">Customers</a>
       </li>
       <li>
-        <i class="fa-solid fa-user"></i>
-        <a href="{% url 'profile_view' %} ">Profile</a>
-      </li>
-
-      <li>
-        <i class="fa-solid fa-question"></i>
-        <a href="">Contact</a>
-      </li>
-      <li>
-        <i class="fa-solid fa-gear"></i>
-        <a href="">Settings</a>
+        <i class="fa-solid fa-comment"></i>
+        <a href="">Feedbacks</a>
       </li>
       <li>
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        <a href="{% url 'account_logout' %}">Logout</a>
+        <a href="{% url 'administrator:logout' %}">Logout</a>
       </li>
     </ul>
   </div>
-
-
   {% else %}
   <div class="flex justify-between px-12 py-3 mb-20">
     <h1 class="heading">
@@ -86,7 +56,7 @@
     </h1>
 
     <span>
-      <a href="{% url 'account_login' %}">
+      <a href="{% url 'administrator:login' %}">
         <b>Account</b>
       </a>
     </span>

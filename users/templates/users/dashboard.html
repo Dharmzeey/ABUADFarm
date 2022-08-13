@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load humanize %}
 {% block content %}
 
 <div class="w-full m-auto p-1">
@@ -15,38 +16,39 @@
     <div class="mb-4">
       <button class="m-1">
         <a href="{% url 'dashboard' %}">
-          <span id="chart" class="text-center px-4 inline-block">All</span>
+          <span id="chart" class="text-center px-2 inline-block">All</span>
         </a>
       </button>
+
       {% for user_good in user_goods %}
       <button class="m-1">
         <a href="{% url 'dashboard' %}?q={{ user_good.item }}">
-          <span id="chart" class="text-center px-4 inline-block">{{ user_good.item }}</span>
+          <span id="chart" class="text-center px-0 inline-block">{{ user_good.item }}</span>
         </a>
       </button>
       {% endfor %}
     </div>
 
     <table class="w-full border-solid border-2 border-black-500 ">
-      <caption>
+      <caption class="mb-2 font-bold">
         Recent Purchases
       </caption>
       <tr>
         <th>Date</th>
         <th>Item</th>
-        <th>Weight (kg)</th>
+        <th>Mass (kg)</th>
         <th>Price (&#8358;)</th>
         <th>Note </th>
       </tr>
       {% for good in goods %}
       <tr>
-        <td>{{ good.date_ordered|date:"d M Y"}}</td>
+        <td>{{ good.date_ordered|date:"D, d M Y"}}</td>
         <td>{{ good.item }}</td>
         <td>{{ good.quantity }}</td>
         <td>{{ good.price }}</td>
         <td>
           {% if good.note %}
-          <span class="text-blue-800 underline font-bold cursor-pointer" onclick="alert('{{ good.note }}')">{{ good.note|truncatewords:2 }}</span>
+          <span class="text-blue-800 underline font-bold cursor-pointer" onclick="alert('{{ good.note }}')">{{ good.note|truncatewords:1 }}</span>
           {% else %}
           ---
           {% endif %}
@@ -55,14 +57,13 @@
       {% endfor %}
       <th>Total</th>
       <td colspan="2"></td>
-      <td> &#8358; {{ total }}</td>
+      <td> &#8358; {{ total|intcomma }}</td>
     </table>
   </div>
 
   {% endif %}
 </div>
 
-<script src="{% static 'js/script.js' %}"></script>
 <script src="{% static 'js/amcharts.js' %}"></script>
 <script>
   const url = "{% url 'chart' %}";

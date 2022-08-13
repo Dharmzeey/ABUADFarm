@@ -1,4 +1,4 @@
-{% extends 'administrator/base.html' %}
+{% extends 'staff/base.html' %}
 {% load humanize %}
 {% block content %}
 
@@ -10,12 +10,12 @@
   </div>
 
     <div class="flex">
-        <a href="{% url 'administrator:add_purchase' %}?q={{ unit_customer.id }} " class="mr-6 btn">
+        <a href="{% url 'staff:add_purchase' %}?q={{ unit_customer.id }} " class="mr-6 btn">
           <i class="fa-solid fa-plus px-2"></i> 
           <span class="pr-3"> Add Purchase </span>
         </a>
 
-        <a href="{% url 'administrator:send_customer_message' %}?q={{ unit_customer.id }}" class="btn">
+        <a href="{% url 'staff:send_customer_message' %}?q={{ unit_customer.id }}" class="btn">
           <i class="fa-solid fa-envelope px-2"></i>
           <span class="pr-3"> Send message </span>
         </a>

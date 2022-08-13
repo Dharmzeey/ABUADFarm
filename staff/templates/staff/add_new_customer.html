@@ -1,7 +1,7 @@
-{% extends 'administrator/base.html' %}
+{% extends 'staff/base.html' %}
 {% block content %}
 
-<h1>Add New product purchase for <b>New Customer</b></h1>
+<h1>Add New {{ product_name }} purchase for <b>New Customer</b></h1>
 <form action="" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <table>

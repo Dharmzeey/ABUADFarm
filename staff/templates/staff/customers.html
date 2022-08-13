@@ -1,0 +1,18 @@
+{% extends 'staff/base.html' %}
+{% block content %}
+
+<div>
+  <div>
+    <b class="mr-3">{{ unit_name }} Unit Customers</b>
+    <a href="{% url 'staff:add_new_customer' %}" class="btn">
+      <i class="fa-solid fa-plus px-1"></i>
+      <span class="pr-3"> Add New Customer</span>
+    </a>
+  </div>
+  <ul class="leading-10">
+    {% for customer in customers %}
+    <li><a href="{% url 'staff:customer_detail' customer.id %}">{{ customer }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

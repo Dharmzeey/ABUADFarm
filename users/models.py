@@ -1,13 +1,14 @@
+from re import T
 from django.db import models
 from django.contrib.auth import settings
 
-from products.models import Product
+from products.models import UnitName, Product
 
 User = settings.AUTH_USER_MODEL
 
 
 class Profile(models.Model):
-    owner = models.ForeignKey(
+    owner = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="owner_profile"
     )
     first_name = models.CharField(max_length=50)
@@ -29,10 +30,11 @@ class Goods(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="owner_goods"
     )
-    item = models.ForeignKey(Product, on_delete=models.CASCADE)
+    unit = models.ForeignKey(UnitName, on_delete=models.CASCADE, related_name="unit_good")
+    item = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="unit_item_good")
     quantity = models.FloatField()
     price = models.FloatField()
-    add_note = models.BooleanField(default=False)
+    add_note = models.BooleanField(default=False, blank=True, null=True)
     note = models.TextField(blank=True, null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
 

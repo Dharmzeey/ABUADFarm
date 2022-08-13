@@ -1,4 +1,5 @@
 from django.contrib import admin
-from .models import Product
+from .models import UnitName, Product
 
+admin.site.register(UnitName)
 admin.site.register(Product)

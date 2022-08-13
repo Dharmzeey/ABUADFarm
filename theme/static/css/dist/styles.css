@@ -788,16 +788,12 @@ html {
   position: relative;
 }
 
-.right-0 {
-  right: 0px;
-}
-
-.top-5 {
-  top: 1.25rem;
-}
-
 .top-10 {
   top: 2.5rem;
+}
+
+.right-0 {
+  right: 0px;
 }
 
 .z-10 {
@@ -834,6 +830,10 @@ html {
   margin-bottom: 1rem;
 }
 
+.mr-4 {
+  margin-right: 1rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
@@ -858,8 +858,20 @@ html {
   margin-right: 1.5rem;
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .mt-6 {
   margin-top: 1.5rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mr-3 {
+  margin-right: 0.75rem;
 }
 
 .block {
@@ -1002,10 +1014,6 @@ html {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-transparent {
-  background-color: transparent;
-}
-
 .bg-red-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(239 68 68 / var(--tw-bg-opacity));
@@ -1062,9 +1070,24 @@ html {
   padding-right: 2.5rem;
 }
 
+.px-0 {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .px-8 {
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 .pr-2 {
@@ -1148,10 +1171,6 @@ html {
   transition-duration: 150ms;
 }
 
-.delay-1000 {
-  transition-delay: 1000ms;
-}
-
 .delay-200 {
   transition-delay: 200ms;
 }
@@ -1199,11 +1218,18 @@ button:hover,  .btn:hover {
 }
 
 td,  th {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   text-align: left;
+}
+
+@media (min-width: 768px) {
+  td,  th {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 }
 
 tr {

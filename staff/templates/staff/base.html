@@ -4,15 +4,10 @@
 <html lang="en">
 
 <head>
-  {% block title %}
-  <title>Afe Balalola University | ABUAD FARM</title>
-  {% endblock %}
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-
-  <link rel="shortcut icon" href="{% static 'images/abuadlogofavicon.ico' %}" type="image/x-icon">
+  <title>Afe Balalola University | ABUAD FARM - ADMINISTRATIVE</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous"
     referrerpolicy="no-referrer" />
@@ -20,21 +15,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap" rel="stylesheet">
-  <!-- LINK FOR CAROUSEL SLIDER CSS FILE BELOW -->
-  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
-  <!-- AM CARTS -->
-  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-  <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-  <!-- <script src="https://cdn.amcharts.com/lib/5/locales/de_DE.js"></script> -->
-  <!-- <script src="https://cdn.amcharts.com/lib/5/geodata/germanyLow.js"></script> -->
-  <!-- <script src="https://cdn.amcharts.com/lib/5/fonts/notosans-sc.js"></script> -->
+  <link rel="shortcut icon" href="{% static 'images/abuadlogofavicon.ico' %}" type="image/x-icon">
   {% tailwind_css %}
 </head>
 
-<body class="" id="body">
-
+<body id="body" class="">
   {% if messages %}
   <ul class="fixed bg-black text-white w-full p-4 text-center" id="pop-up">
     {% for message in messages %}
@@ -45,9 +30,13 @@
   {% endif %}
 
   <nav>
-    {% include "./navbar.html" %}
+    {% include 'staff/navbar.html' %}
   </nav>
-
+  <!-- <h1 class="w-1/3 md:w-2/12 p-2 heading">
+    <a href="{% url 'home' %}">
+      <img src="{% static 'images/afe-uni-logo.png' %}" alt="ABUAD FARM">
+    </a>
+  </h1> -->
   <div class="flex justify-center">
     <div class="container">
       <div class="w-full min-h-screen md:w-3/4 m-auto p-6">
@@ -57,8 +46,9 @@
     </div>
   </div>
 
-  {% include "./footer.html" %}
+  {% include 'administrator/footer.html' %}
   <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 </body>
+
 
 </html>

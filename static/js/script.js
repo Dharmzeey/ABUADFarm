@@ -84,7 +84,7 @@ if (document.querySelector("#menu-toggle-icon")) {
     toggleMenu.classList.toggle("activated");
     openAside.classList.toggle("hidden");
     bodyColor.classList.toggle("bg-neutral-700");
-    bodyColor.classList.toggle("bg-transparent");
+    // bodyColor.classList.toggle("bg-transparent");
   }
 
   toggleMenu.addEventListener('click', toggleFunction);
@@ -104,7 +104,7 @@ if (document.getElementById("pop-up")) {
     popUp = document.getElementById("pop-up");
     setTimeout(() => {
       popUp.style.display = "none"
-    }, 2000)
+    }, 1500)
   }
 }
 
@@ -131,11 +131,22 @@ if (document.getElementById("id_add_note")) {
 }
 
 // THIS FUNCTIONALITY CONTROLS THE PRODUCT DROPDOWN
-if (document.getElementById("dropdown")) {
-  const dropDown = document.getElementById("dropdown");
-  const productDropDown = document.getElementById("product-dropdown");
+// if (document.getElementById("dropdown")) {
+//   const dropDown = document.getElementById("dropdown");
+//   const productDropDown = document.getElementById("product-dropdown");
 
-  dropDown.addEventListener("click", () => {
-    productDropDown.classList.toggle("scale-dropdown")
+//   dropDown.addEventListener("click", () => {
+//     productDropDown.classList.toggle("scale-dropdown")
+//   })
+// }
+
+if (document.getElementById("dropdown")) {
+  // const dropDown = document.getElementsByClassName("dropdown");
+  const dropDowns = document.querySelectorAll(".dropdown");
+  dropDowns.forEach((dropDown)=>{
+    dropDown.addEventListener("click", ()=>{
+      dropDown.nextElementSibling.classList.toggle("scale-dropdown");
+      console.log(dropDown.nextElementSibling)
+    })
   })
 }

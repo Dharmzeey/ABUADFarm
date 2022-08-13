@@ -43,11 +43,11 @@ class Dashboard(LoginRequiredMixin, View):
     def get(self, request):
         goods = Goods.objects.filter(owner=request.user)[:30]
         product = Product.objects.all()
-        # THIS BELOW CHECKS THE GOODS A USER DO PURCHASE BY CHECKING THE REVERSE OF GOODS THROUGH THE PRODUCT MODEL.
+        # THIS BELOW CHECKS THE GOODS A USER DO PURCHASE BY CHECKING THE REVERSE OF GOODS THROUGH THE PRODUCT MODEL. IT USES THE RELATED NAME ATTRIBUTE ON THE GOOD MODEL. 
         user_goods = [
-            x.goods_set.filter(owner=request.user)[0]
+            x.unit_item_good.filter(owner=request.user)[0]
             for x in product
-            if x.goods_set.filter(owner=request.user)
+            if x.unit_item_good.filter(owner=request.user)
         ]
         total = sum([x.price for x in goods])
 

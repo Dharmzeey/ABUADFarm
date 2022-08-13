@@ -1,20 +1,20 @@
-{% extends 'administrator/base.html' %}
+{% extends 'staff/base.html' %}
 {% load humanize %}
 {% block content %}
 
 <div class="mb-4 text-center flex flex-wrap gap-3 items-start">
 
-  <a href="{% url 'administrator:home' %}?day=recently" class="btn">Recent</a>
+  <a href="{% url 'staff:home' %}?day=recently" class="btn">Recent</a>
 
-  <a href="{% url 'administrator:home' %}?day=today" class="btn">Today</a>
+  <a href="{% url 'staff:home' %}?day=today" class="btn">Today</a>
 
-  <a href="{% url 'administrator:home' %}?day=yesterday" class="btn">Yesterday</a>
+  <a href="{% url 'staff:home' %}?day=yesterday" class="btn">Yesterday</a>
 
-  <a href="{% url 'administrator:home' %}?day=last week" class="btn">Last Week</a>
+  <a href="{% url 'staff:home' %}?day=last week" class="btn">Last Week</a>
 
   <div class="relative">
     <a href="" class="relative btn">Select Date</a>
-    <div class="absolute bg-white hidden top-10">
+    <div class="absolute hidden bg-white top-10">
       <form action="" method="get">
         <label for="start-date"> From:
           <input type="date" name="start-date" id="">
@@ -27,24 +27,7 @@
     </div>
   </div>
 
-  <div class="relative mr-4">
-    <div id="dropdown" class="cursor-pointer dropdown">
-      <i class="fa-solid fa-filter pr-2"></i>
-      Filter Unit
-      <i class="fa-solid fa-caret-down pl-2"></i>
-    </div>
-
-    <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
-      <div class="w-40 py-2 m-auto card text-left leading-10">
-        {% for unit in units %}
-        <a href="{% url 'administrator:home' %}?unit={{ unit }}{% if day %}&day={{ day }}{% endif %}"
-          class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ unit }}</a>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-
-
+  <!-- THIS IS THE FILTER PRODUCT -->
   <div class="relative">
     <div id="dropdown" class="cursor-pointer dropdown">
       <i class="fa-solid fa-filter pr-2"></i>
@@ -55,7 +38,7 @@
     <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
       <div class="w-40 py-2 m-auto card text-left leading-10">
         {% for product in products %}
-        <a href="{% url 'administrator:home' %}?product={{ product }}{% if day %}&day={{ day }}{% endif %}"
+        <a href="{% url 'staff:home' %}?product={{ product }}{% if day %}&day={{ day }}{% endif %}"
           class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ product }}</a>
         {% endfor %}
       </div>
@@ -64,8 +47,9 @@
 
 </div>
 
+
 <div class="my-4">
-  <!-- <div>{{day|title}} Sold Goods</div> -->
+  <!-- <div>{{day|title}} Sold Goods at {{ unit_name }} Unit</div> -->
   <!-- <div> {{day|title}} Most Sold goods </div>
   <div>Highest generated Goods</div> -->
 </div>
@@ -73,7 +57,7 @@
 <table class="w-full border-solid border-2 border-black-500 ">
   <caption class="mb-4">
     <!-- {{ unit_customer }} recent {{ unit_name }} Purchases -->
-    {{day|title}} Sold {% if filter_unit %} {{ filter_unit }} Goods {% elif filter_product %} {{ filter_product }} {% else %} Goods {% endif %}
+    {{day|title}} {% if filter_product %} {{ filter_product }} Sold {% else %} Sold Good at {{ unit_name }} Unit {% endif %}
   </caption>
 
   <tr>
@@ -87,7 +71,7 @@
   {% for good in goods %}
   <tr>
     <td>{{ good.owner }}</td>
-    <td>{{ good.date_ordered|date:"D, d-M-y"}}</td>
+    <td>{{ good.date_ordered|date:"D, d M Y"}}</td>
     <td>{{ good.item }}</td>
     <td>{{ good.quantity }}</td>
     <td>{{ good.price }}</td>
