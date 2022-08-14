@@ -1,6 +1,10 @@
 {% extends 'staff/base.html' %}
 {% block content %}
 
+<form action="">
+  <input type="text" name="customer" id="search-customer">
+</form>
+
 {% for customer in customers %}
 {{customer}}
 {% endfor %}

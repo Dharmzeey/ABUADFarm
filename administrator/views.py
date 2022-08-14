@@ -160,15 +160,10 @@ class AllCustomers(LoginRequiredMixin, View):
     login_url = "administrator:login"
     template_name = 'administrator/all_customers.html'
     def get(self, request):
-        customers = User.objects.all()
+        customers = User.objects.all().order_by("username")
         context = {
             "customers": customers
         }
         return render(request, self.template_name, context)
     
 all_customers = AllCustomers.as_view()
-
-
-
-# THIS BELOW IS FOR STAFFS
-# THIS CLASS HABNDLES THE STAFF HOME PAGE 
