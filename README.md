@@ -7,3 +7,5 @@ I used vanilla Js and Tailwind CSS(django-tailwind)
 Django-Allauth was used for the authentication 
 
 It has different Apps that handled different functionalities
+
+You can check the mini documentation [https://github.com/Dharmzeey/ABUADFarm/blob/master/code_docs.txt](Here)
