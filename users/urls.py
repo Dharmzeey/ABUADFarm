@@ -7,5 +7,6 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     path("messages/", views.user_messages, name="messages"),
     path("read-message/", views.read_message, name="read_message"),
+    path("notifications/", views.notifications, name="notifications"),
     path("chart/", views.chart, name="chart"),
 ]

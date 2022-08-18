@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.views import View
 from django.shortcuts import get_object_or_404
 
-from .models import Profile, Messages, Goods
+from .models import Profile, Messages, Goods, Notification
 from products.models import Product
 from .forms import ProfileUpdateForm
 from .serializer import GoodsSerializer
@@ -93,6 +93,21 @@ class ReadMessage(View):
 
 
 read_message = ReadMessage.as_view()
+
+# THIS BELOW HANDLES THE NOTIFICATION USER GETS WHEN THE PRODUCT GETS ADDED, AND WHEN CLICKED THE NOTIFICATION INFO DISAPPEARS
+class NotificationView(LoginRequiredMixin, View):
+    template_name = 'users/notifications.html'
+    def get(self, request):
+        user_notifications = Notification.objects.filter(owner=request.user).order_by("read")[:30]
+        unread_notifications = Notification.objects.filter(owner=request.user, read=False)
+        for notification in unread_notifications:
+            notification.read = True
+            notification.save()
+        context = {
+            "user_notifications": user_notifications
+        }
+        return render(request, self.template_name, context)
+notifications = NotificationView.as_view()
 
 
 # THIS IS PROCESSES WITH AJAX(GET) REQUEST. THE URL G3ETS HIT AND SEARILIZED DATA IS RETURNED BASED ON THE GOOD A USER CLICKS, IF NO GOOD IS CLICKED, ALL THE GOODS ARE RETURNED

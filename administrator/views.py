@@ -5,7 +5,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import View
+from django.views.generic import DetailView
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 from products.models import UnitName, Product
 from users.models import Goods
@@ -156,14 +158,103 @@ class AdminView(LoginRequiredMixin, View):
             return redirect("home")
 admin_view = AdminView.as_view()
 
+
 class AllCustomers(LoginRequiredMixin, View):
     login_url = "administrator:login"
     template_name = 'administrator/all_customers.html'
     def get(self, request):
+        units = UnitName.objects.all()
+        products = Product.objects.all()
         customers = User.objects.all().order_by("username")
-        context = {
-            "customers": customers
-        }
+        context = {"units": units, "products":products}
+        
+        # CUSTOMER SEARCH IS FOR THE INPUT ELEMENT FOR SEARCHING FOR USERS AND IT RETURNS RENDER HTML PAGE
+        customer_search = request.GET.get("customer", None)
+        if customer_search is not None:
+            search_result = User.objects.filter(
+                Q(username__icontains=customer_search) |
+            Q(first_name__icontains=customer_search) |
+            Q(last_name__icontains=customer_search)
+            )
+            if not search_result:
+                messages.info(request, "No Result Found")
+            else:
+                # THIS ELSE RENDERS THE HTML PAGE WHEN IT GETS A SEARCH QUERY
+                messages.info(request, f'{search_result.count()} Results found')
+                context.update({"customers": search_result, "customer_search": True})
+                return render(request, self.template_name, context)
+        
+        # THIS IS FOR FILTERING THE UNIT CUSTOMERS
+        q = request.GET.get("q", None)
+        if q != None:
+            unit_name = UnitName.objects.get(name=q)
+            unit_customers = Goods.objects.filter(unit=unit_name)
+            customers = set([x.owner for x in unit_customers if x.owner not in unit_customers ])
+            context.update({"unit_name": unit_name,})
+            if not customers:
+                messages.info(request, f"No Customer Found for {unit_name} Unit")
+            else:
+                messages.info(request, f"{len(customers)} Customers found for {unit_name} Unit")
+                context.update({"customers": customers})
+                return render(request, self.template_name, context)
+            
+        # THIS IS FOR FILTERING ITEM CUSTOMERS
+        q = request.GET.get("item", None)
+        if q != None:
+            item_name = Product.objects.get(name=q)
+            unit_customers = Goods.objects.filter(item=item_name)
+            customers = set([x.owner for x in unit_customers if x.owner not in unit_customers ])
+            context.update({"item_name": item_name,})
+            if not customers:
+                messages.info(request, f"No Customer Found for {item_name} Product")
+            else:
+                messages.info(request, f"{len(customers)} Customers found for {item_name} Product")
+                context.update({"customers": customers})
+                return render(request, self.template_name, context)
+        context.update({
+            "customers": customers,
+        })
         return render(request, self.template_name, context)
     
 all_customers = AllCustomers.as_view()
+
+
+# class CustomerDetails(LoginRequiredMixin, DetailView):
+#     template_name = 'administrator/customer_detail.html'
+#     model = User
+    
+#     def get(self, request, *args, **kwargs):
+#         return
+# customer_detail = CustomerDetails.as_view()
+
+class CustomerDetails(LoginRequiredMixin, View):
+    template_name = 'administrator/customer_detail.html'
+   
+    def get(self, request, pk):
+        context = {}
+        customer = User.objects.get(id=pk)
+        customer_goods = customer.owner_goods.all().order_by('unit')
+        customer_units = set([x.unit for x in customer_goods])
+        customer_items = set([x.item for x in customer_goods])
+        total = sum([x.price for x in customer_goods])
+        
+        search_unit = request.GET.get("unit", None)
+        if search_unit:
+            context.update({"search_unit": search_unit})
+            customer_goods = Goods.objects.filter(owner=customer, unit__name=search_unit)
+            total = sum([x.price for x in customer_goods])
+        search_item = request.GET.get("item", None)
+        if search_item:
+            context.update({"search_item": search_item})
+            customer_goods = Goods.objects.filter(owner=customer, item__name=search_item)
+            total = sum([x.price for x in customer_goods])
+            
+        context.update({
+            "customer": customer,
+            "customer_goods": customer_goods,
+            "customer_units": customer_units,
+            "customer_items": customer_items,
+            "total": total
+        })
+        return render(request, self.template_name, context)
+customer_detail = CustomerDetails.as_view()

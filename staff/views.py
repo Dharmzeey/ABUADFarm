@@ -1,6 +1,4 @@
 from datetime import date, datetime, timezone
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -8,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, FormView
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 from products.models import UnitName, Product
 from users.models import Goods
@@ -101,13 +100,29 @@ staff_home_view = StaffHomeView.as_view()
 # THIS CLASS GETS ALL CUSTOMERS ASSOCIATED WITH A UNIT WHICH CAN THEN BE VIEWED AND WORKED ON BY THE HEAD
 class UnitCustomers(LoginRequiredMixin, View):
     template_name = "staff/customers.html"    
+    context  = {}
     def get(self, request):
-        if request.user.is_staff and not request.user.is_superuser:
+        unit_name = StaffModel.objects.get(owner=request.user).unit
+        unit_customers = Goods.objects.filter(unit=unit_name).order_by("owner")
+        customers = set([unit_customer.owner for unit_customer in unit_customers])
+        
+        # THIS BELOW HANDLES THE STAFF CUSTOMER SEARCH
+        customer_search = request.GET.get("customer", None)
+        if customer_search is not None:
             unit_name = StaffModel.objects.get(owner=request.user).unit
-            unit_customers = Goods.objects.filter(unit=unit_name).order_by("owner")
-            customers = set([unit_customer.owner for unit_customer in unit_customers])
-            context = {"customers": customers, "unit_name": unit_name}
-            return render(request, self.template_name, context)
+            search_result = Goods.objects.filter(unit=unit_name).filter(
+                Q(owner__username__icontains = customer_search) |
+                Q(owner__first_name__icontains = customer_search) |
+                Q(owner__last_name__icontains = customer_search)
+            )
+            customers = set([profile.owner for profile in search_result])
+            if not customers:
+                messages.info(request, "No Result Found")
+            else:
+                messages.info(request, f'{len(customers)} Results found')
+
+        context = {"customers": customers, "unit_name": unit_name}          
+        return render(request, self.template_name, context)
 unit_customers = UnitCustomers.as_view()
 
 

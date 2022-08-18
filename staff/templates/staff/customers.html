@@ -1,6 +1,10 @@
 {% extends 'staff/base.html' %}
 {% block content %}
 
+<form class="mb-6" action="">
+  <input type="text" placeholder="Search Customer..." name="customer" id="search-customer">
+</form>
+
 <div>
   <div>
     <b class="mr-3">{{ unit_name }} Unit Customers</b>
@@ -9,10 +13,16 @@
       <span class="pr-3"> Add New Customer</span>
     </a>
   </div>
-  <ul class="leading-10">
+  <!-- <ul class="leading-10">
     {% for customer in customers %}
     <li><a href="{% url 'staff:customer_detail' customer.id %}">{{ customer }}</a></li>
     {% endfor %}
-  </ul>
+  </ul> -->
+
+  <div class="flex flex-wrap mt-4">
+    {% for customer in customers %}
+    <a class="p-3 inline-block border border-solid border-black" href="{% url 'staff:customer_detail' customer.id %}">{{ customer }}</a>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

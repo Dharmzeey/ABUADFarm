@@ -3,13 +3,55 @@
 {% block content %}
 
 <div class="container">
-  <div class="mb-24">
-    <div>{{ unit_customer }}</div>
-    <div>{{ unit_customer }}</div>
-    <div>{{ unit_customer }}</div>
+  <div class="mb-10">
+    <h1 class="uppercase font-bold text-xl">Customer Details</h1>
+    <section class="flex gap-8 justify-around leading-10 flex-wrap mb-10">
+      <div class="flex">
+        <div class="w-40 h-40">
+          <img src="{{ unit_customer.owner_profile.avatar.url }}" alt="{{ unit_customer.unit_customer.ame }}" class="w-full h-full rounded-full object-cover">
+        </div>
+      </div>
+      <div id="basic-profile">
+        <div>
+          Username: {{ unit_customer.username }}
+        </div>
+        <div>
+          First Name: {{ unit_customer.first_name }}
+        </div>
+        <div>
+          Last Name: {{ unit_customer.last_name }}
+        </div>
+        <div>
+          Sex: {{ unit_customer.owner_profile.sex }}
+        </div>
+        <div>
+          Email: {{ unit_customer.email }}
+        </div>
+        <div>
+          Number: {{ unit_customer.owner_profile.phone }}
+        </div>
+      </div>
+      <div id="other-profile">
+        <div>
+          Company Name: {{ unit_customer.owner_profile.company_name }}
+        </div>
+        <div>
+          Website: {{ unit_customer.owner_profile.website }}
+        </div>
+        <div>
+          State: {{ unit_customer.owner_profile.state }}
+        </div>
+        <div>
+          City: {{ unit_customer.owner_profile.city }}
+        </div>
+        <div>
+          Address: {{ unit_customer.owner_profile.address }}
+        </div>
+      </div>
+    </section>
   </div>
 
-    <div class="flex">
+    <section class="flex">
         <a href="{% url 'staff:add_purchase' %}?q={{ unit_customer.id }} " class="mr-6 btn">
           <i class="fa-solid fa-plus px-2"></i> 
           <span class="pr-3"> Add Purchase </span>
@@ -19,7 +61,8 @@
           <i class="fa-solid fa-envelope px-2"></i>
           <span class="pr-3"> Send message </span>
         </a>
-    </div>
+    </section>
+
     <table class="w-full border-solid border-2 border-black-500 ">
       <caption class="mb-4">
         {{ unit_customer }} recent {{ unit_name }} Purchases

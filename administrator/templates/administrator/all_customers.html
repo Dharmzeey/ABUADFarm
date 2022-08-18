@@ -1,12 +1,57 @@
-{% extends 'staff/base.html' %}
+{% extends 'administrator/base.html' %}
 {% block content %}
 
-<form action="">
-  <input type="text" name="customer" id="search-customer">
+<form class="mb-6" action="">
+  <input type="text" placeholder="Search Customer..." name="customer" id="search-customer">
 </form>
 
-{% for customer in customers %}
-{{customer}}
-{% endfor %}
+<div class="flex md:gap-32">
+  <div class="relative mr-4">
+    <div id="dropdown" class="cursor-pointer dropdown">
+      <i class="fa-solid fa-filter pr-2"></i>
+      Filter Unit
+      <i class="fa-solid fa-caret-down pl-2"></i>
+    </div>
+
+    <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
+      <div class="w-40 py-2 m-auto card text-left leading-10">
+        {% for unit in units %}
+        <a href="{% url 'administrator:customers' %}?q={{ unit }}" class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">
+          {{ unit }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="relative mr-4">
+    <div id="dropdown" class="cursor-pointer dropdown">
+      <i class="fa-solid fa-filter pr-2"></i>
+      Filter Products
+      <i class="fa-solid fa-caret-down pl-2"></i>
+    </div>
+
+    <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
+      <div class="w-40 py-2 m-auto card text-left leading-10">
+        {% for product in products %}
+        <a href="{% url 'administrator:customers' %}?item={{ product }}" class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">
+          {{ product }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section>
+  <h1>{% if unit_name %} {{ unit_name }} {% elif item_name %} {{item_name}} {% elif customer_search %} Searched {% else %} All {% endif %} Customers</h1>
+  <div class="flex flex-wrap mt-4">
+    {% for customer in customers %}
+    <a class="p-3 inline-block border border-solid border-black" href="{% url 'administrator:customer_detail' customer.id %}">{{ customer }}</a>
+    {% endfor %}
+  </div>
+</section>
+
+
+</section>
 
 {% endblock %}

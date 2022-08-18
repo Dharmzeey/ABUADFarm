@@ -1,3 +1,4 @@
+from email.policy import default
 from re import T
 from django.db import models
 from django.contrib.auth import settings
@@ -8,15 +9,21 @@ User = settings.AUTH_USER_MODEL
 
 
 class Profile(models.Model):
+    select_sex = (
+        ("Male", "Male"),
+        ("Female", "Female")
+    )
     owner = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="owner_profile"
     )
+    avatar = models.ImageField(default="images/avatar.png")
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    sex = models.CharField(choices=select_sex, max_length=10)
+    phone = models.CharField(max_length=11)
     company_name = models.CharField(max_length=100, null=False, blank=False)
     website = models.URLField()
-    phone = models.CharField(max_length=11)
     state = models.CharField(max_length=2)
     city = models.CharField(max_length=15)
     address = models.CharField(max_length=255)
@@ -56,3 +63,17 @@ class Messages(models.Model):
     
     def __str__(self):
       return str(self.title) + " message for " + str(self.owner)
+
+
+class Notification(models.Model):
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="owner_notification"
+    )
+    product = models.ForeignKey(Goods, on_delete=models.CASCADE, related_name="product_notification")
+    message = models.CharField(max_length=250)
+    read = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    
+    def __str__(self):
+        return str(self.message)

@@ -1,0 +1,124 @@
+{% extends 'administrator/base.html' %}
+{% load humanize %}
+{% block content %}
+
+<h1 class="uppercase font-bold text-xl">Customer Details</h1>
+<section class="flex gap-8 justify-around leading-10 flex-wrap mb-10">
+  <div class="flex">
+    <div class="w-40 h-40">
+      <img src="{{ customer.owner_profile.avatar.url }}" alt="{{ customer.customername }}" class="w-full h-full rounded-full object-cover">
+    </div>
+  </div>
+  <div id="basic-profile">
+    <div>
+      Username: {{ customer.username }}
+    </div>
+    <div>
+      First Name: {{ customer.first_name }}
+    </div>
+    <div>
+      Last Name: {{ customer.last_name }}
+    </div>
+    <div>
+      Sex: {{ customer.owner_profile.sex }}
+    </div>
+    <div>
+      Email: {{ customer.email }}
+    </div>
+    <div>
+      Number: {{ customer.owner_profile.phone }}
+    </div>
+  </div>
+  <div id="other-profile">
+    <div>
+      Company Name: {{ customer.owner_profile.company_name }}
+    </div>
+    <div>
+      Website: {{ customer.owner_profile.website }}
+    </div>
+    <div>
+      State: {{ customer.owner_profile.state }}
+    </div>
+    <div>
+      City: {{ customer.owner_profile.city }}
+    </div>
+    <div>
+      Address: {{ customer.owner_profile.address }}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="flex gap-4 flex-wrap">
+    <a href="{% url 'administrator:customer_detail' customer.id %}" class="btn">All</a>
+    <div class="relative mr-4">
+      <div id="dropdown" class="cursor-pointer dropdown">
+        <i class="fa-solid fa-filter pr-2"></i>
+        Filter Unit
+        <i class="fa-solid fa-caret-down pl-2"></i>
+      </div>
+  
+      <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
+        <div class="w-40 py-2 m-auto card text-left leading-10">
+          {% for unit in customer_units %}
+          <a href="{% url 'administrator:customer_detail' customer.id %}?unit={{unit}}"
+            class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ unit }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  
+  
+    <div class="relative">
+      <div id="dropdown" class="cursor-pointer dropdown">
+        <i class="fa-solid fa-filter pr-2"></i>
+        Filter Product
+        <i class="fa-solid fa-caret-down pl-2"></i>
+      </div>
+  
+      <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
+        <div class="w-40 py-2 m-auto card text-left leading-10">
+          {% for item in customer_items %}
+          <a href="{% url 'administrator:customer_detail' customer.id %}?item={{item}}"
+            class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ item }}</a>
+          {% endfor %}
+        </div>
+      </div>
+  </div>
+</section>
+
+
+<table class="w-full border-solid border-2 border-black-500 ">
+  <caption class="mb-4">
+    {{customer|title}} {% if search_unit %}{{ search_unit }} Unit Purchases {% elif search_item %} {{ search_item }} Purchases {% else %} Purchases {% endif %} 
+  </caption>
+
+  <tr>
+    <th>Date</th>
+    <th>Item</th>
+    <th class="">Mass(kg)</th>
+    <th>Price (&#8358;)</th>
+    <th>Note </th>
+  </tr>
+  {% for good in customer_goods %}
+  <tr>
+    <td>{{ good.date_ordered|date:"D, d-M-Y"}}</td>
+    <td>{{ good.item }}</td>
+    <td>{{ good.quantity }}</td>
+    <td>{{ good.price }}</td>
+    <td>
+      {% if good.note %}
+      <span class="text-blue-800 underline font-bold cursor-pointer" onclick="alert('{{ good.note }}')">{{ good.note|truncatewords:1 }}</span>
+      {% else %}
+      ---
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  <th>Total</th>
+  <td colspan="2"></td>
+  <td colspan="2"> &#8358; {{ total|intcomma }}</td>
+</table>
+
+
+{% endblock %}

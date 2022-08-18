@@ -1,4 +1,5 @@
 {% load message_template_tags %}
+{% load notification_tags %}
 {% load static %}
 
 <div>
@@ -51,11 +52,21 @@
         <i class="fa-solid fa-envelope"></i>
         <a href="{% url 'messages' %}">Message</a>
         {% if request.user|message_count >= 1 %}
-        <sup id="message-counter" class="p-1 bg-red-500 text-white rounded-full">
+        <sup id="message-counter" class="p-1 px-2 bg-red-500 text-white rounded-full">
           {{ request.user|message_count }}
         </sup>
         {% endif %}
       </li>
+      <li>
+        <i class="fa-solid fa-bell"></i>
+        <a href="{% url 'notifications' %} ">Notification</a>
+        {% if request.user|notification >= 1 %}
+        <sup class="p-1 px-2 bg-red-500 text-white rounded-full">
+          {{ request.user|notification }}
+        </sup>
+        {% endif %}        
+      </li>
+
       <li>
         <i class="fa-solid fa-user"></i>
         <a href="{% url 'profile_view' %} ">Profile</a>

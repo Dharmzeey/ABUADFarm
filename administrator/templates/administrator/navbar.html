@@ -10,12 +10,11 @@
     </h1>
 
     <h2 class="p-2 text-center md:ml-10 md:text-xl">
-      {% if user.is_superuser %}
+      {% if request.user.is_superuser %}
       Admin Dashboard
       {% else %}
       Staff Dashboard
       {% endif %}
-      <!-- Hello, {{user}} -->
     </h2>
 
     <button class="p-2 px-6 menu-toggle-icon md:hidden border-none hover:bg-transparent hover:text-black" id="menu-toggle-icon">
@@ -42,7 +41,7 @@
       </li>
       <li>
         <i class="fa-solid fa-users"></i>
-        <a href="{% url 'administrator:all_customers' %}">Customers</a>
+        <a href="{% url 'administrator:customers' %}">Customers</a>
       </li>
       <li>
         <i class="fa-solid fa-comment"></i>

@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="w-11/12 md:w-full m-auto p-6"></div>
+{% if not user_notifications %}
+<strong>
+  You Have No Notifications
+</strong>
+{% else %}
+
+{% for user_notification in user_notifications %}
+<small>{{ user_notification.date }}</small>
+<p>{{ user_notification.message|linebreaks }}</p>
+<p>Click Here to View</p>
+<br>
+
+{% endfor %}
+{% endif %}
+
+{% endblock %}
