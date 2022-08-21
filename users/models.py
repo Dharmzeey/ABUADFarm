@@ -1,5 +1,4 @@
-from email.policy import default
-from re import T
+from ckeditor.fields import RichTextField
 from django.db import models
 from django.contrib.auth import settings
 
@@ -16,7 +15,7 @@ class Profile(models.Model):
     owner = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="owner_profile"
     )
-    avatar = models.ImageField(default="images/avatar.png")
+    picture = models.ImageField(default="images/avatar.png")
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -33,6 +32,7 @@ class Profile(models.Model):
         return str(self.owner)
 
 
+# THIS MODEL IS FOR EACH GOOD PURCHASED BY CUSTOMERS
 class Goods(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="owner_goods"
@@ -41,8 +41,11 @@ class Goods(models.Model):
     item = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="unit_item_good")
     quantity = models.FloatField()
     price = models.FloatField()
-    add_note = models.BooleanField(default=False, blank=True, null=True)
-    note = models.TextField(blank=True, null=True)
+    add_description = models.BooleanField(default=False, blank=True, null=True)
+    description = RichTextField()
+    add_feedback = models.BooleanField(default=True)
+    feedback = models.CharField(max_length=225, blank=True, null=True)
+    feedback_read = models.BooleanField(default=False)
     date_ordered = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -69,11 +72,21 @@ class Notification(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="owner_notification"
     )
-    product = models.ForeignKey(Goods, on_delete=models.CASCADE, related_name="product_notification")
-    message = models.CharField(max_length=250)
+    good = models.ForeignKey(Goods, on_delete=models.CASCADE, related_name="product_notification")
     read = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
     
     
     def __str__(self):
         return str(self.message)
+    
+
+class CustomerFeedback(models.Model):
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="owner_feedback"
+    )
+    product = models.ForeignKey(Goods, on_delete=models.CASCADE, related_name="product_feedback")
+    message = models.CharField(max_length=250)
+    read = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+

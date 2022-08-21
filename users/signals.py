@@ -15,8 +15,7 @@ def create_notification(sender, instance, created, **kwargs):
   if created:
     Notification.objects.create(
       owner = instance.owner,
-      product = instance,
-      message = f'Dear {instance.owner} your purchase of {instance.item} has been recorded, we hope you enjoy it. \n \n Thanks for your patronage.'
+      good = instance,
     )
     
 post_save.connect(create_notification, sender=Goods)

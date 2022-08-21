@@ -109,23 +109,23 @@ if (document.getElementById("pop-up")) {
 }
 
 
-// THIS IS THE TOGGLER FOR THE ADD NOTE TEXTAREA
-if (document.getElementById("id_add_note")) {
-  const addNote = document.getElementById("id_add_note");
-  const noteTextarea = document.getElementById("id_note");
+// THIS IS THE TOGGLER FOR THE ADD DESCRIPTION TEXTAREA
+if (document.getElementById("id_add_description")) {
+  const adddescription = document.getElementById("id_add_description");
+  const descriptionTextarea = document.getElementById("id_description");
 
   //  THIS WILL HIDE THE TEXTAREA UNTIL THE BE IS CHECKED
   window.addEventListener('load', () => {
-    if (!addNote.checked) {
-      noteTextarea.parentNode.parentNode.style.display = 'none';
+    if (!adddescription.checked) {
+      descriptionTextarea.parentNode.parentNode.parentNode.style.display = 'none';
     }
   })
 
-  addNote.addEventListener('click', () => {
-    if (addNote.checked) {
-      noteTextarea.parentNode.parentNode.style.display = 'table-row';
+  adddescription.addEventListener('click', () => {
+    if (adddescription.checked) {
+      descriptionTextarea.parentNode.parentNode.parentNode.style.display = 'table-row';
     } else {
-      noteTextarea.parentNode.parentNode.style.display = 'none';
+      descriptionTextarea.parentNode.parentNode.parentNode.style.display = 'none';
     }
   })
 }
@@ -143,8 +143,8 @@ if (document.getElementById("id_add_note")) {
 if (document.getElementById("dropdown")) {
   // const dropDown = document.getElementsByClassName("dropdown");
   const dropDowns = document.querySelectorAll(".dropdown");
-  dropDowns.forEach((dropDown)=>{
-    dropDown.addEventListener("click", ()=>{
+  dropDowns.forEach((dropDown) => {
+    dropDown.addEventListener("click", () => {
       dropDown.nextElementSibling.classList.toggle("scale-dropdown");
       console.log(dropDown.nextElementSibling)
     })

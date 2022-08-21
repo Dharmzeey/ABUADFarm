@@ -1,0 +1,20 @@
+{% extends 'staff/base.html' %}
+{% block content %}
+
+<small>{{ good_feedback.date_ordered | date:"l, d M Y h:i A" }}</small> <br> <br>
+<div>Unit: {{ good_feedback.unit }}</div>
+<div>Item Purchased: {{ good_feedback.item }}</div>
+<div>Quantity: {{ good_feedback.quantity }} Kg</div>
+<div>Price: {{ good_feedback.price }}</div>
+<div>Description of Goods Bought: {{ good_feedback.description | safe }}</div> <br><br>
+<div>Customer Feedback: {{ good_feedback.feedback }}</div>
+
+<div>Send Message ?: 
+  <a href="{% url 'staff:send_customer_message' %}?q={{ good_feedback.owner.id }}" class="ml-10 btn">
+    <i class="fa-solid fa-envelope px-2"></i>
+    <span class="pr-3"> Send message </span>
+  </a>
+
+</div>
+
+{% endblock %}

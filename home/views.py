@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.shortcuts import render
 from django.views import View
 

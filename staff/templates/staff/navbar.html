@@ -1,4 +1,5 @@
 {% load static %}
+{% load feedback_tags %}
 
 <div>
   {% if user.is_authenticated%}
@@ -39,7 +40,12 @@
       </li>
       <li>
         <i class="fa-solid fa-comment"></i>
-        <a href="">Feedbacks</a>
+        <a href="{% url 'staff:customer_feedbacks' %}">Feedbacks</a>
+        {% if request.user|feedback >= 1 %}
+        <sup class="p-1 px-2 bg-red-500 text-white rounded-full">
+          {{ request.user|feedback }}
+        </sup>
+        {% endif %} 
       </li>
       <li>
         <i class="fa-solid fa-arrow-right-from-bracket"></i>

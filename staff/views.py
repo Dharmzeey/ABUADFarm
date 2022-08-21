@@ -1,10 +1,12 @@
 from datetime import date, datetime, timezone
+from distutils.log import Log
+from itertools import product
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, DetailView
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -203,8 +205,8 @@ class AddNewCustomer(LoginRequiredMixin, FormView):
       item = form.cleaned_data["item"]
       quantity = form.cleaned_data["quantity"]
       price = form.cleaned_data["price"]
-      add_note = form.cleaned_data["add_note"]
-      note = form.cleaned_data["note"]
+      add_description = form.cleaned_data["add_description"]
+      description = form.cleaned_data["description"]
       unit_name = StaffModel.objects.get(owner=self.request.user).unit
       # THIS TRY BLOCK CHEKS THE DATABASE TO SEE IF THE NEWLY UNIT CUSTOMER HAS AN ACCOUNT
       try:
@@ -219,8 +221,8 @@ class AddNewCustomer(LoginRequiredMixin, FormView):
           item = item,
           quantity = quantity,    
           price = price,
-          add_note = add_note,
-          note = note,
+          add_description = add_description,
+          description = description,
       )
       messages.success(self.request, "Added Succssfully")
       return super(AddNewCustomer, self).form_valid(form)
@@ -229,6 +231,12 @@ class AddNewCustomer(LoginRequiredMixin, FormView):
         return reverse_lazy('staff:customer_detail', kwargs={'pk': self.user_id})
                     
 add_new_customer = AddNewCustomer.as_view()
+
+
+class PurchaseDescription(LoginRequiredMixin, DetailView):
+    template_name = "staff/purchase_description.html"
+    model = Goods
+purchase_description = PurchaseDescription.as_view()
 
 # THIS CLASS WILL HANDLE STAFF SENDING MESSAGE TO CUSTOMERS IF NECESSARY
 class SendcustomerMessage(LoginRequiredMixin, CreateView):
@@ -255,3 +263,27 @@ class SendcustomerMessage(LoginRequiredMixin, CreateView):
         return reverse_lazy('staff:customer_detail', kwargs={'pk': pk})
     
 send_customer_message = SendcustomerMessage.as_view()
+
+# THIS BELOW HANDLES DISPLAYING ALL FEEDBACKS BY CUSTOMERS, IT DISPLAYS ALL FEEDBACKS THAT HAS NOT BEEN READ AND THAT HAS CONTENT IN FEEDBACK
+class CustomerFeedback(LoginRequiredMixin, View):
+    template_name = "staff/customers_feedback.html"
+    def get(self, request):
+        feedbacks = Goods.objects.filter(feedback_read=False, feedback__isnull=False)
+        context = {
+            "feedbacks": feedbacks
+        }
+        return render(request, self.template_name, context)
+customer_feedback = CustomerFeedback.as_view()    
+
+# THIS BELOW HANDLES READING OF FEEDBACK BY CUSTOMER, ONCE CLICKED, THE "feedback_read" WILL BE SET TO TRUE AND IT WILL NO LONGER BE RETURNED AS LIST BOF FEEDBACKS AGAIN
+class ReadFeedback(LoginRequiredMixin, View):
+    template_name = "staff/read_feedback.html"
+    def get(self, request, pk):
+        good_feedback = Goods.objects.get(id=pk)
+        good_feedback.feedback_read = True
+        good_feedback.save()
+        context = {
+            "good_feedback": good_feedback
+        }
+        return render(request, self.template_name, context)    
+read_feedback = ReadFeedback.as_view()

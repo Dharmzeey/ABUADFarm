@@ -1,3 +1,4 @@
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from users.models import Goods, Messages
 from .models import StaffModel
@@ -6,10 +7,10 @@ from products.models import Product
 class AddCustomerGoodForm(forms.ModelForm):
   class Meta:
     model = Goods
-    fields = ("item", "quantity", "price", "add_note", "note")
+    fields = ("item", "quantity", "price", "add_description", "description")
     widgets = {
-      "note" : forms.Textarea(attrs={'rows': '4', "cols": "22"}),
-      "add_note": forms.CheckboxInput()
+      # "description" : forms.Textarea(attrs={'rows': '4', "cols": "22"}),
+      "add_description": forms.CheckboxInput()
     }
     
   def __init__(self, *args, **kwargs):
@@ -26,8 +27,8 @@ class AddNewCustomerForm(forms.Form):
   item = forms.ModelChoiceField(queryset=None)
   quantity = forms.FloatField()
   price = forms.FloatField()
-  add_note = forms.BooleanField(required=False)
-  note = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': '4', "cols": "22"}))
+  add_description = forms.BooleanField(required=False)
+  description = forms.CharField(required=False, widget=CKEditorWidget())
   
   def __init__(self, *args, **kwargs):
     self.request = kwargs.pop('request', None)

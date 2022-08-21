@@ -8,7 +8,7 @@
     <section class="flex gap-8 justify-around leading-10 flex-wrap mb-10">
       <div class="flex">
         <div class="w-40 h-40">
-          <img src="{{ unit_customer.owner_profile.avatar.url }}" alt="{{ unit_customer.unit_customer.ame }}" class="w-full h-full rounded-full object-cover">
+          <img src="{{ unit_customer.owner_profile.picture.url }}" alt="{{ unit_customer.unit_customer.ame }}" class="w-full h-full rounded-full object-cover">
         </div>
       </div>
       <div id="basic-profile">
@@ -73,7 +73,7 @@
         <th>Item</th>
         <th>Weight (kg)</th>
         <th>Price (&#8358;)</th>
-        <th>Note </th>
+        <th>Description </th>
       </tr>
       {% for good in customer_unit_goods %}
       <tr>
@@ -82,8 +82,9 @@
         <td>{{ good.quantity }}</td>
         <td>{{ good.price }}</td>
         <td>
-          {% if good.note %}
-          <span class="text-blue-800 underline font-bold cursor-pointer" onclick="alert('{{ good.note }}')">{{ good.note|truncatewords:2 }}</span>
+          {% if good.description %}
+          <!-- <span class="text-blue-800 underline font-bold cursor-pointer">{{ good.description |truncatewords:2 }}</span> -->
+          <a href="{% url 'staff:purchase_description' good.id %}" class="text-blue-800 underline font-bold cursor-pointer">View</a>
           {% else %}
           ---
           {% endif %}

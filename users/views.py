@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 
 from .models import Profile, Messages, Goods, Notification
 from products.models import Product
-from .forms import ProfileUpdateForm
+from .forms import ProfileUpdateForm, GetFeedback
 from .serializer import GoodsSerializer
 
 
@@ -18,9 +18,13 @@ class ProfileUpdateView(LoginRequiredMixin, View):
     success_url = "profile_view"
 
     def get(self, request):
-        owner = get_object_or_404(self.model, owner=request.user)
-        form = ProfileUpdateForm(instance=owner)
-        context = {"form": form}
+        profile = get_object_or_404(self.model, owner=request.user)
+        form = ProfileUpdateForm(instance=profile)
+        
+        context = {
+            "form": form,
+            "profile": profile
+        }
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -108,6 +112,39 @@ class NotificationView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 notifications = NotificationView.as_view()
+
+# THIS BELOW HANDLES THE RENDERING AND DISPLAY OF PURCHASE DESCRIPTION
+class PurchaseDescription(LoginRequiredMixin, View):
+    template_name = "users/purchase_description.html"
+    def get(self, request, pk):
+        goods = Goods.objects.get(id=pk)
+        context = {
+            "goods": goods,
+        }  
+        yes_or_no = request.GET.get("q", None)
+        if yes_or_no == "no":
+            goods.add_feedback = False
+            goods.save()
+        elif yes_or_no == "yes":
+            form = GetFeedback()      
+            context.update({"form": form})
+        return render(request, self.template_name, context)    
+    
+    def post(self, request, pk):
+        goods = Goods.objects.get(id=pk)
+        form = GetFeedback(request.POST)
+        if form.is_valid():
+            feedback = form.cleaned_data["feedback"]
+            goods.feedback = feedback
+            goods.add_feedback = False
+            goods.save()
+            messages.info(request, "Feedback Added Successfully")
+        context = {
+            "goods": goods,
+        } 
+        return render(request, self.template_name, context)  
+            
+purchase_description = PurchaseDescription.as_view() 
 
 
 # THIS IS PROCESSES WITH AJAX(GET) REQUEST. THE URL G3ETS HIT AND SEARILIZED DATA IS RETURNED BASED ON THE GOOD A USER CLICKS, IF NO GOOD IS CLICKED, ALL THE GOODS ARE RETURNED

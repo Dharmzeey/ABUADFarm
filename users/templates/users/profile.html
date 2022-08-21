@@ -6,6 +6,9 @@
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <table>
+      <div class="w-40 h-40">
+        <img src="{{ profile.picture.url }}" alt="{{ profile.owner }}" class="w-full h-full rounded-full object-cover">
+      </div>
       {{ form.as_table}}
     </table>
     <!-- <input class="btn" type="submit" value="Submit"> -->

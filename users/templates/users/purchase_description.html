@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div>
+  {{ goods.description | safe }}
+</div>
+<br>
+
+<div>
+  {% if goods.feedback %}
+  <p>Your Feedback: {{ goods.feedback }}</p>  
+  {% endif %}
+</div>
+
+<!-- THIS BELOW CHECKS IF THE ADD FEEDBACK IS YES AND THE FEEDBACK IS EMPTY -->
+{% if goods.add_feedback and not goods.feedback %}
+<div>
+  <p>Give a Feedback ?</p>
+  <a href="{% url 'purchase_description' goods.id %}?q=yes" class="text-blue-800 underline font-bold cursor-pointer">Yes</a>
+  <a href="{% url 'purchase_description' goods.id %}?q=no" class="text-blue-800 underline font-bold cursor-pointer">No</a>
+</div>
+
+{% if form %}
+<form action="" method="POST">
+  {% csrf_token %}
+  {{ form.as_table }}
+</form>
+{% endif %}
+
+{% endif %}
+
+{% endblock %}
