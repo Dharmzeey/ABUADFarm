@@ -1,6 +1,8 @@
 {% extends 'staff/base.html' %}
 {% block content %}
 
+{% if feedbacks %}
+
 {% for feedback in feedbacks %}
 <p>
   <span class="mr-6">{{ feedback }}</span>
@@ -8,5 +10,11 @@
   <a href="{% url 'staff:read_feedback' feedback.id %}" class="text-blue-800 underline font-bold cursor-pointer"> View Feedback</a>
 </p>
 {% endfor %}
+
+{% else %}
+<div>
+  No New Feedbacks
+</div>
+{% endif %}
 
 {% endblock %}

@@ -46,7 +46,9 @@
   <h1>{% if unit_name %} {{ unit_name }} {% elif item_name %} {{item_name}} {% elif customer_search %} Searched {% else %} All {% endif %} Customers</h1>
   <div class="flex flex-wrap mt-4">
     {% for customer in customers %}
-    <a class="p-3 inline-block border border-solid border-black" href="{% url 'administrator:customer_detail' customer.id %}">{{ customer }}</a>
+    <a class="p-3 inline-block border border-solid border-black" href="{% url 'administrator:customer_detail' customer.id %}">
+      {{ customer }}  &#40;{{ customer.first_name }} {{ customer.last_name }}&#41;
+    </a>
     {% endfor %}
   </div>
 </section>

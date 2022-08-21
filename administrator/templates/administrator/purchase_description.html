@@ -1,0 +1,14 @@
+{% extends 'administrator/base.html' %}
+{% block content %}
+
+<small>{{ goods.date_ordered | date:"l, d M Y h:i A" }}</small> <br> <br>
+<div>Customer: {{ goods.owner }}</div>
+<div>Full  Name: {{ goods.owner.first_name }}  {{ goods.owner.last_name }}</div>
+<div>Unit: {{ goods.unit }}</div>
+<div>Item Purchased: {{ goods.item }}</div>
+<div>Quantity: {{ goods.quantity }} Kg</div>
+<div>Price: {{ goods.price }}</div>
+<div>Description of goodss Bought: {{ goods.description | safe }}</div> <br><br>
+<div>Customer Feedback: {{ goods.feedback }}</div>
+
+{% endblock %}

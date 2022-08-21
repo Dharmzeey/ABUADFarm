@@ -233,7 +233,7 @@ class CustomerDetails(LoginRequiredMixin, View):
     def get(self, request, pk):
         context = {}
         customer = User.objects.get(id=pk)
-        customer_goods = customer.owner_goods.all().order_by('unit')
+        customer_goods = customer.owner_goods.all().order_by('-date_ordered')
         customer_units = set([x.unit for x in customer_goods])
         customer_items = set([x.item for x in customer_goods])
         total = sum([x.price for x in customer_goods])
@@ -241,12 +241,12 @@ class CustomerDetails(LoginRequiredMixin, View):
         search_unit = request.GET.get("unit", None)
         if search_unit:
             context.update({"search_unit": search_unit})
-            customer_goods = Goods.objects.filter(owner=customer, unit__name=search_unit)
+            customer_goods = Goods.objects.filter(owner=customer, unit__name=search_unit).order_by('-date_ordered')
             total = sum([x.price for x in customer_goods])
         search_item = request.GET.get("item", None)
         if search_item:
             context.update({"search_item": search_item})
-            customer_goods = Goods.objects.filter(owner=customer, item__name=search_item)
+            customer_goods = Goods.objects.filter(owner=customer, item__name=search_item).order_by('-date_ordered')
             total = sum([x.price for x in customer_goods])
             
         context.update({
@@ -258,3 +258,8 @@ class CustomerDetails(LoginRequiredMixin, View):
         })
         return render(request, self.template_name, context)
 customer_detail = CustomerDetails.as_view()
+
+class PurchaseDescription(LoginRequiredMixin, DetailView):
+    template_name = "administrator/purchase_description.html"
+    model = Goods
+purchase_description = PurchaseDescription.as_view()
