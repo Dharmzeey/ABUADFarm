@@ -10,7 +10,7 @@
   </strong>
   {% else %}
   <!-- THIS DISPLAYS THE GRAPH -->
-  <div id="chartdiv" class="w-full h-[500px] mb-10"> </div>
+  <div id="chartdiv" class="w-full h-[700px] mb-10"> </div>
   <div>
     <!-- THIS DISPLAYS DIFFERENT GOOD USER BUYS AND CAN CLICK IT TO FILTER -->
     <div class="mb-4">
@@ -47,10 +47,10 @@
         <td>{{ good.quantity }}</td>
         <td>{{ good.price }}</td>
         <td>
-          {% if good.note %}
-          <span class="text-blue-800 underline font-bold cursor-pointer" onclick="alert('{{ good.note }}')">{{ good.note|truncatewords:1 }}</span>
+          {% if good.description %}
+          <a class="text-blue-800 underline font-bold cursor-pointer" href="{% url 'purchase_description' good.id %}">View</a>
           {% else %}
-          ---
+          
           {% endif %}
         </td>
       </tr>
@@ -68,6 +68,7 @@
 <script>
   const url = "{% url 'chart' %}";
   const goodName = '{{q}}';
+  // THE LOADCHART FUNCTION IS IN CHART.JS
   window.onload = loadChart()
 </script>
 {% endblock %}

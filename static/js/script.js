@@ -130,16 +130,6 @@ if (document.getElementById("id_add_description")) {
   })
 }
 
-// THIS FUNCTIONALITY CONTROLS THE PRODUCT DROPDOWN
-// if (document.getElementById("dropdown")) {
-//   const dropDown = document.getElementById("dropdown");
-//   const productDropDown = document.getElementById("product-dropdown");
-
-//   dropDown.addEventListener("click", () => {
-//     productDropDown.classList.toggle("scale-dropdown")
-//   })
-// }
-
 if (document.getElementById("dropdown")) {
   // const dropDown = document.getElementsByClassName("dropdown");
   const dropDowns = document.querySelectorAll(".dropdown");

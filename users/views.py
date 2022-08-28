@@ -36,8 +36,6 @@ class ProfileUpdateView(LoginRequiredMixin, View):
         form.save()
         messages.success(request, "Profile Updated Successfully")
         return redirect(self.success_url)
-
-
 profile_update_view = ProfileUpdateView.as_view()
 
 
@@ -68,9 +66,21 @@ class Dashboard(LoginRequiredMixin, View):
             return render(request, self.template_name, {"empty_dashboard": True}) 
         else:
             return render(request, self.template_name, context)
-
-
 dashboard = Dashboard.as_view()
+
+# THIS IS PROCESSES WITH AJAX(GET) REQUEST. THE URL GETS HIT AND SEARILIZED DATA IS RETURNED BASED ON THE GOOD A USER CLICKS, IF NO GOOD IS CLICKED, ALL THE GOODS ARE RETURNED
+class Chart(View):
+    def get(self, request):
+        good_name = request.GET["goodName"]
+        if good_name == "":
+            goods = Goods.objects.filter(owner=request.user).order_by('date_ordered')
+            serialized = GoodsSerializer(goods, many=True)
+            return JsonResponse({"data": serialized.data})
+        else:
+            goods = Goods.objects.filter(owner=request.user, item__name=good_name).order_by('date_ordered')
+            serialized = GoodsSerializer(goods, many=True)
+            return JsonResponse({"data": serialized.data, "singleProduct": True})
+chart = Chart.as_view()
 
 # THIS CLASS HANDLES THE MESSAGE STATUS OF A CUSTOMER
 class UserMessage(LoginRequiredMixin, View):
@@ -80,8 +90,6 @@ class UserMessage(LoginRequiredMixin, View):
         user_messages = Messages.objects.filter(owner=request.user).order_by("date")[:10]
         context = {"user_messages": user_messages}
         return render(request, self.template_name, context)
-
-
 user_messages = UserMessage.as_view()
 
 
@@ -94,8 +102,6 @@ class ReadMessage(View):
         message.save()
         response_data = {"success": 1}
         return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-
 read_message = ReadMessage.as_view()
 
 # THIS BELOW HANDLES THE NOTIFICATION USER GETS WHEN THE PRODUCT GETS ADDED, AND WHEN CLICKED THE NOTIFICATION INFO DISAPPEARS
@@ -147,19 +153,3 @@ class PurchaseDescription(LoginRequiredMixin, View):
 purchase_description = PurchaseDescription.as_view() 
 
 
-# THIS IS PROCESSES WITH AJAX(GET) REQUEST. THE URL G3ETS HIT AND SEARILIZED DATA IS RETURNED BASED ON THE GOOD A USER CLICKS, IF NO GOOD IS CLICKED, ALL THE GOODS ARE RETURNED
-class Chart(View):
-    def get(self, request):
-        good_name = request.GET["goodName"]
-        if good_name == "":
-            goods = Goods.objects.filter(owner=request.user)
-            serialized = GoodsSerializer(goods, many=True)
-            return JsonResponse({"data": serialized.data})
-        else:
-            goods = Goods.objects.filter(owner=request.user, item__name=good_name)
-            serialized = GoodsSerializer(goods, many=True)
-            # print(serialized.data)
-            return JsonResponse({"data": serialized.data, "singleProduct": True})
-
-
-chart = Chart.as_view()
