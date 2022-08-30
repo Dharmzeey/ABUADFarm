@@ -49,3 +49,7 @@ You can check the mini documentation [Here](https://github.com/Dharmzeey/ABUADFa
 - Font awesome was used to load icons
 - Google fonts was used to load font and style the Page
 
+## MODELS
+- The owner attribute (which is a ForeignKey to the User Model) of the Goods and Messages model class of the app named "user" refers to the customers and not the current logged in user when the logged in user is an Admin or a staff operating on the customers.
+- If it is that the user (customer) is logged into his/her account, the owner attribute of the Profile, Goods and the Messages model will refer to the current logged in user
+- The staffModel is used to carry staff detail and their units around the app for usage(which include filtering of units for customers when changes want to be made on the Models)
