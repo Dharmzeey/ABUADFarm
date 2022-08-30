@@ -12,6 +12,7 @@ You can check the mini documentation [Here](https://github.com/Dharmzeey/ABUADFa
 
 
 # ADMIN
+**The Admin is a Django superuser who has full access to the Django Admin Panel and also to all the units and products and all customers both in the Django Admin Panel and the other Admin Page**
 ## The Admin can:
 - Can view all the Units.
 - Can view all the customers on the Database, regardless of the unit they have made purchase from 
@@ -19,6 +20,7 @@ You can check the mini documentation [Here](https://github.com/Dharmzeey/ABUADFa
 - Untimately, can have access to all the features, models and everything of the Django Admin panel and also perform CRUD operations on everything in the Django Admin Panel 
 
 # STAFFS
+**The Staffs is also Django Staff, they only have restricted access to the models and customers concerning their units alone and has restricted access to the Django Admin panel.**
 ## These are the users that have been assigned to each units in the company 
 ### Their Staffs status was created by the superuser (Admin) in the Admin panel 
 ## Staffs Can:
@@ -27,6 +29,7 @@ You can check the mini documentation [Here](https://github.com/Dharmzeey/ABUADFa
 - Add customers product purchase for each customer who made purchase from their units 
 
 # USERS
+**Customers only have access to their accounts alone(which contains all the units they made purchases)**
 **All accounts created have user and  profiles model**
 **But they are later given different statuses**
 ## Users are customers who created account and made purchase from any unit 
@@ -34,3 +37,9 @@ You can check the mini documentation [Here](https://github.com/Dharmzeey/ABUADFa
 - Have access to their Dashboard, Messages, Notifications and Profiles 
 
 # OPERATIONS
+
+
+
+
+
+
