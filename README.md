@@ -37,12 +37,15 @@ You can check the mini documentation [Here](https://github.com/Dharmzeey/ABUADFa
 - Have access to their Dashboard, Messages, Notifications and Profiles 
 
 # OPERATIONS
+
+## Frameworks
 - Django-allauth was the framework used to handle user Registration, Authentication, Validations, Checks and restrictions concerning anything Username and Password.
-
 - DjangorestFramwork was used to serialze the data from the Goods model of a customer to be dislayed a chart oh the dashboard.
-
 - Django-Tailwind was used as the css framework throughout the whole project. It is contained in the app called theme.
 
-
-
+## Lbraries
+- amcharts js was the library used to render data as a grpah on user dashboard
+- Tailwind was used for css
+- Font awesome was used to load icons
+- Google fonts was used to load font and style the Page
 
