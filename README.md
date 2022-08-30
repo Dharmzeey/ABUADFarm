@@ -12,7 +12,7 @@ You can check the mini documentation [Here](https://github.com/Dharmzeey/ABUADFa
 
 
 # ADMIN
-**The Admin is a Django superuser who has full access to the Django Admin Panel and also to all the units and products and all customers both in the Django Admin Panel and the other Admin Page**
+**The Admin is a Django superuser who has full access to the Django Admin Panel and also to all the units and products and all customers both in the Django Admin Panel and the other Admin Page** 
 ## The Admin can:
 - Can view all the Units.
 - Can view all the customers on the Database, regardless of the unit they have made purchase from 
