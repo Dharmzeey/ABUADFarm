@@ -27,8 +27,8 @@ You can check the mini documentation [Here](https://github.com/Dharmzeey/ABUADFa
 - Add customers product purchase for each customer who made purchase from their units 
 
 # USERS
-** All accounts created have user and  profiles model**
-** But they are later given different statuses**
+** All accounts created have user and  profiles model **
+** But they are later given different statuses **
 ## Users are customers who created account and made purchase from any unit 
 ## Users can 
 - Have access to their Dashboard, Messages, Notifications and Profiles 
