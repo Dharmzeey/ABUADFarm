@@ -7,7 +7,7 @@ from django.views import View
 from django.shortcuts import get_object_or_404
 
 from .models import Profile, Messages, Goods, Notification
-from products.models import Product
+from products.models import Product, UnitName
 from .forms import ProfileUpdateForm, GetFeedback
 from .serializer import GoodsSerializer
 
@@ -44,16 +44,31 @@ class Dashboard(LoginRequiredMixin, View):
 
     def get(self, request):
         goods = Goods.objects.filter(owner=request.user)[:30]
+        total = sum([x.price for x in goods])
         product = Product.objects.all()
+        units = UnitName.objects.all()
         # THIS BELOW CHECKS THE GOODS A USER DO PURCHASE BY CHECKING THE REVERSE OF GOODS THROUGH THE PRODUCT MODEL. IT USES THE RELATED NAME ATTRIBUTE ON THE GOOD MODEL. 
         user_goods = [
-            x.unit_item_good.filter(owner=request.user)[0]
+            x.item_good.filter(owner=request.user)[0]
             for x in product
-            if x.unit_item_good.filter(owner=request.user)
+            if x.item_good.filter(owner=request.user)
         ]
-        total = sum([x.price for x in goods])
+        user_unit = [
+            x.unit_good.filter(owner=request.user)[0]
+            for x in units
+            if x.unit_good.filter(owner=request.user)
+        ]
+        units = set()
 
-        # THIS HANDLES THE FILTERING OF USER GOODS AND THEN ASSIGN IT TO THE GOOD DICT, AND IT GETS DISPLAYED ON THE TABLE ON HTML
+        # THIS HANDLES THE FILTERING OF USER GOODS BASED ON ITEMS AND THEN ASSIGN IT TO THE GOOD DICT, AND IT GETS DISPLAYED ON THE TABLE ON HTML
+        s = request.GET.get("s", "")
+        try:
+            if s:
+                goods = Goods.objects.filter(owner=request.user, unit__name=s)[:30]
+                total = sum([x.price for x in goods])
+        except:
+            pass
+        
         q = request.GET.get("q", "")
         try:
             if q:
@@ -61,7 +76,7 @@ class Dashboard(LoginRequiredMixin, View):
                 total = sum([x.price for x in goods])
         except:
             pass
-        context = {"goods": goods, "total": total, "user_goods": user_goods, "q": q}
+        context = {"goods": goods, "total": total, "user_goods": user_goods, "q": q, "user_units": user_unit, "s":s}
         if not goods.exists():
             return render(request, self.template_name, {"empty_dashboard": True}) 
         else:
@@ -72,14 +87,19 @@ dashboard = Dashboard.as_view()
 class Chart(View):
     def get(self, request):
         good_name = request.GET["goodName"]
-        if good_name == "":
-            goods = Goods.objects.filter(owner=request.user).order_by('date_ordered')
-            serialized = GoodsSerializer(goods, many=True)
+        good_unit = request.GET["goodUnit"]
+        if good_unit != "":
+            goods = Goods.objects.filter(owner=request.user, unit__name=good_unit).order_by('date_ordered')
+            serialized = GoodsSerializer(goods, many=True)  
             return JsonResponse({"data": serialized.data})
-        else:
+        elif good_name != "":
             goods = Goods.objects.filter(owner=request.user, item__name=good_name).order_by('date_ordered')
             serialized = GoodsSerializer(goods, many=True)
             return JsonResponse({"data": serialized.data, "singleProduct": True})
+        else:
+            goods = Goods.objects.filter(owner=request.user).order_by('date_ordered')
+            serialized = GoodsSerializer(goods, many=True)
+            return JsonResponse({"data": serialized.data})
 chart = Chart.as_view()
 
 # THIS CLASS HANDLES THE MESSAGE STATUS OF A CUSTOMER

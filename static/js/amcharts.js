@@ -1,5 +1,5 @@
 function loadChart() {
-  $.get(url, { 'goodName': goodName }, (value) => {
+  $.get(url, { 'goodName': goodName, 'goodUnit': goodUnit }, (value) => {
     
     // AMCHARTS
     am5.ready(function () {
@@ -50,14 +50,9 @@ function loadChart() {
         }
 
       }
-      // console.log(dataDict)
-      // let keys = Object.keys(dataDict)
-      // let values = Object.values(dataDict)
 
       // THIS GETS THE KEY VALUE OF THE DICT OF dataDict
       let entries = Object.entries(dataDict)
-      // console.log(keys, values, entries)
-      // console.log(entries)
 
       var data=[]
       dictData = {}
@@ -67,12 +62,13 @@ function loadChart() {
         for (item of values){
           itemName = item["item"]["name"].toLowerCase()
           itemPrice = item["price"]
+          itemPrice = Math.ceil(itemPrice)
           dictData[itemName] = itemPrice
         }
         data.push(dictData)
+        // AFTER THE DICT HAS BEEN PUSHED TO DATA, IT GETS DEFAULTED TO EMPTY DICT
         dictData = {}
       }
-      // console.log(data)
 
       // Add cursor
       // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
@@ -145,8 +141,9 @@ function loadChart() {
       }
 
       for (item of itemNameList){
-        // I USED THIS COMMENTED LINR TO GENERATE RANDOM HEX COLOR
+        // I USED THIS COMMENTED LINE TO GENERATE RANDOM HEX COLOR
         // n = "0x" + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6)
+        // console.log(n)
 
         // I PREDEFINED 20 COLORS THAT THE CODE WILL SELECT RANDOMLY TO DISPLAY THE CHART ON USER DASHBOARD
         colorList = [am5.color(0x60c917), am5.color(0x9ac92f), am5.color(0xe4293d), am5.color(0x350705), am5.color(0x4b904e), am5.color(0xcce606), am5.color(0x656946), am5.color(0xeb5f12), am5.color(0xa7d76a), am5.color(0xb6721e), am5.color(0xe790e0), am5.color(0xd2e273), am5.color(0xc6effd), am5.color(0x5943d6), am5.color(0xb0e5e1), am5.color(0x718f07), am5.color(0xeec8de), am5.color(0x21583c), am5.color(0x501208), am5.color(0x9b6693)]

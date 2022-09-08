@@ -1,8 +1,12 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% load humanize %}
-{% block content %}
 
+{% block title %}
+<title>Dashboard | ABUAD Farm</title>
+{% endblock %}
+
+{% block content %}
 <div class="w-full m-auto p-1">
   {% if empty_dashboard %}
   <strong>
@@ -14,6 +18,23 @@
   <div>
     <!-- THIS DISPLAYS DIFFERENT GOOD USER BUYS AND CAN CLICK IT TO FILTER -->
     <div class="mb-4">
+      <div class="relative mr-4 mb-4">
+        <div id="dropdown" class="cursor-pointer dropdown">
+          <i class="fa-solid fa-filter pr-2"></i>
+          Filter Unit
+          <i class="fa-solid fa-caret-down pl-2"></i>
+        </div>
+    
+        <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
+          <div class="w-40 py-2 m-auto card text-left leading-10">
+            {% for unit in user_units %}
+            <a href="{% url 'dashboard' %}?s={{ unit.unit }}"
+              class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ unit.unit }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
       <button class="m-1">
         <a href="{% url 'dashboard' %}">
           <span id="chart" class="text-center px-2 inline-block">All</span>
@@ -68,6 +89,7 @@
 <script>
   const url = "{% url 'chart' %}";
   const goodName = '{{q}}';
+  const goodUnit = '{{s}}'
   // THE LOADCHART FUNCTION IS IN CHART.JS
   window.onload = loadChart()
 </script>

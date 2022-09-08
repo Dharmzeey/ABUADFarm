@@ -1,4 +1,9 @@
 {% extends 'base/base.html' %}
+
+{% block title %}
+<title>Notifications | ABUAD Farm</title>
+{% endblock %}
+
 {% block content %}
 
 <div class="w-11/12 md:w-full m-auto p-6"></div>
@@ -10,7 +15,7 @@
 
 {% for user_notification in user_notifications %}
 <small>{{ user_notification.date }}</small>
-<p>Dear <b>{{ user_notification.owner }}</b> your purchase of <b>{{ user_notification.good.item }}</b> has been recorded, we hope you enjoy.
+<p>Dear <b>{{ user_notification.owner }}</b> your purchase of <b>{{ user_notification.good.item }}</b> has been recorded, we hope you enjoy it.
   <br>
   Thanks for your patronage
 </p>

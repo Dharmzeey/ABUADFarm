@@ -1,6 +1,5 @@
 from datetime import date, datetime, timezone
 from distutils.log import Log
-from itertools import product
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -97,6 +96,12 @@ class StaffHomeView(LoginRequiredMixin, View):
             return redirect("home")
         
 staff_home_view = StaffHomeView.as_view()
+
+class Activities(LoginRequiredMixin, View):
+    template_name = "staff/activities.html"
+    
+    def get(self, request):
+        return render(request, self.template_name)
 
 
 # THIS CLASS GETS ALL CUSTOMERS ASSOCIATED WITH A UNIT WHICH CAN THEN BE VIEWED AND WORKED ON BY THE HEAD
