@@ -1,1 +1,1 @@
-web: gunicorn 'afarm.wsgi'
+web: gunicorn afarm.wsgi
