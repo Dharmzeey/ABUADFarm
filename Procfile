@@ -1,1 +1,1 @@
-web: gunicorn afarm.wsgi:application --log-file -
+web: gunicorn Afarm.wsgi
