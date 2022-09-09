@@ -1,5 +1,3 @@
-from socket import ntohl
-from tkinter.messagebox import NO
 from django.contrib import admin
 from .models import Profile, Goods, Messages, Notification
 
