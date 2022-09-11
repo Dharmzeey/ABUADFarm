@@ -5,7 +5,8 @@
 
 @layer base {
   html {
-    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Readex Pro', sans-serif;
     /* font-family: 'Montserrat', sans-serif; */
   }
 }
