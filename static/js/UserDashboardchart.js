@@ -55,9 +55,9 @@ function loadChart() {
       let entries = Object.entries(dataDict)
 
       var data=[]
-      dictData = {}
 
       for ([key, values] of entries){
+        dictData = {}
         dictData["date"] = parseInt(key)
         for (item of values){
           itemName = item["item"]["name"].toLowerCase()
@@ -67,7 +67,6 @@ function loadChart() {
         }
         data.push(dictData)
         // AFTER THE DICT HAS BEEN PUSHED TO DATA, IT GETS DEFAULTED TO EMPTY DICT
-        dictData = {}
       }
 
       // Add cursor

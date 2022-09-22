@@ -1,0 +1,117 @@
+{% extends 'administrator/base.html' %}
+{% load humanize %}
+{% block content %}
+
+<div class="mb-4 text-center flex flex-wrap gap-3 items-start">
+
+  <a href="{% url 'administrator:sales' %}?day=recently" class="btn">Recent</a>
+
+  <a href="{% url 'administrator:sales' %}?day=today" class="btn">Today</a>
+
+  <a href="{% url 'administrator:sales' %}?day=yesterday" class="btn">Yesterday</a>
+
+  <a href="{% url 'administrator:sales' %}?day=last week" class="btn">Last Week</a>
+
+  <div class="relative">
+    <button id="select-date" class="relative btn">Select Date</button>
+    <div id="date-dropdown" class="p-4 border shadow-lg absolute bg-white hidden top-10">
+      <form action="" method="get">
+        <label for="start-date"> From:
+          <input type="date" name="start-date" id="">
+        </label>
+        <label for="end-date"> To:
+          <input type="date" name="end-date" id="">
+        </label>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="relative mr-4">
+    <div id="dropdown" class="cursor-pointer dropdown">
+      <i class="fa-solid fa-filter pr-2"></i>
+      Filter Unit
+      <i class="fa-solid fa-caret-down pl-2"></i>
+    </div>
+
+    <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
+      <div class="w-40 py-2 m-auto card text-left leading-10">
+        {% for unit in units %}
+        <a href="{% url 'administrator:sales' %}?unit={{ unit }}{% if day %}&day={{ day }}{% endif %}{% if start_date %}&start-date={{ start_date }}{% endif %}{% if end_date %}&end-date={{ end_date }}{% endif %}"
+          class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ unit }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+
+  <div class="relative">
+    <div id="dropdown" class="cursor-pointer dropdown">
+      <i class="fa-solid fa-filter pr-2"></i>
+      Filter Product
+      <i class="fa-solid fa-caret-down pl-2"></i>
+    </div>
+
+    <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
+      <div class="w-40 py-2 m-auto card text-left leading-10">
+        {% for product in products %}
+        <a href="{% url 'administrator:sales' %}?product={{ product }}{% if day %}&day={{ day }}{% endif %}{% if start_date %}&start-date={{ start_date }}{% endif %}{% if end_date %}&end-date={{ end_date }}{% endif %}"
+          class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ product }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="my-4">
+  <!-- <div>{{day|title}} Sold Goods</div> -->
+  <!-- <div> {{day|title}} Most Sold goods </div>
+  <div>Highest generated Goods</div> -->
+</div>
+
+<table class="w-full border-solid border-2 border-black-500 ">
+  <caption class="mb-4">
+    {% if start_date and end_date %}
+    {% if filter_unit %} {{ filter_unit }} Goods {% elif filter_product %} {{ filter_product }} {% else %} Goods  {% endif %} sold from {{ start_date }} to {{ end_date }}
+
+    {% elif check_date %}
+    {% if filter_unit %} {{ filter_unit }} Goods {% elif filter_product %} {{ filter_product }} {% else %} Goods {% endif %} sold on {{ check_date }}
+
+    {% else %}
+    {{ day|title }} Sold {% if filter_unit %} {{ filter_unit }} Goods {% elif filter_product %} {{ filter_product }} {% else %} Goods {% endif %}
+
+    {% endif %}
+  </caption>
+
+  <tr>
+    <th>Customer</th>
+    <th>Date</th>
+    <th>Item</th>
+    <th class="">Mass(kg)</th>
+    <th>Price (&#8358;)</th>
+    <th>Note </th>
+  </tr>
+  {% for good in goods %}
+  <tr>
+    <td>{{ good.owner }}</td>
+    <td>{{ good.date_ordered|date:"D, d-M-y"}}</td>
+    <td>{{ good.item }}</td>
+    <td>{{ good.quantity }}</td>
+    <td>{{ good.price }}</td>
+    <td>
+      {% if good.description %}
+      <a href="{% url 'administrator:purchase_description' good.id %}" class="link">View</a>
+      {% else %}
+      ---
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  <th>Total</th>
+  <td colspan="3"></td>
+  <td colspan="2"> &#8358; {{ total|intcomma }}</td>
+</table>
+
+
+{% endblock %}

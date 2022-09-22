@@ -85,12 +85,12 @@
   {% endif %}
 </div>
 
-<script src="{% static 'js/amcharts.js' %}"></script>
+<script src="{% static 'js/UserDashboardchart.js' %}"></script>
 <script>
   const url = "{% url 'chart' %}";
   const goodName = '{{q}}';
-  const goodUnit = '{{s}}'
-  // THE LOADCHART FUNCTION IS IN CHART.JS
+  const goodUnit = '{{s}}';
+  // THE LOADCHART FUNCTION IS IN UserDashboardchart.JS
   window.onload = loadChart()
 </script>
 {% endblock %}

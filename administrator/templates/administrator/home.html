@@ -1,109 +1,61 @@
 {% extends 'administrator/base.html' %}
 {% load humanize %}
+{% load static %}
 {% block content %}
 
-<div class="mb-4 text-center flex flex-wrap gap-3 items-start">
-
-  <a href="{% url 'administrator:home' %}?day=recently" class="btn">Recent</a>
-
-  <a href="{% url 'administrator:home' %}?day=today" class="btn">Today</a>
-
-  <a href="{% url 'administrator:home' %}?day=yesterday" class="btn">Yesterday</a>
-
-  <a href="{% url 'administrator:home' %}?day=last week" class="btn">Last Week</a>
-
-  <div class="relative">
-    <a href="" class="relative btn">Select Date</a>
-    <div class="absolute bg-white hidden top-10">
-      <form action="" method="get">
-        <label for="start-date"> From:
-          <input type="date" name="start-date" id="">
-        </label>
-        <label for="end-date"> To:
-          <input type="date" name="end-date" id="">
-        </label>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="relative mr-4">
-    <div id="dropdown" class="cursor-pointer dropdown">
-      <i class="fa-solid fa-filter pr-2"></i>
-      Filter Unit
-      <i class="fa-solid fa-caret-down pl-2"></i>
-    </div>
-
-    <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
-      <div class="w-40 py-2 m-auto card text-left leading-10">
-        {% for unit in units %}
-        <a href="{% url 'administrator:home' %}?unit={{ unit }}{% if day %}&day={{ day }}{% endif %}"
-          class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ unit }}</a>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-
-
-  <div class="relative">
-    <div id="dropdown" class="cursor-pointer dropdown">
-      <i class="fa-solid fa-filter pr-2"></i>
-      Filter Product
-      <i class="fa-solid fa-caret-down pl-2"></i>
-    </div>
-
-    <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
-      <div class="w-40 py-2 m-auto card text-left leading-10">
-        {% for product in products %}
-        <a href="{% url 'administrator:home' %}?product={{ product }}{% if day %}&day={{ day }}{% endif %}"
-          class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ product }}</a>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div class="my-4">
-  <!-- <div>{{day|title}} Sold Goods</div> -->
-  <!-- <div> {{day|title}} Most Sold goods </div>
-  <div>Highest generated Goods</div> -->
-</div>
-
-<table class="w-full border-solid border-2 border-black-500 ">
-  <caption class="mb-4">
-    <!-- {{ unit_customer }} recent {{ unit_name }} Purchases -->
-    {{day|title}} Sold {% if filter_unit %} {{ filter_unit }} Goods {% elif filter_product %} {{ filter_product }} {% else %} Goods {% endif %}
-  </caption>
-
-  <tr>
-    <th>Customer</th>
-    <th>Date</th>
-    <th>Item</th>
-    <th class="">Mass(kg)</th>
-    <th>Price (&#8358;)</th>
-    <th>Note </th>
-  </tr>
-  {% for good in goods %}
-  <tr>
-    <td>{{ good.owner }}</td>
-    <td>{{ good.date_ordered|date:"D, d-M-y"}}</td>
-    <td>{{ good.item }}</td>
-    <td>{{ good.quantity }}</td>
-    <td>{{ good.price }}</td>
-    <td>
-      {% if good.description %}
-      <a href="{% url 'administrator:purchase_description' good.id %}" class="text-blue-800 underline font-bold cursor-pointer">View</a>
-      {% else %}
-      ---
+<section>
+  <div class="flex justify-between gap-3 flex-wrap">
+    <div class="card p-4 w-60">
+      <b><sup>Revenue</sup></b> <br>
+      {% if start_date and end_date %} <small>
+        {{ start_date }} - {{ end_date }}
+      </small> 
+      {% elif check_date %}
+      <small>
+        {{ check_date }}
+      </small>
       {% endif %}
-    </td>
-  </tr>
-  {% endfor %}
-  <th>Total</th>
-  <td colspan="3"></td>
-  <td colspan="2"> &#8358; {{ total|intcomma }}</td>
-</table>
+      <div>&#8358; {{ total | intcomma }}</div>
+    </div>
+    <div class="card p-4 w-52">d</div>
+    <div class="card p-4 w-52">
+      <sup>Visitors</sup>
+    </div>
+    <form class="flex w-60 items-center" action="" method="post">
+      {% csrf_token %}
+      <input class="cursor-pointer border-white border-b-black" type="date" name="start-date" id="start-date">
+      <span class="items-center">&nbsp; - &nbsp;</span>
+      <input class="cursor-pointer border-white border-b-black" type="date" name="end-date" id="end-date">
+      <input class="border rounded-lg p-1 h-10 cursor-pointer hover:bg-black hover:text-white" type="submit" value="Search">
+    </form>
+  </div>
+
+  <div>
+    <div class="card w-full h-[550px] mt-6 p-4">Dashboard
+      <div class="text-center"> 
+        {% if start_date and end_date %} <small>
+          Revenue Chart from {{ start_date }} to {{ end_date }}
+        </small> 
+        {% elif check_date %}
+        <small>
+          Revenue Chart for {{ check_date }}
+        </small>
+        {% endif %}
+      </div>
+      <div class="h-[90%]" id="chartdiv"></div>
+
+    </div>
+  </div>
+</section>
 
 
+<script src="{% static 'js/homeChart.js' %}"></script>
+<script>
+  const url = "{% url 'administrator:home_chart' %}";
+  const startDate = "{{ start_date }}";
+  const endDate = "{{ end_date }}";
+  const checkDate = "{{ check_date }}";
+  // This load the chart on homeChart.js
+  window.onload = loadChart()
+</script>
 {% endblock %}

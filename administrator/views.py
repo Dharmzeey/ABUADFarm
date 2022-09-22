@@ -1,8 +1,9 @@
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timezone, timedelta
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from django.contrib import messages
 from django.views import View
 from django.views.generic import DetailView
@@ -11,6 +12,7 @@ from django.db.models import Q
 
 from products.models import UnitName, Product
 from users.models import Goods
+from users.serializer import GoodsSerializer
 
 
 # User = settings.AUTH_USER_MODEL
@@ -62,10 +64,67 @@ def admin_logout(request):
     return redirect("administrator:login")
 
 
-# THIS CLASS HANDLES THE SUPERUSER(ADMIN) DASHBOARD
-class AdminView(LoginRequiredMixin, View):
-    login_url = "administrator:login"
+class Home(LoginRequiredMixin, View):
     template_name = "administrator/home.html"
+    # THIS GET REQUEST RENDERS THE DATA FOR LAST SEVEN DAYS ON THE HOME PAGE
+    def get(self, request):
+        end_date = date.today()
+        start_date = date(int(end_date.year), int(end_date.month), int(end_date.day) - 7)
+        goods = Goods.objects.filter(date_ordered__range=[start_date, end_date + timedelta(days=1)]) # I ADDED A DAY WITH TIMEDELTA BECAUSE OF RANGE BEHAVIOR WHICH EXCLUDE THE LAST DAY
+        total = sum([x.price for x in goods])
+        context = {"goods": goods, "total":total, "start_date": str(start_date), "end_date": str(end_date)}
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        start_date = request.POST.get("start-date")
+        end_date = request.POST.get("end-date")
+        if start_date and end_date: 
+            check_date = None
+            split_end_date = end_date.split("-")
+            goods = Goods.objects.filter(date_ordered__range=[start_date, datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
+            total = sum([x.price for x in goods])
+        elif start_date or end_date:
+            if start_date:
+                check_date = start_date
+            else:
+                check_date = end_date
+            list_date = check_date.split("-")
+            get_year = int(list_date[0])
+            get_month = int(list_date[1])
+            get_date = int(list_date[2])
+            goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date)
+            total = sum([x.price for x in goods])
+        
+        context = {"goods": goods, "total":total, "start_date": start_date, "end_date": end_date, "check_date": check_date}
+        return render(request, self.template_name, context)
+home = Home.as_view()
+
+# THIS VIEW WILL BE ACCESSED USING AJAX AND WILL BE RENDERD ON HOME
+class HomeChart(View):
+    def get(self, request):
+        start_date = request.GET["startDate"]
+        end_date = request.GET["endDate"]
+        check_date = request.GET["checkDate"]
+        if start_date and end_date:
+            split_end_date = end_date.split("-")
+            goods = Goods.objects.filter(date_ordered__range=[start_date, datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT            
+            serialized = GoodsSerializer(goods, many=True)
+            return JsonResponse({"data": serialized.data})
+        elif check_date:
+            list_date = check_date.split("-")
+            get_year = int(list_date[0])
+            get_month = int(list_date[1])
+            get_date = int(list_date[2])
+            goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date)
+            serialized = GoodsSerializer(goods, many=True)
+            return JsonResponse({"data": serialized.data})
+home_chart = HomeChart.as_view()
+
+# THIS CLASS HANDLES THE SUPERUSER(ADMIN) DASHBOARD
+class Sales(LoginRequiredMixin, View):
+    login_url = "administrator:login"
+    template_name = "administrator/sales.html"
 
     def get(self, request):
         if request.user.is_superuser:
@@ -81,13 +140,15 @@ class AdminView(LoginRequiredMixin, View):
             # datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
             # date_to_get = date(get_year, get_month, get_date)            
             goods = Goods.objects.all()[:30]
+            # print(Goods.objects.dates('date_ordered', 'day'))
                         
             # THIS FUNCTIONALITY WILL HANDLE THE DAY FILTERING FOR DAY AND PRODUCT USINF CONDITIONAL STATEMENT
-            filter_day = request.GET.get("day", "recently")
+            filter_day = request.GET.get("day", None)
             filter_product = request.GET.get("product", None)
             filter_unit = request.GET.get("unit", None)
             start_date = request.GET.get("start-date", None)
             end_date = request.GET.get("end-date", None)
+            check_date = None
             
             if filter_day == "recently":
                 if filter_product:
@@ -100,7 +161,7 @@ class AdminView(LoginRequiredMixin, View):
                     goods = Goods.objects.filter()[:30]
                     total = sum([x.price for x in goods])
                     
-            if filter_day == "today":
+            elif filter_day == "today":
                 datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
                 # date_to_get = date(get_year, get_month, get_date)  
                 if filter_product:
@@ -139,8 +200,43 @@ class AdminView(LoginRequiredMixin, View):
                     goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)
                     total = sum([x.price for x in goods])
             
-            elif start_date and end_date != None:
-                datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
+            # THIS IS FOR THE SELECT DATE RANGE                                  
+            elif start_date and end_date:
+                split_end_date = end_date.split("-")
+                if filter_product:
+                    goods = Goods.objects.filter(item__name = filter_product, date_ordered__range=[start_date, datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
+                    total = sum([x.price for x in goods])
+                elif filter_unit:
+                    goods = Goods.objects.filter( unit__name = filter_unit, date_ordered__range=[start_date,  datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
+                    total = sum([x.price for x in goods])
+                else:      
+                    goods = Goods.objects.filter(date_ordered__range=[start_date,  datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
+                    total = sum([x.price for x in goods])
+                    
+            # THIS IS IF THE USER SELECTS ONE OF THE FROM OR TO, IT RETURNS THE EXACT DATE SELECTED
+            elif start_date or end_date:
+                if start_date:
+                    check_date = start_date
+                else:
+                    check_date = end_date
+                list_date = check_date.split("-")
+                get_year = int(list_date[0])
+                get_month = int(list_date[1])
+                get_date = int(list_date[2])
+                if filter_product:
+                    goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date, item__name = filter_product)
+                    total = sum([x.price for x in goods])
+                elif filter_unit:
+                    goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date, unit__name = filter_unit)
+                    total = sum([x.price for x in goods])
+                else:      
+                    goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date)
+                    total = sum([x.price for x in goods])  
+            # THE FINAL ELSE STATEMENT FOR WHEN NO FILTER IS APPLIED(wHEN JUST CLICKED)
+            else:
+                goods = Goods.objects.filter()[:30]
+                total = sum([x.price for x in goods])
+                filter_day = "Recently"
 
             context = {
                 "filter_unit": filter_unit,
@@ -149,6 +245,9 @@ class AdminView(LoginRequiredMixin, View):
                 "products": products,
                 "goods": goods,
                 "day": filter_day,
+                "start_date": start_date,
+                "end_date": end_date,
+                "check_date": check_date,
                 "total": total
             }
             return render(request, self.template_name, context)
@@ -156,7 +255,7 @@ class AdminView(LoginRequiredMixin, View):
             return redirect("staff:home")
         else:
             return redirect("home")
-admin_view = AdminView.as_view()
+sales = Sales.as_view()
 
 
 class AllCustomers(LoginRequiredMixin, View):
@@ -249,8 +348,10 @@ class CustomerDetails(LoginRequiredMixin, View):
             customer_goods = Goods.objects.filter(owner=customer, item__name=search_item).order_by('-date_ordered')
             total = sum([x.price for x in customer_goods])
             
+                    
         context.update({
             "customer": customer,
+            "pk": pk,
             "customer_goods": customer_goods,
             "customer_units": customer_units,
             "customer_items": customer_items,
@@ -258,6 +359,28 @@ class CustomerDetails(LoginRequiredMixin, View):
         })
         return render(request, self.template_name, context)
 customer_detail = CustomerDetails.as_view()
+
+class CustomerChart(View):
+    def get(self, request):
+        pk = request.GET["pk"]
+        search_unit = request.GET["searchUnit"]
+        search_item = request.GET["searchItem"]
+        customer = User.objects.get(id=pk)
+        
+        if search_unit:
+            goods = Goods.objects.filter(owner=customer, unit__name=search_unit).order_by('-date_ordered')
+            serialized = GoodsSerializer(goods, many=True)
+            return JsonResponse({"data": serialized.data})
+        elif search_item:
+            goods = Goods.objects.filter(owner=customer, item__name=search_item).order_by('-date_ordered')
+            serialized = GoodsSerializer(goods, many=True)
+            return JsonResponse({"data": serialized.data})
+        else:
+            goods = Goods.objects.filter(owner=customer).order_by('-date_ordered')
+            serialized = GoodsSerializer(goods, many=True)
+            return JsonResponse({"data": serialized.data})
+
+customer_chart = CustomerChart.as_view()
 
 class PurchaseDescription(LoginRequiredMixin, DetailView):
     template_name = "administrator/purchase_description.html"

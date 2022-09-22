@@ -171,5 +171,3 @@ class PurchaseDescription(LoginRequiredMixin, View):
         return render(request, self.template_name, context)  
             
 purchase_description = PurchaseDescription.as_view() 
-
-

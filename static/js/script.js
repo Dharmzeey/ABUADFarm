@@ -140,3 +140,12 @@ if (document.getElementById("dropdown")) {
     })
   })
 }
+
+
+if (document.getElementById("select-date")) {
+  const selectDate = document.getElementById("select-date");
+  const dateDropdown = document.getElementById("date-dropdown");
+  selectDate.addEventListener("click", ()=>{
+    dateDropdown.classList.toggle("hidden")
+  })
+}

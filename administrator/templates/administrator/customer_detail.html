@@ -1,4 +1,5 @@
 {% extends 'administrator/base.html' %}
+{% load static %}
 {% load humanize %}
 
 {% block title %}
@@ -8,13 +9,13 @@
 {% block content %}
 
 <h1 class="uppercase font-bold text-xl">Customer Details</h1>
-<section class="flex gap-8 justify-around leading-10 flex-wrap mb-10">
+<section class="flex gap-4 justify-around leading-10 flex-wrap mb-10">
   <div class="flex">
     <div class="w-40 h-40">
       <img src="{{ customer.owner_profile.picture.url }}" alt="{{ customer.customername }}" class="w-full h-full rounded-full object-cover">
     </div>
   </div>
-  <div id="basic-profile">
+  <div class="card p-4 w-[340px]" id="basic-profile">
     <div>
       Username: {{ customer.username }}
     </div>
@@ -34,12 +35,12 @@
       Number: {{ customer.owner_profile.phone }}
     </div>
   </div>
-  <div id="other-profile">
+  <div class="card p-4 w-[480px]" id="other-profile">
     <div>
       Company Name: {{ customer.owner_profile.company_name }}
     </div>
     <div>
-      Website: {{ customer.owner_profile.website }}
+      Website: {% if customer.owner_profile.website %}<a class="link" target="_blank" href="{{ customer.owner_profile.website }}">Visit Website</a>{% endif %}
     </div>
     <div>
       State: {{ customer.owner_profile.state }}
@@ -51,6 +52,14 @@
       Address: {{ customer.owner_profile.address }}
     </div>
   </div>
+</section>
+
+<section>
+  <h2 class="text-2xl">Revenue
+    <br>
+    <div class="text-center text-sm">{{customer|title}} {% if search_unit %}{{ search_unit }} Unit Revenue {% elif search_item %} {{ search_item }} Revenue {% else %} Total Revenue {% endif %} </div>
+  </h2>
+  <div class="w-full h-[500px] mb-6" id="chartdiv"></div>
 </section>
 
 <section>
@@ -113,7 +122,7 @@
     <td>{{ good.price }}</td>
     <td>
       {% if good.description %}
-      <a href="{% url 'administrator:purchase_description' good.id %}" class="text-blue-800 underline font-bold cursor-pointer">View</a>
+      <a href="{% url 'administrator:purchase_description' good.id %}" class="link">View</a>
 
       {% else %}
       ---
@@ -126,5 +135,13 @@
   <td colspan="2"> &#8358; {{ total|intcomma }}</td>
 </table>
 
-
+<script src="{% static 'js/customerDetailsChart.js' %}"></script>
+<script>
+  const url = "{% url 'administrator:customer_chart' %}";
+  const searchUnit = "{{ search_unit }}";
+  const searchItem = "{{ search_item }}";
+  const pk = parseInt("{{pk}}");
+  // This load the chart on customerDetailsChart.js
+  window.onload = loadChart()
+</script>
 {% endblock %}

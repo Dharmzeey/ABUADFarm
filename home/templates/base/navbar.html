@@ -4,7 +4,7 @@
 
 <div>
   {% if user.is_authenticated %}
-  <div class="md:ml-60 md:py-3 md:px-12 flex  justify-between md:justify-center">
+  <div class="md:ml-60 md:py-3 md:px-12 flex justify-between md:justify-center">
 
     <h1 class="w-4/12 p-2 heading md:hidden">
       <a href="{% url 'home' %}">
@@ -14,6 +14,10 @@
 
     <h2 class="p-2 text-center md:ml-10 md:text-xl">
       Hello, {{user}}
+    </h2>
+
+    <h2 class="p-2 text-center md:ml-10 md:text-xl">
+      <a class="items-end" href="">Blog</a>
     </h2>
 
     <button class="p-2 px-6 menu-toggle-icon md:hidden border-none hover:bg-transparent hover:text-black" id="menu-toggle-icon">
@@ -64,7 +68,7 @@
         <sup class="p-1 px-2 bg-red-500 text-white rounded-full">
           {{ request.user|notification }}
         </sup>
-        {% endif %}        
+        {% endif %}
       </li>
 
       <li>
