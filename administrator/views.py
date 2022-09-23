@@ -95,7 +95,8 @@ class Home(LoginRequiredMixin, View):
             get_date = int(list_date[2])
             goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date)
             total = sum([x.price for x in goods])
-        
+        else:
+            return redirect("administrator:home")  
         context = {"goods": goods, "total":total, "start_date": start_date, "end_date": end_date, "check_date": check_date}
         return render(request, self.template_name, context)
 home = Home.as_view()
