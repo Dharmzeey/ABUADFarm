@@ -39,7 +39,7 @@ class Goods(models.Model):
     )
     unit = models.ForeignKey(UnitName, on_delete=models.CASCADE, related_name="unit_good")
     item = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="item_good")
-    quantity = models.DecimalField(max_digits=5, decimal_places=2)
+    quantity = models.DecimalField(max_digits=7, decimal_places=2)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     add_description = models.BooleanField(default=False, blank=True, null=True)
     description = RichTextField(blank=True, null=True)

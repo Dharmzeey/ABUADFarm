@@ -73,7 +73,7 @@
       </div>
   
       <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
-        <div class="w-40 py-2 m-auto card text-left leading-10">
+        <div class="w-44 py-2 m-auto card text-left leading-10">
           {% for unit in customer_units %}
           <a href="{% url 'administrator:customer_detail' customer.id %}?unit={{unit}}"
             class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ unit }}</a>
@@ -91,7 +91,7 @@
       </div>
   
       <div id="product-dropdown" class="product-dropdown scale-dropdown absolute transition ease-in-out delay-200">
-        <div class="w-40 py-2 m-auto card text-left leading-10">
+        <div class="w-48 py-2 m-auto card text-left leading-10">
           {% for item in customer_items %}
           <a href="{% url 'administrator:customer_detail' customer.id %}?item={{item}}"
             class="w-full px-4 pl-6 inline-block hover:bg-black hover:text-white">{{ item }}</a>
