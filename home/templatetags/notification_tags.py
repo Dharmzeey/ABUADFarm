@@ -1,3 +1,7 @@
+"""
+THIS TEMPLATE TAG IS RESPONSIBLE FOR SHOWING AND UPDATING THE NUMBER OF NOTIFICATION AND TURNS OFF WHEN NOTIFICATION IS CLICKED
+"""
+
 from django import template
 from users.models import Notification
 

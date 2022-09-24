@@ -72,7 +72,18 @@ class Home(LoginRequiredMixin, View):
         start_date = date(int(end_date.year), int(end_date.month), int(end_date.day) - 7)
         goods = Goods.objects.filter(date_ordered__range=[start_date, end_date + timedelta(days=1)]) # I ADDED A DAY WITH TIMEDELTA BECAUSE OF RANGE BEHAVIOR WHICH EXCLUDE THE LAST DAY
         total = sum([x.price for x in goods])
-        context = {"goods": goods, "total":total, "start_date": str(start_date), "end_date": str(end_date)}
+        selling_frequency = {}
+        for good in goods:
+            item_name =  str(good.item)
+            item_price = good.price
+            if item_name in selling_frequency.keys():
+                selling_frequency[item_name][0] += 1
+                selling_frequency[item_name][1] += float(item_price)
+            else:
+                selling_frequency[item_name] = []
+                selling_frequency[item_name].append(1)
+                selling_frequency[item_name].append(float(item_price))
+        context = {"goods": goods, "total":total, "start_date": str(start_date), "end_date": str(end_date), "selling_frequency": selling_frequency}
         
         return render(request, self.template_name, context)
     
@@ -97,7 +108,18 @@ class Home(LoginRequiredMixin, View):
             total = sum([x.price for x in goods])
         else:
             return redirect("administrator:home")  
-        context = {"goods": goods, "total":total, "start_date": start_date, "end_date": end_date, "check_date": check_date}
+        selling_frequency = {}
+        for good in goods:
+            item_name =  str(good.item)
+            item_price = good.price
+            if item_name in selling_frequency.keys():
+                selling_frequency[item_name][0] += 1
+                selling_frequency[item_name][1] += float(item_price)
+            else:
+                selling_frequency[item_name] = []
+                selling_frequency[item_name].append(1)
+                selling_frequency[item_name].append(float(item_price))
+        context = {"goods": goods, "total":total, "start_date": start_date, "end_date": end_date, "check_date": check_date, "selling_frequency": selling_frequency}
         return render(request, self.template_name, context)
 home = Home.as_view()
 

@@ -1,3 +1,6 @@
+"""
+THIS TEMPLATE TAG IS RESPONSIBLE FOR SHOWING AND UPDATING THE NUMBER OF MESSAGES AND TURNS OFF IF NO MESSAGE
+"""
 from django import template
 from users.models import Messages
 

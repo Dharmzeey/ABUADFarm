@@ -13,7 +13,6 @@ Django-Allauth was used for the authentication
 
 It has different Apps that handled different functionalities
 
-You can check the mini documentation [Here](https://github.com/Dharmzeey/ABUADFarm/blob/master/code_docs.txt)
 
 ![Homepage](https://github.com/Dharmzeey/dharmzeey/blob/master/public/images/abuadfarm/Home-page.png)
 ## **Home Page**
