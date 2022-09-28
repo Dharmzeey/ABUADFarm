@@ -1,7 +1,6 @@
 from datetime import date, datetime, timezone, timedelta
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
@@ -9,6 +8,9 @@ from django.views import View
 from django.views.generic import DetailView
 from django.contrib.auth.models import User
 from django.db.models import Q
+
+from utils.mixins import AdminRequiredMixin
+from utils.export import view_pdf, download_pdf, export_excel
 
 from products.models import UnitName, Product
 from users.models import Goods
@@ -64,7 +66,7 @@ def admin_logout(request):
     return redirect("administrator:login")
 
 
-class Home(LoginRequiredMixin, View):
+class Home(AdminRequiredMixin, View):
     template_name = "administrator/home.html"
     # THIS GET REQUEST RENDERS THE DATA FOR LAST SEVEN DAYS ON THE HOME PAGE
     def get(self, request):
@@ -87,6 +89,7 @@ class Home(LoginRequiredMixin, View):
         
         return render(request, self.template_name, context)
     
+    # THIS POST REQUEST IS FOR THE DATE RANGE SEARCHING
     def post(self, request):
         start_date = request.POST.get("start-date")
         end_date = request.POST.get("end-date")
@@ -145,143 +148,153 @@ class HomeChart(View):
 home_chart = HomeChart.as_view()
 
 # THIS CLASS HANDLES THE SUPERUSER(ADMIN) DASHBOARD
-class Sales(LoginRequiredMixin, View):
+class Sales(AdminRequiredMixin, View):
     login_url = "administrator:login"
     template_name = "administrator/sales.html"
 
     def get(self, request):
-        if request.user.is_superuser:
-            units = UnitName.objects.all()
-            products = Product.objects.all().order_by("name")
-            today = date.today()
-            str_today = str(today)
-            list_today = str_today.split("-")
-            get_year = int(list_today[0])
-            get_month = int(list_today[1])
-            get_date = int(list_today[2])
-            
-            # datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
-            # date_to_get = date(get_year, get_month, get_date)            
-            goods = Goods.objects.all()[:30]
-            # print(Goods.objects.dates('date_ordered', 'day'))
-                        
-            # THIS FUNCTIONALITY WILL HANDLE THE DAY FILTERING FOR DAY AND PRODUCT USINF CONDITIONAL STATEMENT
-            filter_day = request.GET.get("day", None)
-            filter_product = request.GET.get("product", None)
-            filter_unit = request.GET.get("unit", None)
-            start_date = request.GET.get("start-date", None)
-            end_date = request.GET.get("end-date", None)
-            check_date = None
-            
-            if filter_day == "recently":
-                if filter_product:
-                    goods = Goods.objects.filter(item__name = filter_product)[:30]
-                    total = sum([x.price for x in goods])
-                elif filter_unit:
-                    goods = goods = Goods.objects.filter(unit__name = filter_unit)[:30]
-                    total = sum([x.price for x in goods])
-                else:      
-                    goods = Goods.objects.filter()[:30]
-                    total = sum([x.price for x in goods])
+        units = UnitName.objects.all()
+        products = Product.objects.all().order_by("name")
+        today = date.today()
+        str_today = str(today)
+        list_today = str_today.split("-")
+        get_year = int(list_today[0])
+        get_month = int(list_today[1])
+        get_date = int(list_today[2])
+        
+        # datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
+        # date_to_get = date(get_year, get_month, get_date)            
+        goods = Goods.objects.all()[:30]
+        # print(Goods.objects.dates('date_ordered', 'day'))
                     
-            elif filter_day == "today":
-                datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
-                # date_to_get = date(get_year, get_month, get_date)  
-                if filter_product:
-                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
-                    total = sum([x.price for x in goods])
-                elif filter_unit:
-                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, unit__name = filter_unit)
-                    total = sum([x.price for x in goods])
-                else:      
-                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)
-                    total = sum([x.price for x in goods])
-                
-            elif filter_day == "yesterday":
-                datetime_to_get = datetime(get_year, get_month, get_date - 1, tzinfo=timezone.utc)
-                # date_to_get = date(get_year, get_month, get_date)
-                if filter_product:
-                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
-                    total = sum([x.price for x in goods])
-                elif filter_unit:
-                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, unit__name = filter_unit)
-                    total = sum([x.price for x in goods])
-                else:      
-                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)        
-                    total = sum([x.price for x in goods])
-
-            elif filter_day == "last week":
-                datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
-                # date_to_get = date(get_year, get_month, get_date)        
-                if filter_product:
-                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
-                    total = sum([x.price for x in goods])
-                elif filter_unit:
-                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, unit__name = filter_unit)
-                    total = sum([x.price for x in goods])
-                else:      
-                    goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)
-                    total = sum([x.price for x in goods])
-            
-            # THIS IS FOR THE SELECT DATE RANGE                                  
-            elif start_date and end_date:
-                split_end_date = end_date.split("-")
-                if filter_product:
-                    goods = Goods.objects.filter(item__name = filter_product, date_ordered__range=[start_date, datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
-                    total = sum([x.price for x in goods])
-                elif filter_unit:
-                    goods = Goods.objects.filter( unit__name = filter_unit, date_ordered__range=[start_date,  datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
-                    total = sum([x.price for x in goods])
-                else:      
-                    goods = Goods.objects.filter(date_ordered__range=[start_date,  datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
-                    total = sum([x.price for x in goods])
-                    
-            # THIS IS IF THE USER SELECTS ONE OF THE FROM OR TO, IT RETURNS THE EXACT DATE SELECTED
-            elif start_date or end_date:
-                if start_date:
-                    check_date = start_date
-                else:
-                    check_date = end_date
-                list_date = check_date.split("-")
-                get_year = int(list_date[0])
-                get_month = int(list_date[1])
-                get_date = int(list_date[2])
-                if filter_product:
-                    goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date, item__name = filter_product)
-                    total = sum([x.price for x in goods])
-                elif filter_unit:
-                    goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date, unit__name = filter_unit)
-                    total = sum([x.price for x in goods])
-                else:      
-                    goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date)
-                    total = sum([x.price for x in goods])  
-            # THE FINAL ELSE STATEMENT FOR WHEN NO FILTER IS APPLIED(wHEN JUST CLICKED)
-            else:
+        # THIS FUNCTIONALITY WILL HANDLE THE DAY FILTERING FOR DAY AND PRODUCT USINF CONDITIONAL STATEMENT
+        filter_day = request.GET.get("day", None)
+        filter_product = request.GET.get("product", None)
+        filter_unit = request.GET.get("unit", None)
+        start_date = request.GET.get("start-date", None)
+        end_date = request.GET.get("end-date", None)
+        check_date = None
+        
+        if filter_day == "recently":
+            if filter_product:
+                goods = Goods.objects.filter(item__name = filter_product)[:30]
+                total = sum([x.price for x in goods])
+            elif filter_unit:
+                goods = goods = Goods.objects.filter(unit__name = filter_unit)[:30]
+                total = sum([x.price for x in goods])
+            else:      
                 goods = Goods.objects.filter()[:30]
                 total = sum([x.price for x in goods])
-                filter_day = "Recently"
+                
+        elif filter_day == "today":
+            datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
+            # date_to_get = date(get_year, get_month, get_date)  
+            if filter_product:
+                goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
+                total = sum([x.price for x in goods])
+            elif filter_unit:
+                goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, unit__name = filter_unit)
+                total = sum([x.price for x in goods])
+            else:      
+                goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)
+                total = sum([x.price for x in goods])
+            
+        elif filter_day == "yesterday":
+            datetime_to_get = datetime(get_year, get_month, get_date - 1, tzinfo=timezone.utc)
+            # date_to_get = date(get_year, get_month, get_date)
+            if filter_product:
+                goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
+                total = sum([x.price for x in goods])
+            elif filter_unit:
+                goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, unit__name = filter_unit)
+                total = sum([x.price for x in goods])
+            else:      
+                goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)        
+                total = sum([x.price for x in goods])
 
-            context = {
-                "filter_unit": filter_unit,
-                "filter_product": filter_product,
-                "units": units,
-                "products": products,
-                "goods": goods,
-                "day": filter_day,
-                "start_date": start_date,
-                "end_date": end_date,
-                "check_date": check_date,
-                "total": total
-            }
-            return render(request, self.template_name, context)
-        elif request.user.is_staff:
-            return redirect("staff:home")
+        elif filter_day == "last week":
+            datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
+            # date_to_get = date(get_year, get_month, get_date)        
+            if filter_product:
+                goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
+                total = sum([x.price for x in goods])
+            elif filter_unit:
+                goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, unit__name = filter_unit)
+                total = sum([x.price for x in goods])
+            else:      
+                goods = Goods.objects.filter(date_ordered__gte = datetime_to_get)
+                total = sum([x.price for x in goods])
+        
+        # THIS IS FOR THE SELECT DATE RANGE                                  
+        elif start_date and end_date:
+            split_end_date = end_date.split("-")
+            if filter_product:
+                goods = Goods.objects.filter(item__name = filter_product, date_ordered__range=[start_date, datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
+                total = sum([x.price for x in goods])
+            elif filter_unit:
+                goods = Goods.objects.filter( unit__name = filter_unit, date_ordered__range=[start_date,  datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
+                total = sum([x.price for x in goods])
+            else:      
+                goods = Goods.objects.filter(date_ordered__range=[start_date,  datetime(int(split_end_date[0]), int(split_end_date[1]), int(split_end_date[2])) + timedelta(days=1)]) # HERE I USED DATETIME + TIMEDELTA IN PLACE OF END DATE BECAUSE OF PYTHON RANGE BEHAVIOR THAT EXCLUDE THE LAST ELEMENT
+                total = sum([x.price for x in goods])
+                
+        # THIS IS IF THE USER SELECTS ONE OF THE FROM OR TO, IT RETURNS THE EXACT DATE SELECTED
+        elif start_date or end_date:
+            if start_date:
+                check_date = start_date
+            else:
+                check_date = end_date
+            list_date = check_date.split("-")
+            get_year = int(list_date[0])
+            get_month = int(list_date[1])
+            get_date = int(list_date[2])
+            if filter_product:
+                goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date, item__name = filter_product)
+                total = sum([x.price for x in goods])
+            elif filter_unit:
+                goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date, unit__name = filter_unit)
+                total = sum([x.price for x in goods])
+            else:      
+                goods = Goods.objects.filter(date_ordered__year=get_year, date_ordered__month=get_month, date_ordered__day=get_date)
+                total = sum([x.price for x in goods])  
+        # THE FINAL ELSE STATEMENT FOR WHEN NO FILTER IS APPLIED(wHEN JUST CLICKED)
         else:
-            return redirect("home")
+            goods = Goods.objects.filter()[:30]
+            total = sum([x.price for x in goods])
+            filter_day = "Recently"
+        
+        # THIS BELOW HANDLES DOWNLOADING THE FILES INTO ANY FORMAT SELECTED BY THE USER.
+        export = request.GET.get("export", None)
+        if export  == "view-pdf":
+            data = {'goods': goods, 'total': total, 'admin_flag': True}
+            export_response = view_pdf(request, data, template_name='utils/pdf_template.html')
+            return export_response
+        elif export == "download-pdf":
+            data = {'goods': goods, 'total': total, 'admin_flag': True}
+            export_response = download_pdf(request, data, template_name='utils/pdf_template.html')
+            return export_response
+        elif export == "excel":
+            data = {'goods': goods, 'admin_flag': True}
+            export_response = export_excel(request, data)
+            return export_response
+
+        context = {
+            "filter_unit": filter_unit,
+            "filter_product": filter_product,
+            "units": units,
+            "products": products,
+            "goods": goods,
+            "day": filter_day,
+            "start_date": start_date,
+            "end_date": end_date,
+            "check_date": check_date,
+            "total": total
+        }
+        return render(request, self.template_name, context)
 sales = Sales.as_view()
 
 
-class AllCustomers(LoginRequiredMixin, View):
+class AllCustomers(AdminRequiredMixin, View):
     login_url = "administrator:login"
     template_name = 'administrator/all_customers.html'
     def get(self, request):
@@ -341,15 +354,7 @@ class AllCustomers(LoginRequiredMixin, View):
 all_customers = AllCustomers.as_view()
 
 
-# class CustomerDetails(LoginRequiredMixin, DetailView):
-#     template_name = 'administrator/customer_detail.html'
-#     model = User
-    
-#     def get(self, request, *args, **kwargs):
-#         return
-# customer_detail = CustomerDetails.as_view()
-
-class CustomerDetails(LoginRequiredMixin, View):
+class CustomerDetails(AdminRequiredMixin, View):
     template_name = 'administrator/customer_detail.html'
    
     def get(self, request, pk):
@@ -405,7 +410,7 @@ class CustomerChart(View):
 
 customer_chart = CustomerChart.as_view()
 
-class PurchaseDescription(LoginRequiredMixin, DetailView):
+class PurchaseDescription(AdminRequiredMixin, DetailView):
     template_name = "administrator/purchase_description.html"
     model = Goods
 purchase_description = PurchaseDescription.as_view()

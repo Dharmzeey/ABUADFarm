@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "administrator.apps.AdministratorConfig",
     "staff.apps.StaffConfig",
+    "utils.apps.UtilsConfig",
 ]
 
 MIDDLEWARE = [
@@ -142,7 +143,6 @@ MEDIA_ROOT = BASE_DIR / 'uploads/media/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 # TAILWIND
 TAILWIND_APP_NAME = "theme"
 
@@ -151,7 +151,6 @@ INTERNAL_IPS = [
 ]
 
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
-
 
 # ALLAUTH
 AUTHENTICATION_BACKENDS = [

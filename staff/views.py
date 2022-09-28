@@ -1,6 +1,4 @@
 from datetime import date, datetime, timezone
-from distutils.log import Log
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -9,6 +7,8 @@ from django.views.generic import CreateView, FormView, DetailView
 from django.contrib.auth.models import User
 from django.db.models import Q
 
+from utils.mixins import StaffRequiredMixin
+
 from products.models import UnitName, Product
 from users.models import Goods
 
@@ -16,88 +16,85 @@ from staff.models import StaffModel
 from .forms import AddCustomerGoodForm, AddNewCustomerForm, SendCustomerMessageForm
 
 # Create your views here.
-class StaffHomeView(LoginRequiredMixin, View):
+class StaffHomeView(StaffRequiredMixin, View):
     login_url = "administrator:login"
     template_name = "staff/home.html"
 
     def get(self, request):
-        # THIS ALLOWS ONLY STAFF TO VIEW AND NOT SUPERUSERS
-        if request.user.is_staff and not request.user.is_superuser:
-            unit_name = StaffModel.objects.get(owner=request.user).unit
-            products = Product.objects.filter(unit=unit_name)
-            today = date.today()
-            str_today = str(today)
-            list_today = str_today.split("-")
-            get_year = int(list_today[0])
-            get_month = int(list_today[1])
-            get_date = int(list_today[2])
-            
-            # datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
-            # date_to_get = date(get_year, get_month, get_date)            
-            goods = Goods.objects.all()[:30]
-                        
-            # THIS FUNCTIONALITY WILL HANDLE THE DAY FILTERING FOR DAY AND PRODUCT USINF CONDITIONAL STATEMENT
-            filter_day = request.GET.get("day", "recently")
-            filter_product = request.GET.get("product", None)
-            start_date = request.GET.get("start-date", None)
-            end_date = request.GET.get("end-date", None)
-            if filter_day == "recently":     
-                if filter_product:
-                    goods = Goods.objects.filter(unit = unit_name, item__name = filter_product)[:30]
-                    total = sum([x.price for x in goods])
-                else:
-                    goods = Goods.objects.filter(unit = unit_name)[:30]
-                    total = sum([x.price for x in goods])
-
+        unit_name = StaffModel.objects.get(owner=request.user).unit
+        products = Product.objects.filter(unit=unit_name)
+        today = date.today()
+        str_today = str(today)
+        list_today = str_today.split("-")
+        get_year = int(list_today[0])
+        get_month = int(list_today[1])
+        get_date = int(list_today[2])
+        
+        # datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
+        # date_to_get = date(get_year, get_month, get_date)            
+        goods = Goods.objects.all()[:30]
                     
-            elif filter_day == "today":
-                datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
-                # date_to_get = date(get_year, get_month, get_date)     
-                if filter_product:
-                    goods = Goods.objects.filter(unit = unit_name, item__name = filter_product, date_ordered__gte = datetime_to_get)
-                    total = sum([x.price for x in goods])
-                else:
-                    goods = Goods.objects.filter(unit = unit_name, date_ordered__gte = datetime_to_get)
-                    total = sum([x.price for x in goods])
+        # THIS FUNCTIONALITY WILL HANDLE THE DAY FILTERING FOR DAY AND PRODUCT USINF CONDITIONAL STATEMENT
+        filter_day = request.GET.get("day", "recently")
+        filter_product = request.GET.get("product", None)
+        start_date = request.GET.get("start-date", None)
+        end_date = request.GET.get("end-date", None)
+        if filter_day == "recently":     
+            if filter_product:
+                goods = Goods.objects.filter(unit = unit_name, item__name = filter_product)[:30]
+                total = sum([x.price for x in goods])
+            else:
+                goods = Goods.objects.filter(unit = unit_name)[:30]
+                total = sum([x.price for x in goods])
+
                 
-            elif filter_day == "yesterday":
-                datetime_to_get = datetime(get_year, get_month, get_date - 1, tzinfo=timezone.utc)
-                # date_to_get = date(get_year, get_month, get_date)     
-                if filter_product:
-                    goods = Goods.objects.filter(unit = unit_name, item__name = filter_product, date_ordered__gte = datetime_to_get)        
-                    total = sum([x.price for x in goods])
-                else:    
-                    goods = Goods.objects.filter(unit = unit_name, date_ordered__gte = datetime_to_get)        
-                    total = sum([x.price for x in goods])
-
-            elif filter_day == "last week":
-                datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
-                # date_to_get = date(get_year, get_month, get_date)      
-                if filter_product:       
-                    goods = Goods.objects.filter(unit = unit_name, item__name = filter_product, date_ordered__gte = datetime_to_get)
-                    total = sum([x.price for x in goods])
-                else:
-                    goods = Goods.objects.filter(unit = unit_name, date_ordered__gte = datetime_to_get)
-                    total = sum([x.price for x in goods])
+        elif filter_day == "today":
+            datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
+            # date_to_get = date(get_year, get_month, get_date)     
+            if filter_product:
+                goods = Goods.objects.filter(unit = unit_name, item__name = filter_product, date_ordered__gte = datetime_to_get)
+                total = sum([x.price for x in goods])
+            else:
+                goods = Goods.objects.filter(unit = unit_name, date_ordered__gte = datetime_to_get)
+                total = sum([x.price for x in goods])
             
-            elif start_date and end_date != None:
-                datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
+        elif filter_day == "yesterday":
+            datetime_to_get = datetime(get_year, get_month, get_date - 1, tzinfo=timezone.utc)
+            # date_to_get = date(get_year, get_month, get_date)     
+            if filter_product:
+                goods = Goods.objects.filter(unit = unit_name, item__name = filter_product, date_ordered__gte = datetime_to_get)        
+                total = sum([x.price for x in goods])
+            else:    
+                goods = Goods.objects.filter(unit = unit_name, date_ordered__gte = datetime_to_get)        
+                total = sum([x.price for x in goods])
 
-            context = {
-                "filter_product": filter_product,
-                "products": products,
-                "goods": goods,
-                "day": filter_day,
-                "total": total,
-                "unit_name": unit_name
-            }
-            return render(request, self.template_name, context)
-        else:
-            return redirect("home")
+        elif filter_day == "last week":
+            datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
+            # date_to_get = date(get_year, get_month, get_date)      
+            if filter_product:       
+                goods = Goods.objects.filter(unit = unit_name, item__name = filter_product, date_ordered__gte = datetime_to_get)
+                total = sum([x.price for x in goods])
+            else:
+                goods = Goods.objects.filter(unit = unit_name, date_ordered__gte = datetime_to_get)
+                total = sum([x.price for x in goods])
+        
+        elif start_date and end_date != None:
+            datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
+
+        context = {
+            "filter_product": filter_product,
+            "products": products,
+            "goods": goods,
+            "day": filter_day,
+            "total": total,
+            "unit_name": unit_name
+        }
+        return render(request, self.template_name, context)
+
         
 staff_home_view = StaffHomeView.as_view()
 
-class Activities(LoginRequiredMixin, View):
+class Activities(StaffRequiredMixin, View):
     template_name = "staff/activities.html"
     
     def get(self, request):
@@ -105,7 +102,7 @@ class Activities(LoginRequiredMixin, View):
 
 
 # THIS CLASS GETS ALL CUSTOMERS ASSOCIATED WITH A UNIT WHICH CAN THEN BE VIEWED AND WORKED ON BY THE HEAD
-class UnitCustomers(LoginRequiredMixin, View):
+class UnitCustomers(StaffRequiredMixin, View):
     template_name = "staff/customers.html"    
     context  = {}
     def get(self, request):
@@ -134,7 +131,7 @@ unit_customers = UnitCustomers.as_view()
 
 
 # THIS CLASS BELOW IS WHAT HANDLES THE PROFILE AND PURCASES OF A CUSTOMER IN A PARTICULAR UNIT
-class CustomerView(LoginRequiredMixin, View):
+class CustomerView(StaffRequiredMixin, View):
     template_name = "staff/customer_detail.html"
     def get(self, request, pk):
         unit_name = StaffModel.objects.get(owner=request.user).unit
@@ -152,7 +149,7 @@ customer_view = CustomerView.as_view()
 
 
 # THIS CLASS WILL BE HANDLED BY THE UNIT HEAD, IT IS USED TO ADD GOODS
-class AddCustomerGood(LoginRequiredMixin, CreateView):
+class AddCustomerGood(StaffRequiredMixin, CreateView):
     login_url = "administrator:login"
     form_class = AddCustomerGoodForm
     template_name =  "staff/add_customer_good.html"
@@ -189,7 +186,7 @@ class AddCustomerGood(LoginRequiredMixin, CreateView):
 add_customer_good = AddCustomerGood.as_view()
 
 # THIS CLASS HANDLES THE ADDING A NEW CUSTOMER TO A UNIT IF HE HAS NOT MADE ANY PURCHASE BEFORE
-class AddNewCustomer(LoginRequiredMixin, FormView):
+class AddNewCustomer(StaffRequiredMixin, FormView):
     login_url = "administrator:login"
     template_name = 'staff/add_new_customer.html'
     form_class = AddNewCustomerForm
@@ -238,13 +235,13 @@ class AddNewCustomer(LoginRequiredMixin, FormView):
 add_new_customer = AddNewCustomer.as_view()
 
 
-class PurchaseDescription(LoginRequiredMixin, DetailView):
+class PurchaseDescription(StaffRequiredMixin, DetailView):
     template_name = "staff/purchase_description.html"
     model = Goods
 purchase_description = PurchaseDescription.as_view()
 
 # THIS CLASS WILL HANDLE STAFF SENDING MESSAGE TO CUSTOMERS IF NECESSARY
-class SendcustomerMessage(LoginRequiredMixin, CreateView):
+class SendcustomerMessage(StaffRequiredMixin, CreateView):
     login_url = "administrator:login"
     form_class = SendCustomerMessageForm
     template_name = "staff/send_customer_message.html"
@@ -270,7 +267,7 @@ class SendcustomerMessage(LoginRequiredMixin, CreateView):
 send_customer_message = SendcustomerMessage.as_view()
 
 # THIS BELOW HANDLES DISPLAYING ALL FEEDBACKS BY CUSTOMERS, IT DISPLAYS ALL FEEDBACKS THAT HAS NOT BEEN READ AND THAT HAS CONTENT IN FEEDBACK
-class CustomerFeedback(LoginRequiredMixin, View):
+class CustomerFeedback(StaffRequiredMixin, View):
     template_name = "staff/customers_feedback.html"
     def get(self, request):
         feedbacks = Goods.objects.filter(feedback_read=False, feedback__isnull=False)
@@ -281,7 +278,7 @@ class CustomerFeedback(LoginRequiredMixin, View):
 customer_feedback = CustomerFeedback.as_view()    
 
 # THIS BELOW HANDLES READING OF FEEDBACK BY CUSTOMER, ONCE CLICKED, THE "feedback_read" WILL BE SET TO TRUE AND IT WILL NO LONGER BE RETURNED AS LIST BOF FEEDBACKS AGAIN
-class ReadFeedback(LoginRequiredMixin, View):
+class ReadFeedback(StaffRequiredMixin, View):
     template_name = "staff/read_feedback.html"
     def get(self, request, pk):
         good_feedback = Goods.objects.get(id=pk)

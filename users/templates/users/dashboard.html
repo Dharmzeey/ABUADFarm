@@ -80,8 +80,17 @@
       <td colspan="2"></td>
       <td> &#8358; {{ total|intcomma }}</td>
     </table>
+
+    <section>
+      <br>
+      <!-- THIS KEY WORD OF HREF ATTR GET ARGUMENTS IS TO KNOW IF THE USER HAS SOME FILTER PARAMS -->
+      <a class="btn py-2" target="_blank" href="{% url 'dashboard' %}?export=view-pdf{% if q %}&q={{q}}{% endif %}{% if s %}&s={{s}}{% endif %}">View PDF</a>
+      <a class="btn" href="{% url 'dashboard' %}?export=download-pdf{% if q %}&q={{q}}{% endif %}{% if s %}&s={{s}}{% endif %}">Download to PDF</a>
+      <a class="btn" href="{% url 'dashboard' %}?export=excel{% if q %}&q={{q}}{% endif %}{% if s %}&s={{s}}{% endif %}">Download to Excel</a>
+    </section>
   </div>
 
+  <!-- THIS ENDIF BELOW CLOSES THE IF OF THE EMPTY DASHBOARD -->
   {% endif %}
 </div>
 

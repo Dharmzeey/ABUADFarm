@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.views import View
 from django.shortcuts import get_object_or_404
 
+from utils.export import view_pdf, download_pdf, export_excel
+
 from .models import Profile, Messages, Goods, Notification
 from products.models import Product, UnitName
 from .forms import ProfileUpdateForm, GetFeedback
@@ -61,6 +63,7 @@ class Dashboard(LoginRequiredMixin, View):
         units = set()
 
         # THIS HANDLES THE FILTERING OF USER GOODS BASED ON ITEMS AND THEN ASSIGN IT TO THE GOOD DICT, AND IT GETS DISPLAYED ON THE TABLE ON HTML
+        # S IS FOR USER UNIT
         s = request.GET.get("s", "")
         try:
             if s:
@@ -69,6 +72,7 @@ class Dashboard(LoginRequiredMixin, View):
         except:
             pass
         
+        # Q IS FOR USER GOODS
         q = request.GET.get("q", "")
         try:
             if q:
@@ -76,6 +80,24 @@ class Dashboard(LoginRequiredMixin, View):
                 total = sum([x.price for x in goods])
         except:
             pass
+        # THIS BELOW HANDLES DOWNLOADING THE FILES INTO ANY FORMAT SELECTED BY THE USER.
+        export = request.GET.get("export", None)
+        if export  == "view-pdf":
+            user = request.user
+            data = {'goods': goods, 'user': user, 'total': total}
+            export_response = view_pdf(request, data, template_name='utils/pdf_template.html')
+            return export_response
+        elif export == "download-pdf":
+            user = request.user
+            data = {'goods': goods, 'user': user, 'total': total}
+            export_response = download_pdf(request, data, template_name='utils/pdf_template.html')
+            return export_response
+        elif export == "excel":
+            user = request.user
+            data = {'goods': goods}
+            export_response = export_excel(request, data)
+            return export_response
+            
         context = {"goods": goods, "total": total, "user_goods": user_goods, "q": q, "user_units": user_unit, "s":s}
         if not goods.exists():
             return render(request, self.template_name, {"empty_dashboard": True}) 

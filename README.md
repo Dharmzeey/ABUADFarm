@@ -7,6 +7,13 @@ I designed this web Application on the foundation of a Manufacturing Company.
 - They have different units and they produce different products at each units
 I then decided to build something channeling my focus to the mode of operation 
 
+Here is a Quick Video of the project
+
+https://user-images.githubusercontent.com/68395177/192106787-e79b47e1-f148-4264-81ba-d97f57308aa8.mp4
+
+You can watch detailed video here [Video](https://www.youtube.com/embed/ZQgALAhBvow)
+
+
 It is a Django Project, which I also used djangorestframework for some serialization.
 I used vanilla Js and Tailwind CSS(django-tailwind)
 Django-Allauth was used for the authentication 

@@ -1,0 +1,140 @@
+{% load humanize %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap" rel="stylesheet">
+  <title>PDF Report</title>
+</head>
+<style>
+  @page {
+    size: a4 portrait;
+
+    @frame header_frame {
+      /* Static Frame */
+      -pdf-frame-content: header_content;
+      left: 50pt;
+      width: 512pt;
+      top: 50pt;
+      height: 40pt;
+    }
+
+    @frame content_frame {
+      /* Content Frame */
+      left: 50pt;
+      width: 512pt;
+      top: 90pt;
+      height: 632pt;
+    }
+
+    @frame footer_frame {
+      /* Another static Frame */
+      -pdf-frame-content: footer_content;
+      left: 50pt;
+      width: 512pt;
+      top: 772pt;
+      height: 20pt;
+    }
+  }
+
+  body {
+    font-family: 'Readex Pro', sans-serif;
+  }
+
+  #header {
+    display: flex;
+  }
+
+  #header_content {
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+    border: 0.1px solid black;
+  }
+
+  #caption {
+    font-weight: bold;
+    padding: 0.25rem 0;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  a {
+    color: rgb(0, 0, 255);
+    text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  td,
+  th {
+    padding: 0.5rem 0.25rem;
+    text-align: left;
+  }
+
+  tr {
+    margin-bottom: 1rem;
+  }
+</style>
+</head>
+
+<body>
+  <!-- Content for Static Frame 'header_frame' -->
+  <div id="header_content">
+    <h3>AB Farms Sales Report</h3>
+    <div>AB Farms , ADO-EKITI KM. 8.5, AFE BABALOLA WAY, ADO-EKITI NIGERIA</div>
+  </div>
+
+  <!-- Content for Static Frame 'footer_frame' -->
+  <div id="footer_content">(c) - page <pdf:pagenumber>
+      of <pdf:pagecount>
+  </div>
+
+  <div id="header">
+    <img width="150" src="images/afe-uni-logo.png" alt="AB Farms">
+    <div>
+      {% if not admin_flag %}
+      <div>Name: {{ user.first_name }} {{ user.last_name }}</div>
+      <div>Username: {{ user }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div id="caption">
+    Recent Purchases
+  </div>
+  <table>
+    <tr>
+      {% if admin_flag %}
+      <th>Customer</th>
+      {% endif %}
+      <th>Date</th>
+      <th>Item</th>
+      <th>Mass (kg)</th>
+      <th>Price (&#8358;)</th>
+    </tr>
+    {% for good in goods %}
+    <tr>
+      {% if admin_flag %}
+      <td>{{ good.owner }}</td>
+      {% endif %}
+      <td>{{ good.date_ordered|date:"D, d M Y"}}</td>
+      <td>{{ good.item }}</td>
+      <td>{{ good.quantity }}</td>
+      <td>{{ good.price }}</td>
+    </tr>
+    {% endfor %}
+    <th>Total</th>
+    <td colspan="2"></td>
+    <td> &#8358; {{ total|intcomma }}</td>
+  </table>
+
+</body>
+
+</html>
