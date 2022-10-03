@@ -1,5 +1,6 @@
 import os
 import datetime
+import csv
 import xlwt
 from django.conf import settings
 from django.http import HttpResponse
@@ -74,7 +75,7 @@ def download_pdf(request, data, *args, **kwargs):
 
 # EXCEL
 # EXCEL
-def export_excel(request, data):
+def download_excel(request, data):
   # pip install xlwt
   response = HttpResponse(content_type='application/ms-excel')
   response['Content-Disposition'] = 'attachment; filename=Report' + str(datetime.datetime.now())+'.xls'
@@ -120,5 +121,28 @@ def export_excel(request, data):
     ws.write(len(queryset) + 1, 3, total, font_style)
 
   wb.save(response)
+  
+  return response
+
+# CSV
+# CSV
+def download_csv(request, data):
+  
+  response = HttpResponse(content_type='text/csv')
+  response['Content-Disposition'] = 'attachment; filename=Report' + str(datetime.datetime.now())+ '.csv'
+  
+  writer = csv.writer(response)
+  queryset = data['goods']
+  total = data['total']
+  if 'admin_flag' in data.keys():
+    writer.writerow(['CUSTOMER','DATE', 'ITEM', 'QUANTITY(kG)', 'PRICE(₦)'])
+    for item in queryset:
+      writer.writerow([item.owner, str(item.date_ordered).split(" ")[0], item.item, item.quantity, item.price])
+    writer.writerow(['TOTAL', '', '', '', total])
+  else:
+    writer.writerow(['DATE', 'ITEM', 'QUANTITY(kG)', 'PRICE(₦)'])
+    for item in queryset:
+      writer.writerow([item.date_ordered, item.item, item.quantit, item.price])
+    writer.writerow(['TOTAL', '', '', total])
   
   return response

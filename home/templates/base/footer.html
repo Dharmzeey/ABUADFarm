@@ -1,9 +1,7 @@
-{% load static %}
-
-<footer class="mt-24 p-4 bg-blue-800 text-center text-white">
+<footer class="mt-24 p-4 bg-gray-800 text-center text-white">
   <div class="flex justify-around">
     <h2>
-      <img src="{% static 'images/afe-uni-logo.png' %}" alt="ABUAD FARM">
+      <a class="logo" href="{% url 'home' %}">AB FARMS</a>
     </h2>
     <section>
       <h2 class="mb-10">
@@ -16,5 +14,4 @@
       AB Farm &copy; 2022. All Rights Reserved
     </h2>
   </div>
-
 </footer>

@@ -1,0 +1,26 @@
+{% extends 'administrator/base.html' %}
+{% block content %}
+
+<h2 class="heading">
+  <b>Here are the latest customers' feedbacks</b>
+</h2>
+{% for feedback in feedbacks %}
+<div>
+  <sup>
+    {{ feedback.date_ordered }}
+  </sup>
+  <div>
+    Customer: {{ feedback.owner }}
+  </div>
+  <div>
+    Item: {{ feedback.item }}
+  </div>
+  <div>
+    Customer's Feedback: {{ feedback.feedback }}
+  </div>
+  <a class="link" href="{% url 'administrator:purchase_description' feedback.id %}">View Purchase details</a>
+</div>
+<br>
+{% endfor %}
+
+{% endblock %}

@@ -1,6 +1,17 @@
+function displaySlides() {
+  let i;
+  let pages = document.getElementsByClassName("myPages");
+  for (i = 0; i < pages.length; i++) {
+    pages[i].style.display = "none";  
+  }
+  pageIndex++;
+  if (pageIndex > pages.length) {pageIndex = 1}  
+  pages[pageIndex-1].style.display = "block";  
+  setTimeout(displaySlides, 10000); 
+}
+
 // THIS IS FOR THE HOME.HTML 
 // IT CONTROLS SWITCHING BETWEEN FARM AND INDUSTRY
-
 if (document.getElementById("farm")) {
   const farm = document.getElementById("farm");
   const industry = document.getElementById("industry");

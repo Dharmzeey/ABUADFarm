@@ -12,6 +12,7 @@ urlpatterns = [
   path('customers/', views.all_customers, name="customers"),
   path('customer/<int:pk>', views.customer_detail, name="customer_detail"),
   path("purchase-description/<int:pk>/", views.purchase_description, name="purchase_description"),
+  path("feedbacks", views.feedbacks, name='feedbacks'),
   
   # HERE ARE THE URL THAT WILL BE ACCESSED WITH AJAX
   path("customer-chart/", views.customer_chart, name="customer_chart"),

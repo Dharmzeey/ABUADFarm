@@ -11,6 +11,9 @@
   }
 }
 
+.logo {
+  @apply font-['Bungee_Spice'] text-xl md:text-3xl lg:text-4xl;
+}
 .card{
   @apply rounded bg-white border-gray-200 shadow-md overflow-hidden relative cursor-pointer;
 }

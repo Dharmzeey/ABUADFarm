@@ -13,7 +13,11 @@
 <div>Item Purchased: {{ goods.item }}</div>
 <div>Quantity: {{ goods.quantity }} Kg</div>
 <div>Price: {{ goods.price }}</div>
+{% if goods.description %}
 <div>Description of goodss Bought: {{ goods.description | safe }}</div> <br><br>
+{% endif %}
+{% if goods.feedback %}
 <div>Customer Feedback: {{ goods.feedback }}</div>
+{% endif %}
 
 {% endblock %}

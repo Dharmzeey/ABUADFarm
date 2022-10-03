@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.views import View
 from django.shortcuts import get_object_or_404
 
-from utils.export import view_pdf, download_pdf, export_excel
+from utils.export import view_pdf, download_pdf, download_excel, download_csv
 
 from .models import Profile, Messages, Goods, Notification
 from products.models import Product, UnitName
@@ -95,7 +95,12 @@ class Dashboard(LoginRequiredMixin, View):
         elif export == "excel":
             user = request.user
             data = {'goods': goods}
-            export_response = export_excel(request, data)
+            export_response = download_excel(request, data)
+            return export_response
+        elif export == "csv":
+            user = request.user
+            data = {'goods': goods}
+            export_response = download_csv(request, data)
             return export_response
             
         context = {"goods": goods, "total": total, "user_goods": user_goods, "q": q, "user_units": user_unit, "s":s}

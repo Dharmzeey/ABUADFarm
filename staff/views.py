@@ -1,4 +1,4 @@
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timezone, timedelta
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -59,7 +59,7 @@ class StaffHomeView(StaffRequiredMixin, View):
                 total = sum([x.price for x in goods])
             
         elif filter_day == "yesterday":
-            datetime_to_get = datetime(get_year, get_month, get_date - 1, tzinfo=timezone.utc)
+            datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)  - timedelta(days=1)
             # date_to_get = date(get_year, get_month, get_date)     
             if filter_product:
                 goods = Goods.objects.filter(unit = unit_name, item__name = filter_product, date_ordered__gte = datetime_to_get)        
@@ -69,7 +69,7 @@ class StaffHomeView(StaffRequiredMixin, View):
                 total = sum([x.price for x in goods])
 
         elif filter_day == "last week":
-            datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
+            datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc) - timedelta(days=7)
             # date_to_get = date(get_year, get_month, get_date)      
             if filter_product:       
                 goods = Goods.objects.filter(unit = unit_name, item__name = filter_product, date_ordered__gte = datetime_to_get)

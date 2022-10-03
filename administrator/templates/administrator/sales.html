@@ -118,9 +118,11 @@
   <!-- THIS KEY WORD OF HREF ATTR GET ARGUMENTS IS TO KNOW IF THE USER HAS SOME FILTER PARAMS -->
   <a class="btn" target="_blank" href="{% url 'administrator:sales' %}?export=view-pdf{% if filter_unit %}&filter_unit={{ filter_unit }}{% endif %}{% if filter_product %}&filter_unit={{ filter_product }}{% endif %}{% if day %}&day={{ day }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">View PDF</a>
 
-  <a class="btn" target="_blank" href="{% url 'administrator:sales' %}?export=download-pdf{% if filter_unit %}&filter_unit={{ filter_unit }}{% endif %}{% if filter_product %}&filter_unit={{ filter_product }}{% endif %}{% if day %}&day={{ day }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">Download to PDF</a>
+  <a class="btn" target="_blank" href="{% url 'administrator:sales' %}?export=download-pdf{% if filter_unit %}&filter_unit={{ filter_unit }}{% endif %}{% if filter_product %}&filter_unit={{ filter_product }}{% endif %}{% if day %}&day={{ day }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">Download as PDF</a>
 
-  <a class="btn " target="_blank" href="{% url 'administrator:sales' %}?export=excel{% if filter_unit %}&filter_unit={{ filter_unit }}{% endif %}{% if filter_product %}&filter_unit={{ filter_product }}{% endif %}{% if day %}&day={{ day }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">Download to Excel</a>
+  <a class="btn " target="_blank" href="{% url 'administrator:sales' %}?export=excel{% if filter_unit %}&filter_unit={{ filter_unit }}{% endif %}{% if filter_product %}&filter_unit={{ filter_product }}{% endif %}{% if day %}&day={{ day }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">Download as Excel</a>
+
+  <a class="btn " target="_blank" href="{% url 'administrator:sales' %}?export=csv{% if filter_unit %}&filter_unit={{ filter_unit }}{% endif %}{% if filter_product %}&filter_unit={{ filter_product }}{% endif %}{% if day %}&day={{ day }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">Download as CSV</a>
 
 </section>
 

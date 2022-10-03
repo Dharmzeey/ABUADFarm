@@ -12,183 +12,247 @@
     integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous"
     referrerpolicy="no-referrer" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap" rel="stylesheet">
-    <title>Afe Balalola University | ABUAD FARM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Readex+Pro&display=swap" rel="stylesheet">
+  <title>Afe Balalola University | ABUAD FARM</title>
   {% tailwind_css %}
 </head>
 
-<body>
-  <nav>
-    {% include "../base/navbar.html" %}
-  </nav>
+<style>
+  .active {
+    background-color: #717171;
+  }
 
-  <div class="flex justify-center">
-    <div class="container">
-      <div class="w-full min-h-screen md:w-3/4 m-auto px-6">
+  /* Fading animation */
+  .fade {
+    animation-name: fade;
+    animation-duration: 1900ms;
+  }
+
+
+  @keyframes fade {
+    from {
+      opacity: .3
+    }
+
+    to {
+      opacity: 1
+    }
+  }
+
+  /* On smaller screens, decrease text size */
+  @media only screen and (max-width: 300px) {
+    .text {
+      font-size: 11px
+    }
+  }
+</style>
+
+<body id="body">
+
+  <!-- THIS IS FOR FLASH MESSAGE(MOSTLY WHEN USER LOGS OUT) -->
+  {% if messages %}
+  <ul class="fixed bg-black text-white w-full p-4 text-center" id="pop-up">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div>
+    <header class="relative ">
+      <div class="h-20 bg-gradient-to-b from-black to-transparent flex justify-around items-center absolute z-10 w-full">
         <div>
-          <header class="w-11/12 md:w-4/5 m-auto px-6 text-center">
-            <!-- Afe Babalola University Ado Ekiti Farm Industry is the subset and extension of the Afe Babalola University which they have specialized in
-            taking our Nation's Manufacturing and Production to the greater Level.
+          <a class="logo" href="{% url 'home' %}">AB FARMS</a>
+        </div>
 
-            We are committed to making our country and humanity idk. -->
-            At AB Farms, We have everything you need to take care of your own and family's health. Buy fresh and healthy meat, fruits, vegetables and more at the best prices you can find anywhere.
-          </header>
+        <nav id="aside" class="hidden md:block w-1/2">
+          <ul class="w-full pl-4 flex flex-col md:flex-row absolute left-0 gap-2 justify-center md:gap-12 uppercase font-bold text-gray-100">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'units' %}">Units</a></li>
+            <li><a href="">About</a></li>
+            <li><a href="">Blog</a></li>
+            <li><a href="">Contact</a></li>
+          </ul>
+        </nav>
+        <button class="p-2 px-6 menu-toggle-icon md:hidden border-none hover:bg-transparent hover:text-black" id="menu-toggle-icon">
+          <i class="fa-solid fa-bars open-menu-icon toggle" id="open-menu"></i>
+          <i class="fa-solid fa-xmark close-menu-icon toggle" id="close-menu"></i>
+        </button>
+      </div>
 
-          <h1>Our Units</h1>
-          <div class="p-6 text-center">
-            <button id="farm">
-              <span class="text-center px-10 inline-block">Farm</span>
-            </button>
 
-            <button id="industry">
-              <span class="text-center px-10 inline-block">Industry</span>
-            </button>
-          </div>
-          <div class="farm-items" id="farm-items">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 m-auto">
-              <div class="card">
-                <a href="{% url 'agronomy' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Agronomy</h1>
-                </a>
-              </div>
+    </header>
 
-              <div class="card">
-                <a href="{% url 'feedmill' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Feedmill</h1>
-                </a>
-              </div>
+    <div class="relative m-auto">
+      <div class="md:h-[40rem]">
+        <div class="myPages fade ">
+          <img class="md:max-h-[40rem]" src="{% static 'images/inside-sign.jpg' %}" alt="Abuad Farm Junction">
+        </div>
 
-              <div class="card">
-                <a href="{% url 'fishries' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Fishries</h1>
-                </a>
-              </div>
+        <div class="myPages fade">
+          <img class="md:max-h-[40rem]" src="{% static 'images/mango.jfif' %}" alt="Abuad Farm Feedmill">
+        </div>
 
-              <div class="card">
-                <a href="{% url 'honey' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Honey</h1>
-                </a>
-              </div>
+        <div class="myPages fade">
+          <img class="md:max-h-[40rem]" src="{% static 'images/feedmill.webp' %}" alt="Abuad Farm Feedmill">
+        </div>
 
-              <div class="card">
-                <a href="{% url 'mango_juice' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Mango Juice</h1>
-                </a>
-              </div>
+        <div class="myPages fade">
+          <img class="md:max-h-[40rem]" src="{% static 'images/fish-pond.webp' %}" alt="Abuad Farm Fish pond">
+        </div>
 
-              <div class="card">
-                <a href="{% url 'moringa' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Moringa</h1>
-                </a>
-              </div>
+        <div class="myPages fade">
+          <img class="md:max-h-[40rem]" src="{% static 'images/moringa.webp' %}" alt="Abuad Farm Moringa">
+        </div>
 
-              <div class="card">
-                <a href="{% url 'piggery' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Piggery</h1>
-                </a>
-              </div>
+        <div class="myPages fade">
+          <img class="md:max-h-[40rem]" src="{% static 'images/piggery.webp' %}" alt="Abuad Farm Piggery">
+        </div>
 
-              <div class="card">
-                <a href="{% url 'plantain_chips' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Plantain Chips</h1>
-                </a>
-              </div>
-
-              <div class="card">
-                <a href="{% url 'poultry' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Poultry</h1>
-                </a>
-              </div>
-
-              <div class="card">
-                <a href="{% url 'wood_factory' %}">
-                  <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                  <!-- <div class="w-60 h-72 "></div> -->
-                  <h1>Wood Factory</h1>
-                </a>
-              </div>
-            </div>
-            <div>
-            </div>
-          </div>
-
-          <div class="industry-items hidden" id="industry-items">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 m-auto">
-              <div class="card">
-                <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                <h1>Tmt p</h1>
-              </div>
-              <div class="card">
-                <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-                <h1>Pnd Y</h1>
-              </div>
-              <div class="card">
-                <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-              </div>
-              <div class="card">
-                <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-              </div>
-              <div class="card">
-                <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-              </div>
-              <div class="card">
-                <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-              </div>
-              <div class="card">
-                <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-              </div>
-              <div class="card">
-                <img src="{% static 'images/img.jpg' %}" alt="ABUAD ">
-              </div>
-            </div>
-          </div>
+        <div class="myPages fade">
+          <img class="md:max-h-[40rem]" src="{% static 'images/wpu.webp' %}" alt="Abuad Farm Wood Processing Unit">
         </div>
       </div>
     </div>
+
+    <section>
+      <div class="pb-20 pt-12 bg-gray-100">
+        <div class="text-center">
+          <div class="mb-8">
+            <p>For over a decade we are committed to making Agriculture a priority.</p>
+          </div>
+          <div class=" md:w-5/6 m-auto flex justify-center gap-9 flex-col md:flex-row">
+            <div class="md:w-1/3  p-4 ">
+              <h2>Quality Product</h2>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam non aspernatur minima unde, provident, ut sint tempora error atque
+                molestiae nisi perferendis architecto ab alias praesentium dolore repellat minus dolorum.
+              </p>
+            </div>
+            <div class="md:w-1/3  p-4">
+              <h2>Food Availability</h2>
+            </div>
+
+            <div class="md:w-1/3  p-4">
+              <h2>Food Availability</h2>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="contact">
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+    </section>
   </div>
-  </div>
-  <footer class="mt-24 p-4 bg-blue-800 text-center text-white">
-    <div class="flex justify-around">
-      <h2>
-        <img src="{% static 'images/afe-uni-logo.png' %}" alt="ABUAD FARM">
-      </h2>
-      <section>
-        <h2 class="mb-10">
-          <!-- AFE BABALOLA UNIVERSITY FARM, ADO-EKITI KM. 8.5, AFE BABALOLA WAY, ADO-EKITI NIGERIA -->
-          AB Farms , ADO-EKITI KM. 8.5, AFE BABALOLA WAY, ADO-EKITI NIGERIA
+
+
+
+  <footer class="p-4 bg-gray-800 text-white">
+    <div class="flex justify-around flex-col md:flex-row">
+      <div class="pb-7 leading-[3rem]">
+        <h2>
+          <a class="logo mb-5" href="{% url 'home' %}">AB FARMS</a>
         </h2>
-        
-        <div class="mapouter"><div class="gmap_canvas"><iframe class="w-full" height="250" id="gmap_canvas" src="https://maps.google.com/maps?q=Afe%20Babalola%20University%20Farms%20Ado%20Ekiti&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://123movies-to.org"></a><br><style>.mapouter{position:relative;text-align:right;height:250px;width:100%;}</style><a href="https://www.embedgooglemap.net">google maps iframe embed</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:250px;width:100%;}</style></div></div>
-  
-      </section>
-      <h2>
-        <!-- ABUAD Farm &copy; 2022. All Rights Reserved -->
-        AB Farm &copy; 2022. All Rights Reserved
-      </h2>
+        <p class="">
+          AB Farms , ADO-EKITI KM. 8.5, AFE BABALOLA WAY,
+          <br> ADO-EKITI NIGERIA.
+        </p>
+
+        <ul class="text-gray-300">
+          <li class="number"><a href="#">090 0000 000</a></li>
+          <li class="number2"><a href="#">mail@mail.com</a></li>
+        </ul>
+        <ul class="flex gap-8 text-gray-300">
+          <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+          <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+          <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+          <li> <a href="#"><i class="fab fa-youtube"></i></a></li>
+        </ul>
+      </div>
+
+      <div class="pb-7">
+        <h2 class="mb-5">Navigations</h2>
+        <nav class="flex flex-col gap-6 leading-[3rem]">
+          <ul class="text-gray-300">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'units' %}">Units</a></li>
+            <li><a href="">About</a></li>
+            <li><a href="">Blog</a></li>
+            <li><a href="">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="pb-7">
+        <h2 class="mb-5">Units</h2>
+        <ul class="text-gray-300">
+          <li><a href="{% url 'agronomy' %}">Agronomy</a></li>
+          <li><a href="{% url 'feedmill' %}"> Feedmill</a></li>
+          <li><a href="{% url 'fishries' %}">Fishries</a></li>
+          <li><a href="{% url 'honey' %}">Honey</a></li>
+          <li><a href="{% url 'mango_juice' %}">Mango Juice</a></li>
+          <li><a href="{% url 'moringa' %}">Moringa</a></li>
+          <li><a href="{% url 'piggery' %}">Piggery</a></li>
+          <li><a href="{% url 'plantain_chips' %}}">Plantain Chips</a></li>
+          <li><a href="{% url 'poultry' %}">Poultry</a></li>
+          <li><a href="{% url 'wood_factory' %}">Wood Factory</a></li>
+        </ul>
+      </div>
     </div>
-  
+    </div>
+
+
+
+
+
+    <h2 class="mt-4 text-center">
+      <!-- ABUAD Farm &copy; 2022. All Rights Reserved -->
+      AB Farm &copy; 2022. All Rights Reserved
+    </h2>
+
   </footer>
+
   <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+  <script>
+    let pageIndex = 0;
+    displaySlides();
+  </script>
 </body>
 
 </html>
+
+<!-- <div class="mapouter">
+      <div class="gmap_canvas"><iframe class="w-full" height="250" id="gmap_canvas"
+          src="https://maps.google.com/maps?q=Afe%20Babalola%20University%20Farms%20Ado%20Ekiti&t=&z=15&ie=UTF8&iwloc=&output=embed"
+          frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://123movies-to.org"></a><br>
+        <style>
+          .mapouter {
+            position: relative;
+            text-align: right;
+            height: 250px;
+            width: 100%;
+          }
+        </style><a href="https://www.embedgooglemap.net">google maps iframe embed</a>
+        <style>
+          .gmap_canvas {
+            overflow: hidden;
+            background: none !important;
+            height: 250px;
+            width: 100%;
+          }
+        </style>
+      </div>
+    </div> -->

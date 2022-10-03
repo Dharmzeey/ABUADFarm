@@ -8,9 +8,13 @@ class Home(View):
 
     def get(self, request):
         return render(request, self.template_name)
-
-
 home = Home.as_view()
+
+class Units(View):
+    template_name = "home/operations.html"
+    def get(self, request):
+        return render(request, self.template_name)
+units = Units.as_view()
 
 
 def agronomy(request):

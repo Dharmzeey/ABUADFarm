@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 
 from utils.mixins import AdminRequiredMixin
-from utils.export import view_pdf, download_pdf, export_excel
+from utils.export import view_pdf, download_pdf, download_excel, download_csv
 
 from products.models import UnitName, Product
 from users.models import Goods
@@ -71,7 +71,7 @@ class Home(AdminRequiredMixin, View):
     # THIS GET REQUEST RENDERS THE DATA FOR LAST SEVEN DAYS ON THE HOME PAGE
     def get(self, request):
         end_date = date.today()
-        start_date = date(int(end_date.year), int(end_date.month), int(end_date.day) - 7)
+        start_date = date(int(end_date.year), int(end_date.month), int(end_date.day)) - timedelta(days=7)
         goods = Goods.objects.filter(date_ordered__range=[start_date, end_date + timedelta(days=1)]) # I ADDED A DAY WITH TIMEDELTA BECAUSE OF RANGE BEHAVIOR WHICH EXCLUDE THE LAST DAY
         total = sum([x.price for x in goods])
         selling_frequency = {}
@@ -200,7 +200,7 @@ class Sales(AdminRequiredMixin, View):
                 total = sum([x.price for x in goods])
             
         elif filter_day == "yesterday":
-            datetime_to_get = datetime(get_year, get_month, get_date - 1, tzinfo=timezone.utc)
+            datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc) - timedelta(days=1)
             # date_to_get = date(get_year, get_month, get_date)
             if filter_product:
                 goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
@@ -213,7 +213,7 @@ class Sales(AdminRequiredMixin, View):
                 total = sum([x.price for x in goods])
 
         elif filter_day == "last week":
-            datetime_to_get = datetime(get_year, get_month, get_date - 7, tzinfo=timezone.utc)
+            datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc) - timedelta(days=7)
             # date_to_get = date(get_year, get_month, get_date)        
             if filter_product:
                 goods = Goods.objects.filter(date_ordered__gte = datetime_to_get, item__name = filter_product)
@@ -275,7 +275,11 @@ class Sales(AdminRequiredMixin, View):
             return export_response
         elif export == "excel":
             data = {'goods': goods, 'admin_flag': True}
-            export_response = export_excel(request, data)
+            export_response = download_excel(request, data)
+            return export_response
+        elif export == "csv":
+            data = {'goods': goods, 'total': total, 'admin_flag': True}
+            export_response = download_csv(request, data)
             return export_response
 
         context = {
@@ -414,3 +418,12 @@ class PurchaseDescription(AdminRequiredMixin, DetailView):
     template_name = "administrator/purchase_description.html"
     model = Goods
 purchase_description = PurchaseDescription.as_view()
+
+
+class Feedbacks(View):
+    template_name = 'administrator/feedbacks.html'
+    def get(self, request):
+        goods = Goods.objects.filter(feedback__isnull=False)[:20]
+        context = {'feedbacks': goods}
+        return render(request, self.template_name, context)
+feedbacks = Feedbacks.as_view()

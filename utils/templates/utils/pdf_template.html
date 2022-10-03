@@ -130,9 +130,13 @@
       <td>{{ good.price }}</td>
     </tr>
     {% endfor %}
-    <th>Total</th>
-    <td colspan="2"></td>
+    {% if admin_flag %}
+    <th colspan="4">Total</th>
     <td> &#8358; {{ total|intcomma }}</td>
+    {%else %}
+    <th colspan="3">Total</th>
+    <td> &#8358; {{ total|intcomma }}</td>
+    {% endif %}
   </table>
 
 </body>
