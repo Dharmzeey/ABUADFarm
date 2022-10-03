@@ -17,18 +17,6 @@ from users.models import Goods
 from users.serializer import GoodsSerializer
 
 
-# User = settings.AUTH_USER_MODEL
-# def filter_function(day, *args, **kwargs):
-#     if filter_day == "recently":
-#         datetime_to_get = datetime(get_year, get_month, get_date, tzinfo=timezone.utc)
-#         # date_to_get = date(get_year, get_month, get_date)  
-#         if filter_product:
-#             goods = Goods.objects.filter(item__name = filter_product)[:30]
-#             total = sum([x.price for x in goods])
-#         else:      
-#             goods = Goods.objects.filter()[:30]
-#             total = sum([x.price for x in goods])
-
 class AdminLogin(View):
     template_name = "administrator/login.html"
 

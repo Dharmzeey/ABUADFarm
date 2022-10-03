@@ -18,6 +18,11 @@
   @apply rounded bg-white border-gray-200 shadow-md overflow-hidden relative cursor-pointer;
 }
 
+/* THIS BELOW IS FOR THE NAV LINK ON MOBILE */
+#top-nav-mobile li a {
+  @apply p-2 py-3 w-full block rounded-sm hover:bg-gray-800 md:hover:bg-transparent md:hover:underline transition-[background-color_text-decoration] delay-75 ease-out;
+}
+
 button, .btn {
   @apply p-1 px-4 rounded-full border-[1px] border-black hover:bg-black hover:text-white transition ease-in delay-100;
 }
