@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<section class="bg-gray-200">
+  <div class="container mx-auto">
+    <div class="w-4/5 mx-auto pt-20">
+      {% for news_item in news %}
+      <div class="card min-h-[14vh] p-3">
+        <h1>{{ news_item.title }}</h1>
+        <small>Posted on: {{ news_item.date_created }}</small>
+        <p>
+          {{ news_item.body|safe|truncatewords:40 }}
+        </p>
+        <div class="md:hidden">
+          <br>
+          <a class="btn" href="{% url 'news_details' news_item.id %}">Continue Reading</a>
+        </div>
+
+
+        <div class="hidden w-full h-full absolute top-0 md:flex justify-center items-center md:opacity-0 md:hover:opacity-100  transition-all delay-100">
+          <a href="{% url 'news_details' news_item.id %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ MORE</a></div>
+      </div>
+      
+      <br>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<section class="pb-20  bg-gray-200 min-h-[80vh]">
+  <div class="container mx-auto">
+    <div class="w-4/5 mx-auto pt-20">
+      <div>
+        <h1 class="text-2xl font-bold">{{ blog.title }}</h1>
+        Posted on: <span> {{ blog.date_created }} </span> <br><br>
+        <div class="h-64 w-4/5 mx-auto">
+          <img class="h-full w-auto mx-auto" src="{{ blog.image.url }}" alt="AB farm {{ blog.title }} blog">
+        </div>
+        <br>
+        <br>
+        <p>{{ blog.body|safe }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-gray-300 pb-20">
+  <h2 class="p-3 uppercase text-center font-bold">Suggested Blog Posts</h2>
+  <div class="md:w-5/6 m-auto flex justify-center items-center md:items-stretch gap-7 flex-col md:flex-row">
+    {% for blog_item in random_blogs %}
+    <div class="card w-3/4 md:w-1/3 p-4 bg-opacity-20">
+      <h1>{{ blog_item.title }}</h1>
+      <small>Posted on: {{ blog_item.date_created }}</small>
+      <div class="h-48">
+        <img class="h-full" src="{{ blog_item.image.url }}" alt="AB Farm {{ blog_item.title }}">
+      </div>
+      <p>
+        {{ blog_item.body|safe|truncatewords:40 }}
+      </p>
+      <div class="md:hidden">
+        <br>
+        <a class="btn" href="{% url 'blog_details' blog_item.id %}">Continue Reading</a>
+      </div>
+      <div
+        class="hidden w-full h-full absolute top-0 md:flex justify-center items-center md:opacity-0 md:hover:opacity-100  transition-all delay-100">
+        <a href="{% url 'blog_details' blog_item.id %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ MORE</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+{% endblock %}

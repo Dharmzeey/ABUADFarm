@@ -1,17 +1,58 @@
-<footer class="mt-24 p-4 bg-gray-800 text-center text-white">
-  <div class="flex justify-around">
-    <h2>
-      <a class="logo" href="{% url 'home' %}">AB FARMS</a>
-    </h2>
-    <section>
-      <h2 class="mb-10">
-        <!-- AFE BABALOLA UNIVERSITY FARM, ADO-EKITI KM. 8.5, AFE BABALOLA WAY, ADO-EKITI NIGERIA -->
-        AB Farms , ADO-EKITI KM. 8.5, AFE BABALOLA WAY, ADO-EKITI NIGERIA
+<footer class="p-4 bg-gray-800 text-white">
+  <div class="flex justify-around flex-col md:flex-row">
+    <div class="pb-7 leading-[3rem]">
+      <h2>
+        <a class="logo mb-5" href="{% url 'home' %}">AB FARMS</a>
       </h2>
-    </section>
-    <h2>
-      <!-- ABUAD Farm &copy; 2022. All Rights Reserved -->
-      AB Farm &copy; 2022. All Rights Reserved
-    </h2>
+      <p class="">
+        AB Farms , ADO-EKITI KM. 8.5, AFE BABALOLA WAY,
+        <br> ADO-EKITI NIGERIA.
+      </p>
+
+      <ul class="text-gray-300">
+        <li class="number"><a href="#">090 0000 000</a></li>
+        <li class="number2"><a href="#">mail@mail.com</a></li>
+      </ul>
+      <ul class="flex gap-8 text-gray-300">
+        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+        <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+        <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+        <li> <a href="#"><i class="fab fa-youtube"></i></a></li>
+      </ul>
+    </div>
+
+    <div class="pb-7">
+      <h2 class="mb-5">Navigations</h2>
+      <nav class="flex flex-col gap-6 leading-[3rem]">
+        <ul class="text-gray-300">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'units' %}">Units</a></li>
+          <li><a href="">About</a></li>
+          <li><a href="{% url 'blog' %}">Blog</a></li>
+          <li><a href="{% url 'news' %}">News</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="pb-7">
+      <h2 class="mb-5">Units</h2>
+      <ul class="text-gray-300">
+        <li><a href="{% url 'agronomy' %}">Agronomy</a></li>
+        <li><a href="{% url 'feedmill' %}"> Feedmill</a></li>
+        <li><a href="{% url 'fishries' %}">Fishries</a></li>
+        <li><a href="{% url 'honey' %}">Honey</a></li>
+        <li><a href="{% url 'mango_juice' %}">Mango Juice</a></li>
+        <li><a href="{% url 'moringa' %}">Moringa</a></li>
+        <li><a href="{% url 'piggery' %}">Piggery</a></li>
+        <li><a href="{% url 'plantain_chips' %}}">Plantain Chips</a></li>
+        <li><a href="{% url 'poultry' %}">Poultry</a></li>
+        <li><a href="{% url 'wood_factory' %}">Wood Factory</a></li>
+      </ul>
+    </div>
   </div>
+  <h2 class="mt-4 text-center">
+    <!-- ABUAD Farm &copy; 2022. All Rights Reserved -->
+    AB Farm &copy; 2022. All Rights Reserved
+  </h2>
 </footer>

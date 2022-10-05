@@ -4,39 +4,62 @@
 <html lang="en">
 
 <head>
-  {% block title %}
-  <title>Afe Balalola University | ABUAD FARM</title>
-  {% endblock %}
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-
   <link rel="shortcut icon" href="{% static 'images/abuadlogofavicon.ico' %}" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous"
     referrerpolicy="no-referrer" />
-  <!-- FONTS -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Readex+Pro&display=swap" rel="stylesheet">
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap" rel="stylesheet"> -->
-  <!-- LINK FOR CAROUSEL SLIDER CSS FILE BELOW -->
-  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
-  <!-- AM CARTS -->
-  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-  <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-  <!-- <script src="https://cdn.amcharts.com/lib/5/locales/de_DE.js"></script> -->
-  <!-- <script src="https://cdn.amcharts.com/lib/5/geodata/germanyLow.js"></script> -->
-  <!-- <script src="https://cdn.amcharts.com/lib/5/fonts/notosans-sc.js"></script> -->
+
+  {% block title %}
+  <title>Afe Balalola University | ABUAD FARM</title>
+  {% endblock %}
   {% tailwind_css %}
 </head>
 
-<body class="" id="body">
+<style>
+  .active {
+    background-color: #717171;
+  }
 
+  /* Fading animation */
+  .fade {
+    animation-name: fade;
+    animation-duration: 1900ms;
+  }
+
+  /* I AM LAZY TO USE TAILWIND */
+  li a:hover {
+    text-decoration: underline;
+  }
+
+
+  @keyframes fade {
+    from {
+      opacity: .3
+    }
+
+    to {
+      opacity: 1
+    }
+  }
+
+  /* On smaller screens, decrease text size */
+  @media only screen and (max-width: 300px) {
+    .text {
+      font-size: 11px
+    }
+  }
+</style>
+
+<body id="body">
   {% if messages %}
+  <!-- THIS IS FOR FLASH MESSAGE(MOSTLY WHEN USER LOGS OUT) -->
   <ul class="fixed bg-black text-white w-full p-4 text-center" id="pop-up">
     {% for message in messages %}
     <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
@@ -45,21 +68,20 @@
   </ul>
   {% endif %}
 
-  <nav>
-    {% include "./navbar.html" %}
-  </nav>
+  <div>
+{% include 'base/navbar.html' %}
 
-  <div class="md:flex md:justify-end lg:justify-center">
-    <div class="container md:flex justify-end">
-      <div class="md:flex justify-end w-full min-h-screen md:w-4/5 lg:w-3/4 pl-6 lg:justify-center">
-        {% block content%}
-        {% endblock %}
-      </div>
+    <!-- THIS IS WHERE THE CONTENT STARTS -->
+
+    <div class="min-h-[70vh] relative">
+      {% block content %}
+      {% endblock %}
     </div>
+{% include 'base/footer.html' %}
+    
   </div>
-
-  {% include "./footer.html" %}
-  <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
 </body>
 
 </html>
+

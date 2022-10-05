@@ -1,266 +1,127 @@
+{% extends 'base/base.html' %}
 {% load static %}
-{% load static tailwind_tags %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="{% static 'images/abuadlogofavicon.ico' %}" type="image/x-icon">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous"
-    referrerpolicy="no-referrer" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Readex+Pro&display=swap" rel="stylesheet">
-  <title>Afe Balalola University | ABUAD FARM</title>
-  {% tailwind_css %}
-</head>
-
-<style>
-  .active {
-    background-color: #717171;
-  }
-
-  /* Fading animation */
-  .fade {
-    animation-name: fade;
-    animation-duration: 1900ms;
-  }
-
-  /* I AM LAZY TO USE TAILWIND */
-  li a:hover {
-    text-decoration: underline;
-  }
 
 
-  @keyframes fade {
-    from {
-      opacity: .3
-    }
+{% block content %}
 
-    to {
-      opacity: 1
-    }
-  }
-
-  /* On smaller screens, decrease text size */
-  @media only screen and (max-width: 300px) {
-    .text {
-      font-size: 11px
-    }
-  }
-</style>
-
-<body id="body">
-
-  <!-- THIS IS FOR FLASH MESSAGE(MOSTLY WHEN USER LOGS OUT) -->
-  {% if messages %}
-  <ul class="fixed bg-black text-white w-full p-4 text-center" id="pop-up">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-
-    {% endfor %}
-  </ul>
-  {% endif %}
-
-  <div>
-    <header class="relative z-20">
-      <div class="flex flex-col absolute w-full">
-        <div class="h-20 bg-gradient-to-b from-black to-transparent flex flex-col md:flex-row md:justify-around gap-6">
-          <div class=" pt-4">
-            <a class="logo p-4" href="{% url 'home' %}">AB FARMS</a>
-          </div>
-
-          <nav id="aside" class="hidden md:block bg-gradient-to-b from-transparent to-black z-10 md:bg-none">
-            <ul id="top-nav-mobile" class="w-full p-1 uppercase font-bold text-gray-100 flex flex-col md:flex-row md:gap-6">
-              <li><a href="{% url 'home' %}">Home</a></li>
-              <li><a href="{% url 'units' %}">Units</a></li>
-              <li><a href="">About</a></li>
-              <li><a href="">Blog</a></li>
-              <li><a href="">Contact</a></li>
-            </ul>
-          </nav>
-        </div>
-
-        <button class="absolute right-0 p-2 px-6 text-white menu-toggle-icon md:hidden border-none hover:bg-transparent hover:text-gray-400" id="menu-toggle-icon">
-          <i class="fa-solid fa-bars open-menu-icon toggle" id="open-menu"></i>
-          <i class="fa-solid fa-xmark close-menu-icon toggle" id="close-menu"></i>
-        </button>
-      </div>
-
-
-    </header>
-
-    <div class="relative m-auto -top-1">
-      <div class="md:h-[40rem]">
-        <div class="myPages fade ">
-          <img class="md:max-h-[40rem]" src="{% static 'images/inside-sign.jpg' %}" alt="Abuad Farm Junction">
-        </div>
-
-        <div class="myPages fade">
-          <img class="md:max-h-[40rem]" src="{% static 'images/mango.jfif' %}" alt="Abuad Farm Feedmill">
-        </div>
-
-        <div class="myPages fade">
-          <img class="md:max-h-[40rem]" src="{% static 'images/feedmill.webp' %}" alt="Abuad Farm Feedmill">
-        </div>
-
-        <div class="myPages fade">
-          <img class="md:max-h-[40rem]" src="{% static 'images/fish-pond.webp' %}" alt="Abuad Farm Fish pond">
-        </div>
-
-        <div class="myPages fade">
-          <img class="md:max-h-[40rem]" src="{% static 'images/moringa.webp' %}" alt="Abuad Farm Moringa">
-        </div>
-
-        <div class="myPages fade">
-          <img class="md:max-h-[40rem]" src="{% static 'images/piggery.webp' %}" alt="Abuad Farm Piggery">
-        </div>
-
-        <div class="myPages fade">
-          <img class="md:max-h-[40rem]" src="{% static 'images/wpu.webp' %}" alt="Abuad Farm Wood Processing Unit">
-        </div>
-      </div>
+<div class="relative m-auto ">
+  <div class="md:min-h-[40rem]">
+    <div class="myPages fade ">
+      <img class="md:max-h-[40rem]" src="{% static 'images/inside-sign.jpg' %}" alt="Abuad Farm Junction">
     </div>
 
-    <section>
-      <div class="pb-20 pt-12 bg-gray-100">
-        <div class="text-center">
-          <div class="mb-8">
-            <p>For over a decade we are committed to making sustainable Agriculture a priority.</p>
-          </div>
-          <div class=" md:w-5/6 m-auto flex justify-center items-center md:items-stretch gap-7 flex-col md:flex-row">
-            <div class="w-3/4 md:w-1/3 card p-4 ">
-              <h2>Quality Product</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam non aspernatur minima unde, provident, ut sint tempora error atque
-                molestiae nisi perferendis architecto ab alias praesentium dolore repellat minus dolorum.
-              </p>
-            </div>
-            <div class="w-3/4 md:w-1/3 card p-4">
-              <h2>Food Availability</h2>
-              <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates a repellendus, quia tempore incidunt in possimus quidem voluptatibus maxime ducimus atque odio eum animi culpa voluptatum accusamus iusto, nobis eaque?
-              </p>
-            </div>
+    <div class="myPages fade">
+      <img class="md:max-h-[40rem]" src="{% static 'images/mango.jfif' %}" alt="Abuad Farm Feedmill">
+    </div>
 
-            <div class="w-3/4 md:w-1/3 card p-4">
-              <h2>Sustainable Agriculture</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad voluptas repellendus, debitis aperiam labore harum nihil amet repellat enim deleniti ex suscipit veritatis beatae! Debitis, veniam vel. Corrupti, a assumenda?
-              </p>
-            </div>
+    <div class="myPages fade">
+      <img class="md:max-h-[40rem]" src="{% static 'images/feedmill.webp' %}" alt="Abuad Farm Feedmill">
+    </div>
 
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="myPages fade">
+      <img class="md:max-h-[40rem]" src="{% static 'images/fish-pond.webp' %}" alt="Abuad Farm Fish pond">
+    </div>
 
-    <section class="w-3/4 m-auto">
-      <div class="h-[50vh]">
+    <div class="myPages fade">
+      <img class="md:max-h-[40rem]" src="{% static 'images/moringa.webp' %}" alt="Abuad Farm Moringa">
+    </div>
 
-      </div>
-    </section>
+    <div class="myPages fade">
+      <img class="md:max-h-[40rem]" src="{% static 'images/piggery.webp' %}" alt="Abuad Farm Piggery">
+    </div>
+
+    <div class="myPages fade">
+      <img class="md:max-h-[40rem]" src="{% static 'images/wpu.webp' %}" alt="Abuad Farm Wood Processing Unit">
+    </div>
   </div>
+</div>
 
-
-
-  <footer class="p-4 bg-gray-800 text-white">
-    <div class="flex justify-around flex-col md:flex-row">
-      <div class="pb-7 leading-[3rem]">
-        <h2>
-          <a class="logo mb-5" href="{% url 'home' %}">AB FARMS</a>
-        </h2>
-        <p class="">
-          AB Farms , ADO-EKITI KM. 8.5, AFE BABALOLA WAY,
-          <br> ADO-EKITI NIGERIA.
-        </p>
-
-        <ul class="text-gray-300">
-          <li class="number"><a href="#">090 0000 000</a></li>
-          <li class="number2"><a href="#">mail@mail.com</a></li>
-        </ul>
-        <ul class="flex gap-8 text-gray-300">
-          <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-          <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-          <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-          <li> <a href="#"><i class="fab fa-youtube"></i></a></li>
-        </ul>
+<section>
+  <div class="pb-20 pt-12 bg-gray-100">
+    <div class="text-center">
+      <div class="mb-8">
+        <p>For over a decade we are committed to making sustainable Agriculture a priority.</p>
       </div>
+      <div class=" md:w-5/6 m-auto flex justify-center items-center md:items-stretch gap-7 flex-col md:flex-row">
+        <div class="w-3/4 md:w-1/3 card p-4 ">
+          <h2 class="pb-4">Quality Product</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam non aspernatur minima unde, provident, ut sint tempora error atque
+            molestiae nisi perferendis architecto ab alias praesentium dolore repellat minus dolorum.
+          </p>
+        </div>
+        <div class="w-3/4 md:w-1/3 card p-4">
+          <h2 class="pb-4">Food Availability</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates a repellendus, quia tempore incidunt in possimus quidem
+            voluptatibus maxime ducimus atque odio eum animi culpa voluptatum accusamus iusto, nobis eaque?
+          </p>
+        </div>
 
-      <div class="pb-7">
-        <h2 class="mb-5">Navigations</h2>
-        <nav class="flex flex-col gap-6 leading-[3rem]">
-          <ul class="text-gray-300">
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'units' %}">Units</a></li>
-            <li><a href="">About</a></li>
-            <li><a href="">Blog</a></li>
-            <li><a href="">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
+        <div class="w-3/4 md:w-1/3 card p-4">
+          <h2 class="pb-4">Sustainable Agriculture</h2>
+          <div>
+            <i class="text-9xl p-3 fa-solid fa-tractor"></i>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad voluptas repellendus, debitis aperiam labore harum nihil amet repellat
+            enim deleniti ex suscipit veritatis beatae! Debitis, veniam vel. Corrupti, a assumenda?
+          </p>
+        </div>
 
-      <div class="pb-7">
-        <h2 class="mb-5">Units</h2>
-        <ul class="text-gray-300">
-          <li><a href="{% url 'agronomy' %}">Agronomy</a></li>
-          <li><a href="{% url 'feedmill' %}"> Feedmill</a></li>
-          <li><a href="{% url 'fishries' %}">Fishries</a></li>
-          <li><a href="{% url 'honey' %}">Honey</a></li>
-          <li><a href="{% url 'mango_juice' %}">Mango Juice</a></li>
-          <li><a href="{% url 'moringa' %}">Moringa</a></li>
-          <li><a href="{% url 'piggery' %}">Piggery</a></li>
-          <li><a href="{% url 'plantain_chips' %}}">Plantain Chips</a></li>
-          <li><a href="{% url 'poultry' %}">Poultry</a></li>
-          <li><a href="{% url 'wood_factory' %}">Wood Factory</a></li>
-        </ul>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="m-auto pb-20 bg-gray-200">
+  <div class="w-4/5 md:w-full lg:w-4/5 mx-auto">
+    <h2 class="p-3 uppercase text-center">Latest News</h2>
+    <div class="md:w-5/6 m-auto flex justify-center items-center md:items-stretch gap-7 flex-col md:flex-row">
+      {% for news_item in news %}
+      <div class="card w-3/4 md:w-1/3 p-4 bg-opacity-20">
+        <h1>{{ news_item.title }}</h1>
+        <small>Posted on: {{ news_item.date_created }}</small>
+
+        <p>{{ news_item.body|safe|truncatewords:40 }} </p>
+        <br>
+        <a class="btn" href="{% url 'news_details' news_item.id %}">Read More</a>
+
+      </div>
+      {% endfor %}
     </div>
 
+  </div>
+</section>
 
+<section class="m-auto pb-20 bg-gray-300">
+  <div class="w-4/5 md:w-full lg:w-4/5 mx-auto">
+    <h2 class="p-3 uppercase text-center">Blog</h2>
 
+    <div class="md:w-5/6 m-auto flex justify-center items-center md:items-stretch gap-7 flex-col md:flex-row">
+      {% for blog_item in blog %}
+      <div class="card w-3/4 md:w-1/3 p-4 bg-opacity-20">
+        <h1>{{ blog_item.title }}</h1>
+        <small>Posted on: {{ blog_item.date_created }}</small>
+        <div>
+          <img src="{{ blog_item.image.url }}" alt="AB farm {{ blog_item.title }} blog">
+        </div>
 
+        <p>{{ blog_item.body|safe|truncatewords:40 }} </p>
+        <br>
+        <a class="btn" href="{% url 'blog_details' blog_item.id %}">Read More</a>
 
-    <h2 class="mt-4 text-center">
-      <!-- ABUAD Farm &copy; 2022. All Rights Reserved -->
-      AB Farm &copy; 2022. All Rights Reserved
-    </h2>
-
-  </footer>
-
-  <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
-  <script>
-    let pageIndex = 0;
-    displaySlides();
-  </script>
-</body>
-
-</html>
-
-<!-- <div class="mapouter">
-      <div class="gmap_canvas"><iframe class="w-full" height="250" id="gmap_canvas"
-          src="https://maps.google.com/maps?q=Afe%20Babalola%20University%20Farms%20Ado%20Ekiti&t=&z=15&ie=UTF8&iwloc=&output=embed"
-          frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://123movies-to.org"></a><br>
-        <style>
-          .mapouter {
-            position: relative;
-            text-align: right;
-            height: 250px;
-            width: 100%;
-          }
-        </style><a href="https://www.embedgooglemap.net">google maps iframe embed</a>
-        <style>
-          .gmap_canvas {
-            overflow: hidden;
-            background: none !important;
-            height: 250px;
-            width: 100%;
-          }
-        </style>
       </div>
-    </div> -->
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+</div>
+
+<script src="{% static 'js/script.js' %}"></script>
+<script>
+  let pageIndex = 0;
+  displaySlides();
+</script>
+{% endblock %}

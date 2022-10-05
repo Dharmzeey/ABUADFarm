@@ -6,61 +6,62 @@
 <title>Plantain Chips Section | ABUAD Farms</title>
 {% endblock %}
 
-<div class="w-11/12 md:w-4/5 m-auto p-6">
-<div>
-  <h1>PLANTAIN CHIPS SECTION</h1>
-  Crunchy Yummy Tasty Plaintain chips 😚. Here we produce plantain chips 
-  <br>
-  We produce high quality plantain chips from natural plantain. Our chips are very tasty and crispy, we produce them using the best production methods to get the best results possible.
-</div>
+<section class="first">
+  <div class="second">
+    <div class="third">
+      <div>
+        <h1>PLANTAIN CHIPS SECTION</h1>
+        Crunchy Yummy Tasty Plaintain chips 😚. Here we produce plantain chips
+        <br>
+        We produce high quality plantain chips from natural plantain. Our chips are very tasty and crispy, we produce them using the best production
+        methods to get the best results possible.
+      </div>
 
-<div class="slideshow-container">
-  <div class="mySlides fade">
-    <div class="numbertext">1 / 5</div>
-    <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
-    <div class="text">Caption Text</div>
+      <div class="slideshow-container">
+        <div class="mySlides fade">
+          <div class="numbertext">1 / 5</div>
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
+          <div class="text">Caption Text</div>
+        </div>
+
+        <div class="mySlides fade">
+          <div class="numbertext">2 / 5</div>
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
+          <div class="text">Caption Two</div>
+        </div>
+
+        <div class="mySlides fade">
+          <div class="numbertext">3 / 5</div>
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
+          <div class="text">Caption Three</div>
+        </div>
+
+        <div class="mySlides fade">
+          <div class="numbertext">4 / 5</div>
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
+          <div class="text">Caption Four</div>
+        </div>
+
+        <div class="mySlides fade">
+          <div class="numbertext">5 / 5</div>
+          <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
+          <div class="text">Caption Five</div>
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+
+      </div>
+      <br>
+
+      <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+        <span class="dot" onclick="currentSlide(5)"></span>
+      </div>
+    </div>
   </div>
-
-  <div class="mySlides fade">
-    <div class="numbertext">2 / 5</div>
-    <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
-    <div class="text">Caption Two</div>
-  </div>
-
-  <div class="mySlides fade">
-    <div class="numbertext">3 / 5</div>
-    <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
-    <div class="text">Caption Three</div>
-  </div>
-
-  <div class="mySlides fade">
-    <div class="numbertext">4 / 5</div>
-    <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
-    <div class="text">Caption Four</div>
-  </div>
-
-  <div class="mySlides fade">
-    <div class="numbertext">5 / 5</div>
-    <img src="{% static 'images/img.jpg' %}" alt="ABUAD " style="width: 100%;">
-    <div class="text">Caption Five</div>
-  </div>
-
-  <a class="prev" onclick="plusSlides(-1)">❮</a>
-  <a class="next" onclick="plusSlides(1)">❯</a>
-
-</div>
-<br>
-
-<div style="text-align:center">
-  <span class="dot" onclick="currentSlide(1)"></span>
-  <span class="dot" onclick="currentSlide(2)"></span>
-  <span class="dot" onclick="currentSlide(3)"></span>
-  <span class="dot" onclick="currentSlide(4)"></span>
-  <span class="dot" onclick="currentSlide(5)"></span>
-</div>
-</div>
-
-<script src="{% static 'js/script.js' %}"></script>
-
-
+</section>
 {% endblock %}

@@ -15,8 +15,20 @@
   @apply font-['Bungee_Spice'] text-xl md:text-3xl lg:text-4xl;
 }
 .card{
-  @apply rounded bg-white border-gray-200 shadow-md overflow-hidden relative cursor-pointer;
+  @apply rounded border-gray-200 shadow-md overflow-hidden relative cursor-pointer  transition ease-in delay-100 hover:bg-opacity-20;
 }
+
+/* THIS IS FOR THE SECTIONS (UNITS) STYLING AND ALSO SIGN-IN AND SIGN-UP FOR ALL AUTH TEMPLATE */
+.first {
+  @apply bg-gray-200 min-h-[70vh];
+}
+.second {
+  @apply md:w-9/12 lg:w-3/5 mx-auto;
+}
+.third {
+  @apply container mx-auto pt-32 px-10;
+}
+/* THAT ABOVE FOR THE SECTIONS STYLING */
 
 /* THIS BELOW IS FOR THE NAV LINK ON MOBILE */
 #top-nav-mobile li a {
@@ -25,6 +37,10 @@
 
 button, .btn {
   @apply p-1 px-4 rounded-full border-[1px] border-black hover:bg-black hover:text-white transition ease-in delay-100;
+}
+
+input[type='text'], input[type='date']{
+  @apply bg-inherit;
 }
 
 .link {
@@ -64,5 +80,9 @@ img{
 }
 
 .scale-dropdown{
-  @apply scale-0
+  @apply scale-0;
+}
+
+.bg-blur {
+  @apply bg-neutral-900;
 }
