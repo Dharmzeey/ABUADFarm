@@ -1,10 +1,50 @@
 {% extends 'base/base.html' %}
 {% load static %}
-
+{% block title %}
+<title>Contact | AB Farms</title>
+{% endblock %}
 
 {% block content %}
-<section class="bg-gray-200 h-[80vh]">
-  <h2>Contact</h2>
+<section style="background-image: url({% static 'images/inside-sign.jpg' %})" class="bg-gray-200 min-h-[40vh] bg-no-repeat bg-cover">
+  <div class="second">
+    <div class="third">
+      <h2 class="text-center pt-2 text-3xl md:text-4xl lg:text-5xl font-bold tracking-wider ">Get in touch with us</h2>
+    </div>
+  </div>
+</section>
+
+<section class="m-auto pb-20 bg-gray-200">
+  <div class="second">
+    <div class="third">
+      <div class="font-bold py-4 text-xl">Contact Us</div>
+      <form action="">
+        <div class="flex justify-between flex-wrap gap-5">
+          <div class="flex flex-col gap-8 w-1/2">
+            <input type="text" name="form-name" id="form-name" placeholder="Your Name">
+            <input type="email" name="form-email" id="form-email" placeholder="Your Email Address">
+            <input type="text" name="form-title" id="form-title" placeholder="Message Title">
+          </div>
+          <textarea name="form-message" id="form-message" cols="50" rows="10" placeholder="Message"></textarea>
+        </div>
+        <input class="px-8 py-4 border border-black hover:bg-black hover:text-white" type="submit" value="Send">
+      </form>
+    </div>
+    <div class="pt-6 leading-9 flex flex-col gap-5">
+      <div>
+        <i class="fa-solid fa-house px-3 text-2xl"></i>
+        Office
+        Ado-Ekiti, Ekiti.
+      </div>
+      <div>
+        <i class="fa-solid fa-mobile-button px-3 text-2xl"></i>
+        +23 80 0000 000
+      </div>
+      <div>
+        <i class="fa-regular fa-envelope px-3 text-2xl"></i>
+        mail@mail.com
+      </div>
+    </div>
+  </div>
 </section>
 
 <div class="mapouter">

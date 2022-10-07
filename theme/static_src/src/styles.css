@@ -20,7 +20,7 @@
 
 /* THIS IS FOR THE SECTIONS (UNITS) STYLING AND ALSO SIGN-IN AND SIGN-UP FOR ALL AUTH TEMPLATE */
 .first {
-  @apply bg-gray-200 min-h-[70vh];
+  @apply bg-gray-200 min-h-[70vh] pb-24;
 }
 .second {
   @apply md:w-9/12 lg:w-3/5 mx-auto;
@@ -39,7 +39,28 @@ button, .btn {
   @apply p-1 px-4 rounded-full border-[1px] border-black hover:bg-black hover:text-white transition ease-in delay-100;
 }
 
-input[type='text'], input[type='date']{
+/* THIS BELOW IS FOR SLIDE SHOW */
+.slideshow-container {
+  @apply max-w-5xl relative m-auto
+}
+
+.prev, .next {
+  @apply cursor-pointer absolute top-2/4 w-auto p-4 -mt-6 text-white font-bold text-lg transition delay-75 ease-in select-none hover:bg-black
+}
+
+.dot {
+  @apply cursor-pointer h-4 w-4 mx-1 bg-gray-700 rounded-full inline-block transition delay-75 ease-in hover:bg-gray-400
+}
+
+.next {
+  @apply right-0
+}
+
+.text {
+  @apply text-sm p-3 absolute bottom-2 w-full text-center
+}
+
+input[type='text'], input[type='date'], input[type='email'], input[type='password'], textarea{
   @apply bg-inherit;
 }
 
@@ -81,8 +102,4 @@ img{
 
 .scale-dropdown{
   @apply scale-0;
-}
-
-.bg-blur {
-  @apply bg-neutral-900;
 }

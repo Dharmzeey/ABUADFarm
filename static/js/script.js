@@ -10,6 +10,7 @@ if (document.getElementsByClassName("myPages").length != 0) {
     pages[pageIndex - 1].style.display = "block";
     setTimeout(displaySlides, 10000);
   }
+  displaySlides()
 }
 
 

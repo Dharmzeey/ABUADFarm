@@ -1,6 +1,21 @@
+if (document.getElementsByClassName("myPages").length != 0) {
+  function displaySlides() {
+    let i;
+    let pages = document.getElementsByClassName("myPages");
+    for (i = 0; i < pages.length; i++) {
+      pages[i].style.display = "none";
+    }
+    pageIndex++;
+    if (pageIndex > pages.length) { pageIndex = 1 }
+    pages[pageIndex - 1].style.display = "block";
+    setTimeout(displaySlides, 10000);
+  }
+  displaySlides()
+}
+
+
 // THIS IS FOR THE HOME.HTML 
 // IT CONTROLS SWITCHING BETWEEN FARM AND INDUSTRY
-
 if (document.getElementById("farm")) {
   const farm = document.getElementById("farm");
   const industry = document.getElementById("industry");
@@ -83,7 +98,7 @@ if (document.querySelector("#menu-toggle-icon")) {
   function toggleFunction() {
     toggleMenu.classList.toggle("activated");
     openAside.classList.toggle("hidden");
-    bodyColor.classList.toggle("bg-neutral-700");
+    // bodyColor.classList.toggle("bg-blur");
     // bodyColor.classList.toggle("bg-transparent");
   }
 
@@ -138,5 +153,14 @@ if (document.getElementById("dropdown")) {
       dropDown.nextElementSibling.classList.toggle("scale-dropdown");
       console.log(dropDown.nextElementSibling)
     })
+  })
+}
+
+
+if (document.getElementById("select-date")) {
+  const selectDate = document.getElementById("select-date");
+  const dateDropdown = document.getElementById("date-dropdown");
+  selectDate.addEventListener("click", () => {
+    dateDropdown.classList.toggle("hidden")
   })
 }
