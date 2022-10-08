@@ -20,7 +20,7 @@
 
 /* THIS IS FOR THE SECTIONS (UNITS) STYLING AND ALSO SIGN-IN AND SIGN-UP FOR ALL AUTH TEMPLATE */
 .first {
-  @apply bg-gray-200 min-h-[70vh] pb-24;
+  @apply bg-gray-200 min-h-[70vh] pb-24 tracking-wider leading-8;
 }
 .second {
   @apply md:w-9/12 lg:w-3/5 mx-auto;
