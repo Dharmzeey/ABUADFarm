@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "tailwind",
     "theme",
+    'django_extensions',
     "django_browser_reload",
     "home.apps.HomeConfig",
     "products.apps.ProductsConfig",

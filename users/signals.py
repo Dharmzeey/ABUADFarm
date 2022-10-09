@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
@@ -28,12 +28,17 @@ def update_user_model(sender, instance, created, **kwargs):
 post_save.connect(update_user_model, sender=Profile)
 
 
-def create_slug(sender, created, instance, **kwargs):
-  if created:
+def create_slug(sender, instance, **kwargs):
+  # if created:
     slug_input = f"{instance.quantity}-Kg-of-{instance.item}-purchase-{instance.id}"
     instance.slug = slugify(slug_input)
+    if instance.slug:
+      return 0
+    print("slug_input")
     instance.save()
-post_save.connect(create_slug, sender=Goods)
+    check += 1
+    return 0
+pre_save.connect(create_slug, sender=Goods)
 
 # HERE IF I USE IT IT WILL CAUSE THE USER AND PROFILE MODEL TO RECURSE
 # def update_profile_model(sender, instance, created, **kwargs):
