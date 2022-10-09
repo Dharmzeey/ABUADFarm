@@ -19,7 +19,7 @@ DATABASES = {
         'HOST':os.environ.get('PGHOST'),
         'PORT':os.environ.get('PGPORT')
     # }
-    'default':{}
+    # 'default':{}
 }
 
 import django_heroku
