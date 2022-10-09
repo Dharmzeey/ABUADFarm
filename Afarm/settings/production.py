@@ -3,8 +3,8 @@ from .base import *
 DEBUG = False
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-ALLOWED_HOSTS = ["abuadfarm.up.railway.app/", "abuadfarm.herokuapp.com"]
-CSRF_TRUSTED_ORIGIN = ["https://abuadfarm.up.railway.app/", "https://abuadfarm.herokuapp.com"]
+ALLOWED_HOSTS = ["abuadfarm.up.railway.app", "abuadfarm.herokuapp.com"]
+CSRF_TRUSTED_ORIGIN = ["https://abuadfarm.up.railway.app", "https://abuadfarm.herokuapp.com"]
 
 # DATABASES = {
 #     'default': {
