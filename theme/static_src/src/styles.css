@@ -7,6 +7,7 @@
   html {
     /* font-family: 'Roboto', sans-serif; */
     font-family: 'Readex Pro', sans-serif;
+    user-select: none;
     /* font-family: 'Montserrat', sans-serif; */
   }
 }
@@ -36,7 +37,7 @@
 }
 
 button, .btn {
-  @apply p-1 px-4 rounded-full border-[1px] border-black hover:bg-black hover:text-white transition ease-in delay-100;
+  @apply py-1 px-4 rounded-full border-[1px] border-black hover:bg-black hover:text-white transition ease-in delay-100;
 }
 
 /* THIS BELOW IS FOR SLIDE SHOW */
@@ -60,7 +61,7 @@ button, .btn {
   @apply text-sm p-3 absolute bottom-2 w-full text-center
 }
 
-input[type='text'], input[type='date'], input[type='email'], input[type='password'], textarea{
+input[type='text'], input[type='date'], input[type='email'], input[type='password'], input[type="url"] textarea, select{
   @apply bg-inherit;
 }
 
@@ -102,4 +103,8 @@ img{
 
 .scale-dropdown{
   @apply scale-0;
+}
+
+.page-link {
+  @apply block px-5 py-3 hover:bg-gray-400 w-full h-full
 }

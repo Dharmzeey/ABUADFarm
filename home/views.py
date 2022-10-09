@@ -1,6 +1,7 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from .models import News, Blog
 
@@ -26,12 +27,11 @@ class AboutView(View):
 about = AboutView.as_view()
 
 
-class BlogView(View):
-    templete_name = "pages/blog.html"
-    def get(self, request):
-        blog = Blog.objects.all()
-        context = {"blog": blog}
-        return render(request, self.templete_name, context)
+class BlogView(ListView):
+    template_name = "pages/blog.html"
+    model = Blog
+    context_object_name = "blog"
+    paginate_by = 20
 blog = BlogView.as_view()
 
 class BlogDetailsView(DetailView):
@@ -45,12 +45,11 @@ class BlogDetailsView(DetailView):
 blog_details = BlogDetailsView.as_view()
 
 
-class NewsView(View):
-    templete_name = "pages/news.html"
-    def get(self, request):
-        news = News.objects.all()
-        context = {"news": news}
-        return render(request, self.templete_name, context)
+class NewsView(ListView):
+    template_name = "pages/news.html"
+    model = News
+    context_object_name = "news"
+    paginate_by = 20
 news = NewsView.as_view()
 
 class NewsDetailsView(DetailView):
@@ -81,8 +80,8 @@ def honey(request):
     return render(request, "farm/honey.html")
 
 
-def mango_juice(request):
-    return render(request, "farm/mango-juice.html")
+def mango(request):
+    return render(request, "farm/mango.html")
 
 
 def moringa(request):

@@ -4,7 +4,7 @@
 <title> {{ blog.title }}(Blog) | AB Farms</title>
 {% endblock %}
 {% block content %}
-<section class="pb-20 bg-gray-200 min-h-[80vh] tracking-wider leading-8">
+<section class="pb-20 bg-gray-200 min-h-[80vh] tracking-wider leading-6 md:leading-8">
   <div class="container mx-auto">
     <div class="w-4/5 mx-auto pt-20">
       <div>
@@ -21,7 +21,7 @@
   </div>
 </section>
 
-<section class="bg-gray-300 pb-20 tracking-wider leading-8">
+<section class="bg-gray-300 pb-20 tracking-wider leading-6 md:leading-8">
   <h2 class="p-3 uppercase text-center font-bold">Suggested Blog Posts</h2>
   <div class="md:w-5/6 m-auto flex justify-center items-center md:items-stretch gap-7 flex-col md:flex-row">
     {% for blog_item in random_blogs %}
@@ -36,11 +36,11 @@
       </p>
       <div class="md:hidden">
         <br>
-        <a class="btn" href="{% url 'blog_details' blog_item.id %}">Continue Reading</a>
+        <a class="btn" href="{% url 'blog_details' blog_item.slug %}">Continue Reading</a>
       </div>
       <div
         class="hidden w-full h-full absolute top-0 md:flex justify-center items-center md:opacity-0 md:hover:opacity-100  transition-all delay-100">
-        <a href="{% url 'blog_details' blog_item.id %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ MORE</a>
+        <a href="{% url 'blog_details' blog_item.slug %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ MORE</a>
       </div>
     </div>
     {% endfor %}

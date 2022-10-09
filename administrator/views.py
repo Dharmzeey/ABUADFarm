@@ -73,6 +73,10 @@ class Home(AdminRequiredMixin, View):
                 selling_frequency[item_name] = []
                 selling_frequency[item_name].append(1)
                 selling_frequency[item_name].append(float(item_price))
+        # THIS BELOW ORDERS THE DICT ACCORDING TO PRICE
+        selling_frequency = {k: v for k, v in sorted(selling_frequency.items(), key=lambda item: item[1])}
+        # THIS BELOW REVERSE THE DICT ACCORDING TO PRICE
+        selling_frequency = dict(reversed(list(selling_frequency.items())))
         context = {"goods": goods, "total":total, "start_date": str(start_date), "end_date": str(end_date), "selling_frequency": selling_frequency}
         
         return render(request, self.template_name, context)

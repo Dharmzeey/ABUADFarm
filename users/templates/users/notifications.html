@@ -22,7 +22,7 @@
       Thanks for your patronage
     </p>
     {% if user_notification.good.description %}
-    <a href="{% url 'purchase_description' user_notification.good.id %}" class="text-blue-800 underline font-bold cursor-pointer">Click Here to
+    <a href="{% url 'purchase_description' user_notification.good.slug %}" class="text-blue-800 underline font-bold cursor-pointer">Click Here to
       View</a>
     {% endif %}
     <br> <br>

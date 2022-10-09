@@ -46,6 +46,7 @@ class Goods(models.Model):
     add_feedback = models.BooleanField(default=True)
     feedback = models.CharField(max_length=225, blank=True, null=True)
     feedback_read = models.BooleanField(default=False)
+    slug = models.SlugField(null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -75,11 +76,7 @@ class Notification(models.Model):
     good = models.ForeignKey(Goods, on_delete=models.CASCADE, related_name="product_notification")
     read = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
-    
-    
-    def __str__(self):
-        return str(self.message)
-    
+        
 
 class CustomerFeedback(models.Model):
     owner = models.ForeignKey(

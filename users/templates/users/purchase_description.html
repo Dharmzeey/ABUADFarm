@@ -1,4 +1,4 @@
-{% extends 'user/base.html' %}
+{% extends 'users/base.html' %}
 
 {% block title %}
 <title>Purchase Description | ABUAD Farm</title>
@@ -21,8 +21,8 @@
 {% if goods.add_feedback and not goods.feedback %}
 <div>
   <p>Give a Feedback ?</p>
-  <a href="{% url 'purchase_description' goods.id %}?q=yes" class="text-blue-800 underline font-bold cursor-pointer">Yes</a>
-  <a href="{% url 'purchase_description' goods.id %}?q=no" class="text-blue-800 underline font-bold cursor-pointer">No</a>
+  <a href="{% url 'purchase_description' goods.slug %}?q=yes" class="text-blue-800 underline font-bold cursor-pointer">Yes</a>
+  <a href="{% url 'purchase_description' goods.slug %}?q=no" class="text-blue-800 underline font-bold cursor-pointer">No</a>
 </div>
 
 {% if form %}

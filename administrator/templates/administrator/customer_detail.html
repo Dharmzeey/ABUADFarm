@@ -122,7 +122,7 @@
     <td>{{ good.price }}</td>
     <td>
       {% if good.description %}
-      <a href="{% url 'administrator:purchase_description' good.id %}" class="link">View</a>
+      <a href="{% url 'administrator:purchase_description' good.slug %}" class="link">View</a>
 
       {% else %}
       ---

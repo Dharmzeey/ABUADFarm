@@ -94,12 +94,6 @@ class StaffHomeView(StaffRequiredMixin, View):
         
 staff_home_view = StaffHomeView.as_view()
 
-class Activities(StaffRequiredMixin, View):
-    template_name = "staff/activities.html"
-    
-    def get(self, request):
-        return render(request, self.template_name)
-
 
 # THIS CLASS GETS ALL CUSTOMERS ASSOCIATED WITH A UNIT WHICH CAN THEN BE VIEWED AND WORKED ON BY THE HEAD
 class UnitCustomers(StaffRequiredMixin, View):
@@ -204,6 +198,7 @@ class AddNewCustomer(StaffRequiredMixin, FormView):
     
     def form_valid(self, form):
       username = form.cleaned_data["username"]
+      print(username)
       item = form.cleaned_data["item"]
       quantity = form.cleaned_data["quantity"]
       price = form.cleaned_data["price"]
@@ -212,7 +207,7 @@ class AddNewCustomer(StaffRequiredMixin, FormView):
       unit_name = StaffModel.objects.get(owner=self.request.user).unit
       # THIS TRY BLOCK CHEKS THE DATABASE TO SEE IF THE NEWLY UNIT CUSTOMER HAS AN ACCOUNT
       try:
-          uname = User.objects.get(username=username)
+          uname = User.objects.get(username__iexact=username) #iexact will make the query case insensitive
       except:
           messages.info(self.request, "Username does not exist")
           return self.render_to_response(self.get_context_data(form=form))

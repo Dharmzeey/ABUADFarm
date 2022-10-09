@@ -18,7 +18,7 @@
   <div>
     Customer's Feedback: {{ feedback.feedback }}
   </div>
-  <a class="link" href="{% url 'administrator:purchase_description' feedback.id %}">View Purchase details</a>
+  <a class="link" href="{% url 'administrator:purchase_description' feedback.slug %}">View Purchase details</a>
 </div>
 <br>
 {% endfor %}

@@ -7,31 +7,31 @@
 <div class="relative m-auto ">
   <div class="md:min-h-[40rem]">
     <div class="myPages fade ">
-      <img class="md:max-h-[40rem]" src="{% static 'images/inside-sign.jpg' %}" alt="Abuad Farm Junction">
+      <img class="md:max-h-[40rem]" src="{% static 'images/home/inside-sign.jpg' %}" alt="Abuad Farm Junction">
     </div>
 
     <div class="myPages fade">
-      <img class="md:max-h-[40rem]" src="{% static 'images/mango.jfif' %}" alt="Abuad Farm Feedmill">
+      <img class="md:max-h-[40rem]" src="{% static 'images/home/mango.jfif' %}" alt="Abuad Mango Farm">
     </div>
 
     <div class="myPages fade">
-      <img class="md:max-h-[40rem]" src="{% static 'images/feedmill.webp' %}" alt="Abuad Farm Feedmill">
+      <img class="md:max-h-[40rem]" src="{% static 'images/home/feedmill.webp' %}" alt="Abuad Farm Feedmill">
     </div>
 
     <div class="myPages fade">
-      <img class="md:max-h-[40rem]" src="{% static 'images/fish-pond.webp' %}" alt="Abuad Farm Fish pond">
+      <img class="md:max-h-[40rem]" src="{% static 'images/home/fish-pond.webp' %}" alt="Abuad Farm Fish pond">
     </div>
 
     <div class="myPages fade">
-      <img class="md:max-h-[40rem]" src="{% static 'images/moringa.webp' %}" alt="Abuad Farm Moringa">
+      <img class="md:max-h-[40rem]" src="{% static 'images/home/moringa.webp' %}" alt="Abuad Farm Moringa">
     </div>
 
     <div class="myPages fade">
-      <img class="md:max-h-[40rem]" src="{% static 'images/piggery.webp' %}" alt="Abuad Farm Piggery">
+      <img class="md:max-h-[40rem]" src="{% static 'images/home/piggery.webp' %}" alt="Abuad Farm Piggery">
     </div>
 
     <div class="myPages fade">
-      <img class="md:max-h-[40rem]" src="{% static 'images/wpu.webp' %}" alt="Abuad Farm Wood Processing Unit">
+      <img class="md:max-h-[40rem]" src="{% static 'images/home/wpu.webp' %}" alt="Abuad Farm Wood Processing Unit">
     </div>
   </div>
 </div>
@@ -85,13 +85,13 @@
     <h2 class="p-3 uppercase text-center">Latest News</h2>
     <div class="md:w-5/6 m-auto flex justify-center items-center md:items-stretch gap-7 flex-col md:flex-row">
       {% for news_item in news %}
-      <div class="card w-3/4 md:w-1/3 p-4 bg-opacity-20">
+      <div class="card w-3/4 md:w-1/3 p-4 pb-10 bg-opacity-20">
         <h1>{{ news_item.title }}</h1>
         <small>Posted on: {{ news_item.date_created }}</small>
 
         <p>{{ news_item.body|safe|truncatewords:40 }} </p>
         <br>
-        <a class="btn" href="{% url 'news_details' news_item.id %}">Read More</a>
+        <a class="btn absolute bottom-3" href="{% url 'news_details' news_item.slug %}">Read More</a>
 
       </div>
       {% endfor %}
@@ -106,7 +106,7 @@
 
     <div class="md:w-5/6 m-auto flex justify-center items-center md:items-stretch gap-7 flex-col md:flex-row">
       {% for blog_item in blog %}
-      <div class="card w-3/4 md:w-1/3 p-4 bg-opacity-20">
+      <div class="card w-3/4 md:w-1/3 p-4 pb-10 bg-opacity-20">
         <h1>{{ blog_item.title }}</h1>
         <small>Posted on: {{ blog_item.date_created }}</small>
         <div>
@@ -115,7 +115,7 @@
 
         <p>{{ blog_item.body|safe|truncatewords:40 }} </p>
         <br>
-        <a class="btn" href="{% url 'blog_details' blog_item.id %}">Read More</a>
+        <a class="btn absolute bottom-3" href="{% url 'blog_details' blog_item.slug %}">Read More</a>
 
       </div>
       {% endfor %}

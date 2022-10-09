@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 
-<section class="bg-gray-200 tracking-wider leading-10">
+<section class="bg-gray-200 tracking-wider leading-6 md:leading-8">
   <div class="container mx-auto">
     <div class="w-4/5 mx-auto pt-20">
       <h1 title="AB Farm Blog" class="uppercase font-bold text-xl">BLOG</h1>
@@ -21,14 +21,59 @@
         </p>
         <div class="md:hidden">
           <br>
-          <a class="btn" href="{% url 'blog_details' blog_item.id %}">Continue Reading</a>
+          <a class="btn" href="{% url 'blog_details' blog_item.slug %}">Continue Reading</a>
         </div>
-        <div class="hidden w-full h-full absolute top-0 md:flex justify-center items-center md:opacity-0 md:hover:opacity-100  transition-all delay-100">
-          <a href="{% url 'blog_details' blog_item.id %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ MORE</a></div>
+        <div
+          class="hidden w-full h-full absolute top-0 md:flex justify-center items-center md:opacity-0 md:hover:opacity-100  transition-all delay-100">
+          <a href="{% url 'blog_details' blog_item.slug %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ MORE</a>
+        </div>
       </div>
-      
+
       <br>
       {% endfor %}
+
+      <!-- PAGINATION -->
+      <div class="paginator pt-8">
+        {% if page_obj.has_other_pages %}
+        <ul class="pagination flex justify-around flex-wrap">
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ 1 }}">First</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+          </li>
+          {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+          {% endif %}
+
+          {% for i in page_obj.paginator.page_range %}
+          {% if page_obj.number == i %}
+          <li class="page-item bg-gray-500"><a class="page-link">{{ i }}</a></li>
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?={{ page_obj.paginator.num_pages }}">Last</a>
+          </li>
+          {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+          {% endif %}
+        </ul>
+
+        {% endif %}
+
+      </div>
+
     </div>
   </div>
 </section>

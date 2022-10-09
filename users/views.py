@@ -134,7 +134,7 @@ class UserMessage(LoginRequiredMixin, View):
     template_name = "users/messages.html"
 
     def get(self, request):
-        user_messages = Messages.objects.filter(owner=request.user).order_by("date")[:10]
+        user_messages = Messages.objects.filter(owner=request.user).order_by("-date")[:10]
         context = {"user_messages": user_messages}
         return render(request, self.template_name, context)
 user_messages = UserMessage.as_view()
@@ -155,7 +155,7 @@ read_message = ReadMessage.as_view()
 class NotificationView(LoginRequiredMixin, View):
     template_name = 'users/notifications.html'
     def get(self, request):
-        user_notifications = Notification.objects.filter(owner=request.user).order_by("read")[:30]
+        user_notifications = Notification.objects.filter(owner=request.user).order_by("-date")[:30]
         unread_notifications = Notification.objects.filter(owner=request.user, read=False)
         for notification in unread_notifications:
             notification.read = True
@@ -169,8 +169,8 @@ notifications = NotificationView.as_view()
 # THIS BELOW HANDLES THE RENDERING AND DISPLAY OF PURCHASE DESCRIPTION
 class PurchaseDescription(LoginRequiredMixin, View):
     template_name = "users/purchase_description.html"
-    def get(self, request, pk):
-        goods = Goods.objects.get(id=pk)
+    def get(self, request, slug):
+        goods = Goods.objects.get(slug=slug)
         context = {
             "goods": goods,
         }  
@@ -183,8 +183,8 @@ class PurchaseDescription(LoginRequiredMixin, View):
             context.update({"form": form})
         return render(request, self.template_name, context)    
     
-    def post(self, request, pk):
-        goods = Goods.objects.get(id=pk)
+    def post(self, request, slug):
+        goods = Goods.objects.get(slug=slug)
         form = GetFeedback(request.POST)
         if form.is_valid():
             feedback = form.cleaned_data["feedback"]
