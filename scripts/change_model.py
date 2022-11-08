@@ -1,4 +1,3 @@
-import django_extensions
 from users.models import Goods
 
 def run():

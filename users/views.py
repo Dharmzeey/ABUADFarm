@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 
 from utils.export import view_pdf, download_pdf, download_excel, download_csv
 
-from .models import Profile, Messages, Goods, Notification
+from .models import LGA, Profile, Messages, Goods, Notification
 from products.models import Product, UnitName
 from .forms import ProfileUpdateForm, GetFeedback
 from .serializer import GoodsSerializer
@@ -39,6 +39,13 @@ class ProfileUpdateView(LoginRequiredMixin, View):
         messages.success(request, "Profile Updated Successfully")
         return redirect(self.success_url)
 profile_update_view = ProfileUpdateView.as_view()
+
+# THIS FUNCTION BELOW IS BEING ACCESSED BY AJAX
+def load_data(request):
+  state = request.GET.get('state', None)
+  if state != None:
+    lgas = LGA.objects.filter(state__id=state).order_by("name")
+    return render(request, "users/data_list.html", {"lgas":lgas})  
 
 
 class Dashboard(LoginRequiredMixin, View):

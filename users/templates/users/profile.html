@@ -8,7 +8,7 @@
 {% block content %}
 
 <div class="md:ml-10 w-full p-1">
-  <form action="" method="POST" enctype="multipart/form-data">
+  <form action="" method="POST" id="registerForm" data-url="{% url 'ajax_load_data' %}" enctype="multipart/form-data">
     {% csrf_token %}
     <table>
       <div class="w-40 h-40">
@@ -20,4 +20,21 @@
     <button class="p-2 px-4"> Submit</button>
   </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#id_state").change(function () {
+    let url = $("#registerForm").attr("data-url");
+    let state = $(this).val()
+
+    $.ajax({
+      url: url,
+      data: {
+        'state': state
+      },
+      success: function (data) {
+        $("#id_local_government").html(data)
+      }
+    })
+  })
+</script>
 {% endblock %}

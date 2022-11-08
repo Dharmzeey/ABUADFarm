@@ -4,6 +4,8 @@ from . import views
 
 urlpatterns = [
     path("u/", views.profile_update_view, name="profile_view"),
+    path("ajax/load-data/", views.load_data, name="ajax_load_data"),
+    
     path("dashboard/", views.dashboard, name="dashboard"),
     path("messages/", views.user_messages, name="messages"),
     path("read-message/", views.read_message, name="read_message"),

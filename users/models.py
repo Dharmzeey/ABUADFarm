@@ -6,6 +6,26 @@ from products.models import UnitName, Product
 
 User = settings.AUTH_USER_MODEL
 
+class Country(models.Model):
+  name = models.CharField(max_length=7)
+  def __str__(self):
+    return self.name
+  
+class State(models.Model):
+  name = models.CharField(max_length=50)
+  country = models.ForeignKey(Country, on_delete=models.CASCADE)
+  def __str__(self):
+    return self.name
+
+class LGA(models.Model):
+  name = models.CharField(max_length=100)
+  country = models.ForeignKey(Country, on_delete=models.CASCADE)
+  state = models.ForeignKey(State, on_delete=models.CASCADE)
+  class Meta:
+    ordering = ["name"]
+  def __str__(self):
+    return self.name
+    
 
 class Profile(models.Model):
     select_sex = (
@@ -23,8 +43,9 @@ class Profile(models.Model):
     phone = models.CharField(max_length=11)
     company_name = models.CharField(max_length=100, null=False, blank=False)
     website = models.URLField()
-    state = models.CharField(max_length=2)
-    city = models.CharField(max_length=15)
+    country = models.ForeignKey("Country", on_delete=models.CASCADE, related_name="owner_country")
+    state = models.ForeignKey("State", on_delete=models.CASCADE, related_name="owner_state")
+    local_government = models.ForeignKey("LGA", on_delete=models.CASCADE, related_name="owner_lga")
     address = models.CharField(max_length=255)
     date_created = models.DateTimeField(auto_now=True)
 
