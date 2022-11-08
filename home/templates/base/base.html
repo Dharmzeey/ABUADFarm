@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Readex+Pro&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">  <!-- AOS -->
 
   {% block title %}
   <title>Afe Balalola University | ABUAD FARM</title>
@@ -69,7 +70,7 @@
   {% endif %}
 
   <div>
-{% include 'base/navbar.html' %}
+    {% include 'base/navbar.html' %}
 
     <!-- THIS IS WHERE THE CONTENT STARTS -->
 
@@ -77,11 +78,15 @@
       {% block content %}
       {% endblock %}
     </div>
-{% include 'base/footer.html' %}
-    
+    {% include 'base/footer.html' %}
+
   </div>
   <script src="{% static 'js/script.js' %}"></script>
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
 </body>
 
 </html>
-
