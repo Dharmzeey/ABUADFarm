@@ -4,7 +4,8 @@ from decouple import config
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost"]
+# ALLOWED_HOSTS = ["localhost", '*.ngrok.io']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok.io']
 
 # THIS IS THE ONLY SITE THAT WILL ALLOW CSRF ACCESS
 # I CREATED IT MYSELF
