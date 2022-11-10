@@ -17,9 +17,16 @@
         <br>
         <p>{{ blog.body|safe }}</p>
       </div>
+      {% if request.user.is_superuser %}
+      <div class="mt-10">
+        <a class="btn" href="{% url 'blog:update_blog' blog.slug %}">Update Blog</a>
+        <a class="btn" href="{% url 'blog:delete_blog' blog.slug %}">Delete Blog</a>
+      </div>
+      {% endif %}
     </div>
   </div>
 </section>
+
 
 <section class="bg-gray-300 pb-20 tracking-wider leading-6 md:leading-8">
   <h2 class="p-3 uppercase text-center font-bold">Suggested Blog Posts</h2>
@@ -36,11 +43,12 @@
       </p>
       <div class="md:hidden">
         <br>
-        <a class="btn" href="{% url 'blog_details' blog_item.slug %}">Continue Reading</a>
+        <a class="btn" href="{% url 'blog:blog_details' blog_item.slug %}">Continue Reading</a>
       </div>
       <div
         class="hidden w-full h-full absolute top-0 md:flex justify-center items-center md:opacity-0 md:hover:opacity-100  transition-all delay-100">
-        <a href="{% url 'blog_details' blog_item.slug %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ MORE</a>
+        <a href="{% url 'blog:blog_details' blog_item.slug %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ
+          MORE</a>
       </div>
     </div>
     {% endfor %}

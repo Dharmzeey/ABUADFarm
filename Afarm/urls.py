@@ -25,6 +25,8 @@ urlpatterns = [
     path("", include("users.urls")),
     path("administrator/", include("administrator.urls", namespace="administrator")),
     path("staff/", include("staff.urls", namespace="staff")),
+    path("blog/", include("blog.urls", namespace="blog")),
+    path("news/", include("news.urls", namespace="news")),
     
     # THIS IS FOR TAILWIND
     path("__reload__/", include("django_browser_reload.urls")),

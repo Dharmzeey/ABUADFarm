@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block title %}
+<title>Delete {{ object }} (Blog) | AB Farms</title>
+{% endblock %}
+{% block content %}
+
+<div class="md:ml-10 w-full p-1">
+  <form method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    <input class="btn" type="submit" value="Confirm">
+  </form>
+</div>
+
+{% endblock %}

@@ -103,7 +103,7 @@
 
         <p>{{ news_item.body|safe|truncatewords:40 }} </p>
         <br>
-        <a class="btn absolute bottom-3" href="{% url 'news_details' news_item.slug %}">Read More</a>
+        <a class="btn absolute bottom-3" href="{% url 'news:news_details' news_item.slug %}">Read More</a>
 
       </div>
       {% endfor %}
@@ -127,7 +127,7 @@
 
         <p>{{ blog_item.body|safe|truncatewords:40 }} </p>
         <br>
-        <a class="btn absolute bottom-3" href="{% url 'blog_details' blog_item.slug %}">Read More</a>
+        <a class="btn absolute bottom-3" href="{% url 'blog:blog_details' blog_item.slug %}">Read More</a>
 
       </div>
       {% endfor %}

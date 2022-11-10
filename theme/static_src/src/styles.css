@@ -61,7 +61,7 @@ button, .btn {
   @apply text-sm p-3 absolute bottom-2 w-full text-center
 }
 
-input[type='text'], input[type='date'], input[type='email'], input[type='password'], input[type="url"] textarea, select{
+input[type='text'], input[type='date'], input[type='email'], input[type='password'], input[type="url"], textarea, select{
   @apply bg-inherit;
 }
 

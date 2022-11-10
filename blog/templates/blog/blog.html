@@ -21,16 +21,23 @@
         </p>
         <div class="md:hidden">
           <br>
-          <a class="btn" href="{% url 'blog_details' blog_item.slug %}">Continue Reading</a>
+          <a class="btn" href="{% url 'blog:blog_details' blog_item.slug %}">Continue Reading</a>
         </div>
         <div
           class="hidden w-full h-full absolute top-0 md:flex justify-center items-center md:opacity-0 md:hover:opacity-100  transition-all delay-100">
-          <a href="{% url 'blog_details' blog_item.slug %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ MORE</a>
+          <a href="{% url 'blog:blog_details' blog_item.slug %}" class="border p-3 border-black z-20 md:hover:bg-black md:hover:text-white">READ MORE</a>
         </div>
       </div>
 
       <br>
       {% endfor %}
+      
+      <!-- THIS BUTTON CREATE BLOG POST, ONLY ASSESSIBLR TO SUPERUSER -->
+      {% if request.user.is_superuser %}
+      <div>
+        <a class="btn" href="{% url 'blog:create_blog' %}">Create Blog Post</a>
+      </div>
+      {% endif %}
 
       <!-- PAGINATION -->
       <div class="paginator pt-8">

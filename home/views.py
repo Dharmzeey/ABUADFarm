@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView, ListView
 
-from .models import News, Blog
+from news.models import News
+from blog.models import Blog
 
 class Home(View):
     template_name = "home/index.html"
@@ -26,36 +27,6 @@ class AboutView(View):
         return render(request, self.template_name)
 about = AboutView.as_view()
 
-
-class BlogView(ListView):
-    template_name = "pages/blog.html"
-    model = Blog
-    context_object_name = "blog"
-    paginate_by = 20
-blog = BlogView.as_view()
-
-class BlogDetailsView(DetailView):
-    model = Blog
-    template_name = 'pages/blog-details.html'
-    def get_context_data(self, **kwargs):
-        random_blogs = Blog.objects.all().order_by('?')[:3]
-        data = super().get_context_data(**kwargs)
-        data['random_blogs'] = random_blogs
-        return data
-blog_details = BlogDetailsView.as_view()
-
-
-class NewsView(ListView):
-    template_name = "pages/news.html"
-    model = News
-    context_object_name = "news"
-    paginate_by = 20
-news = NewsView.as_view()
-
-class NewsDetailsView(DetailView):
-    model = News
-    template_name = 'pages/news-details.html'
-news_details = NewsDetailsView.as_view()
 
 class ContactView(View):
     template_name = 'pages/contact.html'

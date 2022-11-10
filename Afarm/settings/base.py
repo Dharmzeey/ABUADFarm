@@ -44,12 +44,15 @@ INSTALLED_APPS = [
     "theme",
     'django_extensions',
     "django_browser_reload",
+    
     "home.apps.HomeConfig",
     "products.apps.ProductsConfig",
     "users.apps.UsersConfig",
     "administrator.apps.AdministratorConfig",
     "staff.apps.StaffConfig",
     "utils.apps.UtilsConfig",
+    "blog.apps.BlogConfig",
+    "news.apps.NewsConfig",
 ]
 
 MIDDLEWARE = [
